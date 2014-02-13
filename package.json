@@ -16,9 +16,19 @@
   ],
   "author": "Maximilian Klein",
   "contributors": [
-    "Rasmus Buchmann", "Andreas Tarnowsky"
+    "Rasmus Buchmann",
+    "Andreas Tarnowsky"
   ],
   "license": "GPL v3",
   "readmeFilename": "README.md",
-  "gitHead": "c19834e3bb97636e5f283656221f14dde1f82bae"
+  "gitHead": "c19834e3bb97636e5f283656221f14dde1f82bae",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "requirejs": "~2.1.10",
+    "mocha": "~1.17.1",
+    "grunt-mocha-test": "~0.9.0",
+    "grunt-livescript": "~0.5.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-clean": "~0.5.0"
+  }
 }
