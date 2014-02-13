@@ -1,0 +1,24 @@
+{
+  "name": "Buggy",
+  "version": "3.0.0",
+  "description": "A special Development-Framework",
+  "main": "buggy.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/LittleHelicase/Buggy.git"
+  },
+  "keywords": [
+    "Framework",
+    "Distributed"
+  ],
+  "author": "Maximilian Klein",
+  "contributors": [
+    "Rasmus Buchmann", "Andreas Tarnowsky"
+  ],
+  "license": "GPL v3",
+  "readmeFilename": "README.md",
+  "gitHead": "c19834e3bb97636e5f283656221f14dde1f82bae"
+}
