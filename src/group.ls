@@ -32,6 +32,7 @@ define (...) ->
     # all necessary fields are defined in the empty-group
     # so create-group can be run without an argument
     create-group: (group-details) ->
+      new-group = {}
       new-group <<< empty-group
       new-group <<< group-details
 
