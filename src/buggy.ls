@@ -15,9 +15,9 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-pkg = require \./package
+pkg = require "json!src/../package.json"
 
-define ["ls!group"], (Group) ->
+define ["ls!src/group"], (Group) ->
   minimal-environment = {
     # groups are an essential part of buggy as they describe the 
     # program flow, the environment can only contain groups, no generics!
@@ -34,7 +34,8 @@ define ["ls!group"], (Group) ->
   {
     # Environments are a kind of program descriptors
     # they contain the important parts of the program
-    create-new-environment: (...) ->
+    create-environment: (...) ->
+      new-environment = {}
       new-environment <<< minimal-environment
     
     load-environment: (env) ->

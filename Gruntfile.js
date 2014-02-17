@@ -15,20 +15,19 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+console.log(__dirname);
+
 module.exports = function(grunt) {
   'use strict';
 
-  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    // Before generating any new files, remove any previously-created files.
     clean: {
       web:  ['build'],
       app:  ['build'],
       test: ['test/*.js']
     },
 
-    // Configuration to be run (and then tested).
     livescript: { 
       test: {
         expand: true,
@@ -58,27 +57,27 @@ module.exports = function(grunt) {
 
     },
 
-    mochaTest: {
+    mochacli: {
         options: {
-            reporter: 'mocha-unfunk-reporter'
+          require: ["src/require"],
+          reporter: 'mocha-unfunk-reporter'
         },
         any: {
-            src: ['test/**/*-test.js']
+          src: ['test/**/*-test.js']
         }
     },
   });
 
-  grunt.loadTasks('tasks');
-
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-livescript');
-  grunt.loadNpmTasks('grunt-mocha-test');
+  //grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-mocha-cli');
 
   require('mocha-unfunk-reporter').option('reportPending', true);
 
   grunt.registerTask('app', ['livescript:app']);
-  grunt.registerTask('test', ['livescript:test', 'exec:mocha_test', 'clean:test']);
+  grunt.registerTask('test', ['livescript:test', 'mochacli', 'clean:test']);
   
   // By default, lint and run all tests.
   grunt.registerTask('default', ['app', 'test-app']);
