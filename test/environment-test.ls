@@ -9,3 +9,6 @@ describe "Buggy Environment", ->
     it "should create a valid instance", (...)->
       env = Buggy.create-environment!
       env.should.be.ok
+      # environment should contain 
+      env.should.have.property "groups"
+      env.should.have.property "dependencies"
