@@ -12,3 +12,10 @@ describe "Buggy Group", ->
 
       grp.should.have.property "name"
       grp.should.have.property "generics"
+
+    it "shouldn't overwrite existing entries", (...) ->
+      grp = Group.create-group name: "new Group"
+      grp.name.should.equal "new Group"
+      # but necessary items should be in the group!
+      grp.should.have.property "generics"
+      grp.generics.should.eql []
