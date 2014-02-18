@@ -23,6 +23,7 @@ define (...) ->
     # e.g. this could be a group, an atomic, a note or similar
     generics: []
     meta: {
+      type: "group"
       description: "Buggy Group"
     }
   }
@@ -42,4 +43,13 @@ define (...) ->
       # should change somewhen
       group.name
 
+    add-generic: (group, generic) ->
+      # make a copy of it to ensure that no side effects can change
+      # the value of the generic
+      new-generic = {}
+      new-generic <<< generic
+      group.generics.push new-generic
+
+    get-generics-by-name: (group, name) ->
+      group.generics |> filter (g) -> g.name == name
   }
