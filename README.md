@@ -3,6 +3,11 @@ Buggy
 
 A *special* Development-Framework (there is more to come soon.. we hope)
 
+Generial Idea
+=============
+
+With **Buggy** we want to adress several problems of modern programming languages like avoiding manual parallelization effort and simpe exchangeability of code parts without redesigning. But the major philosophy behind Buggy is to develop a tool that lets programmer write programs /program parts that are highly reusable and shareable. 
+
 Version
 =======
 
