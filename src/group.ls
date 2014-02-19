@@ -40,7 +40,7 @@ define (...) ->
     # gets the identifier for the group
     identifier: (group) ->
       # currently the group is identified by its name, but that
-      # should change somewhen
+      # should change somewhen to a unique identifier
       group.name
 
     add-generic: (group, generic) ->

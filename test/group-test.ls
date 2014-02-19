@@ -4,6 +4,7 @@ require! chai
 chai.should!
 
 Group = requirejs \ls!src/group
+Generic = requirejs \ls!src/generic
 
 describe "Buggy Group", ->
   describe "Creating a new group", (...) ->
@@ -30,7 +31,8 @@ describe "Buggy Group", ->
       grp1 = Group.create-group!
       grp2 = Group.create-group name: "GRP2"
 
-      Group.add-generic grp1, grp2
+      grp2Generic = Generic.construct-generic grp2
+      Group.add-generic grp1, grp2Generic
       generics = Group.get-generics-by-name grp1, "GRP2"
       generics.length.should.equal 1
 

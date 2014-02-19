@@ -1,0 +1,23 @@
+{
+	"meta" : {
+		"## LanguageName" : "TestLanguage"
+	},
+	"symbols" : {
+		"Add"	: [
+			{
+				"Atomic": true,
+				"Connectors": [
+					{  }
+				],
+				"Implementation" : ""
+			}
+		]
+	},
+	"sources" : [
+		{
+			"name" : "GitHub Project Source",
+			"type" : "json",
+			"url"  : "https://github.com/LittleHelicase/Buggy/..."
+		}
+	]
+}
