@@ -36,8 +36,9 @@ define (...) ->
       # return the query function that uses the json
       # to look up entries/symbols
       (name) ->
-        if name.indexOf "## " == 0
+        if (name.indexOf "## ") == 0
           json.meta[name.substring 3]
         else
+          # also check distributed sources...
           json.symbols[name]
   }

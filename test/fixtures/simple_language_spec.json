@@ -1,15 +1,29 @@
 {
 	"meta" : {
-		"## LanguageName" : "TestLanguage"
+		"LanguageName" : "TestLanguage"
 	},
 	"symbols" : {
 		"Add"	: [
 			{
 				"Atomic": true,
 				"Connectors": [
-					{  }
+					{ 
+						"name" : "Term 1",
+						"connector-type" : "Input",
+						"data-type"	: "number"
+					},
+					{
+						"name" : "Term 2",
+						"connector-type" : "Input",
+						"data-type"	: "number"
+					},
+					{
+						"name" : "Sum",
+						"connector-type" : "Output",
+						"data-type" : "number"
+					}
 				],
-				"Implementation" : ""
+				"Implementation" : "{{Sum}} = {{Term 1}} + {{Term 2}}"
 			}
 		]
 	},
