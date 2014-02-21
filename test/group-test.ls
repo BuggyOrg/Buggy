@@ -9,7 +9,7 @@ Generic = requirejs \ls!src/generic
 describe "Buggy Group", ->
   describe "Creating a new group", (...) ->
     it "should create a valid empty group", ->
-      grp = Group.create-group!
+      grp = Group.create!
       grp.should.be.ok
 
       grp.should.have.property "name"
@@ -18,7 +18,7 @@ describe "Buggy Group", ->
       grp.meta.type.should.equal "group"
 
     it "shouldn't overwrite existing entries", (...) ->
-      grp = Group.create-group name: "new Group"
+      grp = Group.create name: "new Group"
       grp.name.should.equal "new Group"
       # but necessary items should be in the group!
       grp.should.have.property "generics"
@@ -28,8 +28,8 @@ describe "Buggy Group", ->
 
   describe "Group generics", (...) ->
     it "should be able to add new generics", ->
-      grp1 = Group.create-group!
-      grp2 = Group.create-group name: "GRP2"
+      grp1 = Group.create!
+      grp2 = Group.create name: "GRP2"
 
       grp2Generic = Generic.construct-generic grp2
       Group.add-generic grp1, grp2Generic
