@@ -49,7 +49,6 @@ define ["ls!src/group"], (Group) ->
       new-environment <<< minimal-environment
     
     load: (env) ->
-      # do some stuff like resolve nodes, transfer functions etc.
       new-environment = {}
       new-environment <<< minimal-environment
       new-environment <<< env
