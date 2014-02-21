@@ -58,7 +58,8 @@ define ["ls!src/group"], (Group) ->
     add-group: (env, group) ->
       id = Group.identifier group
       if id of env.groups
-        throw "Group #id already contained in environment"
+        throw new Error "Group #id already contained in environment"
       else
+        env.groups[id] = {}
         env.groups[id] <<< group
   }
