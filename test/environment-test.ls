@@ -3,6 +3,7 @@ require! chai
 chai.should!
 
 Environment = requirejs "ls!src/environment"
+Group = requirejs "ls!src/group"
 
 describe "Buggy Environment", !->
   describe "Creating an empty environment", (...) !->
@@ -39,13 +40,36 @@ describe "Buggy Environment", !->
 
     it "should fail on wrong formatted groups", !->
       json-env = {groups: ["A"]}
-      # it should probably not throw simple strings ;)
       (-> Environment.load json-env).should.throw Error
 
     it "should fail on wrong formatted dependencies", !->
       json-env = {dependencies: "A"}
-      # it should probably not throw simple strings ;)
       (-> Environment.load json-env).should.throw Error
+
+  describe "Adding groups", (...) ->
+    it "should be able to add new groups", !->
+      env = Environment.create!
+      new-group = Group.create name: "GROUP"
+      Environment.add-group env, new-group
+      env.groups.should.have.property "GROUP"
+
+    it "shouldn't affect other created instances", !->
+      group-name = "GROUPNAME"
+
+      env1 = Environment.create!
+      grp = Group.create name: group-name
+      Environment.add-group env1, grp
+
+      env2 = Environment.create!
+      env2.groups.should.not.have.property group-name
+
+    it "should fail if a group with the same identifier is inserted more than once", !->
+      env = Environment.create!
+      grp1 = Group.create name: "GROUP"
+      grp2 = Group.create name: "GROUP"
+      
+      Environment.add-group env, grp1
+      (-> Environment.add-group env, grp2).should.throw Error
 
 
 

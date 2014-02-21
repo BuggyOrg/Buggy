@@ -47,6 +47,7 @@ define ["ls!src/group"], (Group) ->
     create: (...) ->
       new-environment = {}
       new-environment <<< minimal-environment
+      return new-environment
     
     load: (env) ->
       new-environment = {}
@@ -60,6 +61,10 @@ define ["ls!src/group"], (Group) ->
       if id of env.groups
         throw new Error "Group #id already contained in environment"
       else
-        env.groups[id] = {}
-        env.groups[id] <<< group
+        # make sure to not override the existing group object!
+        groups = {}
+        groups <<< env.groups
+        groups[id] = {}
+        groups[id] <<< group
+        env.groups = groups
   }
