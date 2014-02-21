@@ -23,6 +23,7 @@
 						"data-type" : "number"
 					}
 				],
+				"comment" : "Implementation is only relevant for atomic nodes, it uses handlebars templates",
 				"Implementation" : "{{Sum}} = {{Term 1}} + {{Term 2}}"
 			}
 		]
