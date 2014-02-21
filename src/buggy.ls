@@ -31,6 +31,16 @@ define ["ls!src/group"], (Group) ->
     }
   }
 
+  sanity-check = (env) ->
+    if typeof! env.groups != "Object"
+      throw new Error "Groups must be an Object"
+    else if typeof! env.dependencies != "Array"
+      throw new Error "Dependencies must be an Array"
+
+  # always do an sanity check on the minimal environment
+  # otherwise it would be stupid to continue
+  sanity-check minimal-environment
+
   {
     # Environments are a kind of program descriptors
     # they contain the important parts of the program
@@ -39,8 +49,12 @@ define ["ls!src/group"], (Group) ->
       new-environment <<< minimal-environment
     
     load-environment: (env) ->
-      throw "load-environment is not implemented yet"
       # do some stuff like resolve nodes, transfer functions etc.
+      new-environment = {}
+      new-environment <<< minimal-environment
+      new-environment <<< env
+      sanity-check new-environment
+      return new-environment
 
     add-group: (env, group) ->
       id = Group.identifier group
