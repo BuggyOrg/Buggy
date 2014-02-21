@@ -44,11 +44,11 @@ define ["ls!src/group"], (Group) ->
   {
     # Environments are a kind of program descriptors
     # they contain the important parts of the program
-    create-environment: (...) ->
+    create: (...) ->
       new-environment = {}
       new-environment <<< minimal-environment
     
-    load-environment: (env) ->
+    load: (env) ->
       # do some stuff like resolve nodes, transfer functions etc.
       new-environment = {}
       new-environment <<< minimal-environment
