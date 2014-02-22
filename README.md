@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/LittleHelicase/Buggy.png)](https://travis-ci.org/LittleHelicase/Buggy)
+
 Buggy
 =====
 
