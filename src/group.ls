@@ -15,6 +15,14 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+# a group should be a semantic 'unit' that describes a process on a appropiate
+# abstraction level (sound a bit vague, but for low abstraction layers the group
+# can adress technical problems, wheres on a high level the group shouldn't adress
+# low level / technical issues as those aren't vital for the semantics)
+#
+# Groups shouldn't define exactly how everything works in detail, but should referenc to
+# other groups that solve problems on a lower abstraction level.
 define (...) ->
   empty-group = {
     name: "Unnamed Group"
