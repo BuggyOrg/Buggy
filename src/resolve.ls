@@ -28,8 +28,26 @@
 # necessary due to changes done by others to the implementation of such semantic groups)
 define ["ls!src/environment", "ls!src/language-definition", "ls!src/group"], (Env, Ld, Group) ->
 
-  resolve-group = (query, enqueue, group-id) -->
-    enqueue ["#group-id", query group-id]
+  is-empty = (obj) ->
+    (keys obj).length == 0
+
+  resolve-group = (query, enqueue, group-arr) -->
+    group-id = group-arr.0
+    resolved = false
+    if not is-empty group-arr.1
+      enqueue ["#group-id", group-arr.1]
+      resolved = true
+
+    query-resolved = query group-id
+    if typeof! query-resolved == "Object" and not is-empty query-resolved
+      enqueue ["#group-id", query-resolved]
+      resolved = true
+    else if typeof! query-resolved == "Array" and query-resolved.length != 0
+      query-resolved |> map (res) -> enqueue ["#group-id", res]
+      resolved = true
+
+    if not resolved
+      throw new Error "Symbol #group-id couldn't be resolved"
 
   enqueue-into-array = (arr, loaded, what) -->
     arr.push what
@@ -41,9 +59,9 @@ define ["ls!src/environment", "ls!src/language-definition", "ls!src/group"], (En
       enqueue = enqueue-into-array resolved, (gid) -> # do something... call callback or so
       res = resolve-group ld.query, enqueue
 
-      keys program.groups |> map res
+      obj-to-pairs program.groups |> map res
 
-      done (resolved |> pairs-to-obj)
+      done? (resolved |> pairs-to-obj)
       
 
     # resolves everything necessary for a given output.. creates a dependency tree

@@ -15,16 +15,33 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/group"], (Group) ->
+# generics are not specified nodes in the graph that can be
+# either groups or input / output objects ?
+define (...) ->
   {
-    construct-generic: (thing) ->
-      if thing.meta?.type == "group"
+    create: (thing) ->
+      if typeof! thing == "String"
+        thing
+      else if thing.meta?.type == "group"
         {
           name: thing.name
-          id: Group.identifier thing
+          id: thing.name
           generic: true
           type: "group"
         }
       else
-        throw "unkown generic type -- not supported (yet)"
+        throw new Error "unkown generic type -- not supported (yet)"
+
+    copy: (generic) ->
+      if typeof! generic == "String"
+        "#generic"
+      else
+        copy = {}
+        copy <<< generic
+
+    name: (generic) ->
+      if typeof! generic == "String"
+        generic
+      else
+        generic.name
   }

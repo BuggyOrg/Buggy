@@ -23,7 +23,7 @@
 #
 # Groups shouldn't define exactly how everything works in detail, but should referenc to
 # other groups that solve problems on a lower abstraction level.
-define (...) ->
+define ["ls!src/generic"] (Generic) ->
   empty-group = {
     name: "Unnamed Group"
     # generics are a concept that be an object that
@@ -54,10 +54,9 @@ define (...) ->
     add-generic: (group, generic) ->
       # make a copy of it to ensure that no side effects can change
       # the value of the generic
-      new-generic = {}
-      new-generic <<< generic
+      new-generic = Generic.copy generic
       group.generics.push new-generic
 
     get-generics-by-name: (group, name) ->
-      group.generics |> filter (g) -> g.name == name
+      group.generics |> filter (g) -> (Generic.name g) == name
   }

@@ -31,7 +31,7 @@ describe "Buggy Group", ->
       grp1 = Group.create!
       grp2 = Group.create name: "GRP2"
 
-      grp2Generic = Generic.construct-generic grp2
+      grp2Generic = Generic.create grp2
       Group.add-generic grp1, grp2Generic
       generics = Group.get-generics-by-name grp1, "GRP2"
       generics.length.should.equal 1
