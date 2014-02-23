@@ -12,7 +12,7 @@ describe "Buggy Groups / Symbol Resolve", (...) !->
   ld = Ld.create (query) ->
     switch query
     | "## LanguageName" => "TESTLANG"
-    | "GRP" => [{ "Atomic" : true }]
+    | "GRP" => [{ "atomic" : true }]
     | otherwise => throw new Error "not existing symbol '#query' queried"
 
   describe "Resolving programs", (...) !->
@@ -24,7 +24,7 @@ describe "Buggy Groups / Symbol Resolve", (...) !->
       # language definition is necessary, but not implemented yet ;)
       Resolve.resolve env, ld, (res) ->
         res.should.have.property "GRP"
-        res.GRP.should.eql [{"Atomic" : true}]
+        res.GRP.should.eql [{"atomic" : true}]
 
     it "should fail?! if a symbol cannot be resolved", !->
       env = Environment.create!

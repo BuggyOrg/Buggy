@@ -5,8 +5,8 @@
 	"symbols" : {
 		"Add"	: [
 			{
-				"Atomic": true,
-				"Connectors": [
+				"atomic": true,
+				"connectors": [
 					{ 
 						"name" : "Term 1",
 						"connector-type" : "Input",
@@ -24,9 +24,31 @@
 					}
 				],
 				"comment" : "Implementation is only relevant for atomic nodes, it uses handlebars templates",
-				"Implementation" : "{{Sum}} = {{Term 1}} + {{Term 2}}"
+				"implementation" : "{{Sum}} = {{Term 1}} + {{Term 2}};"
+			}
+		],
+		"StringToNumber" : [
+			{
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "String",
+						"connector-type" : "Input",
+						"data-type" : "string"
+					},
+					{
+						"name" : "Number",
+						"connector-type" : "Output",
+						"data-type" : "number"
+					}
+				],
+				"implementation" : "{{Number}} = Number({{String}});"
 			}
 		]
+	},
+	"transformations" : {
+		"comment" : "The naming isn't final and can change... Array should contain groups",
+		"string -> number" : [ "StringToNumber"	]
 	},
 	"sources" : [
 		{
