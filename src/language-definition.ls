@@ -22,7 +22,7 @@
 define (...) ->
 
   {
-    create-definition: (query-function) ->
+    create: (query-function) ->
       { 
         # '## LanguageName' is a special function implemented by every language
         # that simply gives the name of the implemented language
@@ -32,7 +32,7 @@ define (...) ->
       }
 
     # returns a query function for a json specification
-    load-specification-from-json: (json) ->
+    load-from-json: (json) ->
       # return the query function that uses the json
       # to look up entries/symbols
       (name) ->
