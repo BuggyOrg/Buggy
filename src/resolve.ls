@@ -28,20 +28,28 @@
 # necessary due to changes done by others to the implementation of such semantic groups)
 define ["ls!src/environment", "ls!src/language-definition", "ls!src/group"], (Env, Ld, Group) ->
 
-  resolve-group = (ld, group-id) -->
-    group-id
+  resolve-group = (query, enqueue, group-id) -->
+    enqueue ["#group-id", query group-id]
+
+  enqueue-into-array = (arr, loaded, what) -->
+    arr.push what
+    loaded what.0
 
   {
-    resolve: (program, ld) ->
-      res = resolve-group ld
+    resolve: (program, ld, done) ->
+      resolved = []
+      enqueue = enqueue-into-array resolved, (gid) -> # do something... call callback or so
+      res = resolve-group ld.query, enqueue
 
-      keys program.groups |> map res |> flatten
+      keys program.groups |> map res
+
+      done (resolved |> pairs-to-obj)
       
 
     # resolves everything necessary for a given output.. creates a dependency tree
     # and only resolves necessary elements with optional lazy "resolvation"
     # if a path might not be necessary for the calculation
-    resolve-output: (output, program, ld, lazy = false) ->
+    resolve-output: (output, program, ld, done, lazy = false) ->
       # do other stuff
   }
   

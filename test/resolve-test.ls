@@ -6,14 +6,29 @@ chai.should!
 Resolve = requirejs \ls!src/resolve
 Environment = requirejs \ls!src/environment
 Group = requirejs \ls!src/group
+Ld = requirejs \ls!src/language-definition
 
 describe "Buggy Groups / Symbol Resolve", (...) !->
+  ld = Ld.create (query) ->
+    switch query
+    | "## LanguageName" => "TESTLANG"
+    | "GRP" => [{ "Atomic" : true }]
+    | otherwise => throw new Error "not existing symbol '#query' queried"
+
   describe "Resolving programs", (...) !->
-    it "should contain every environment group", !->
+    it "should contain the groups of the environment", !->
       env = Environment.create!
       grp = Group.create name: "GRP"
       Environment.add-group env, grp
 
       # language definition is necessary, but not implemented yet ;)
-      res = Resolve.resolve env, null
-      res.should.contain "GRP"
+      Resolve.resolve env, ld, (res) ->
+        res.should.have.property "GRP"
+        res.GRP.should.eql [{"Atomic" : true}]
+
+    it "should fail?! if a symbol cannot be resolved", !->
+      env = Environment.create!
+      grp = Group.create name: "NOT_RESOLVABLE"
+      Environment.add-group env, grp
+
+      (-> Resolve.resolve env, ld).should.throw Error
