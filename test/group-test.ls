@@ -36,3 +36,7 @@ describe "Buggy Group", ->
       generics = Group.get-generics-by-name grp1, "GRP2"
       generics.length.should.equal 1
 
+    it "shouldn't affect other instances", !->
+      grp1 = Group.create!
+
+      grp1.generics.length.should.equal 0

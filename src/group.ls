@@ -44,6 +44,8 @@ define ["ls!src/generic"] (Generic) ->
       new-group = {}
       new-group <<< empty-group
       new-group <<< group-details
+      new-group.generics = []
+      return new-group 
 
     # gets the identifier for the group
     identifier: (group) ->
