@@ -26,7 +26,10 @@
 # exact implementation). One should be able to provide those information beforehand or
 # the resolve-process be able to request a choice for every such situation (which is most certainly
 # necessary due to changes done by others to the implementation of such semantic groups)
-define ["ls!src/environment", "ls!src/language-definition", "ls!src/group"], (Env, Ld, Group) ->
+define ["ls!src/environment", 
+        "ls!src/language-definition", 
+        "ls!src/group",
+        "ls!src/generic"], (Env, Ld, Group, Generic) ->
 
   is-empty = (obj) ->
     (keys obj).length == 0
@@ -34,10 +37,12 @@ define ["ls!src/environment", "ls!src/language-definition", "ls!src/group"], (En
   resolve-group = (query, enqueue, group-arr) -->
     group-id = group-arr.0
     resolved = false
+    # if there is already a definition enqueue it
     if not is-empty group-arr.1
       enqueue ["#group-id", group-arr.1]
       resolved = true
 
+    # query definitions for the group
     query-resolved = query group-id
     if typeof! query-resolved == "Object" and not is-empty query-resolved
       enqueue ["#group-id", query-resolved]
@@ -49,14 +54,18 @@ define ["ls!src/environment", "ls!src/language-definition", "ls!src/group"], (En
     if not resolved
       throw new Error "Symbol #group-id couldn't be resolved"
 
-  enqueue-into-array = (arr, loaded, what) -->
+  enqueue-into-array = (arr, query, loaded, what) -->
     arr.push what
     loaded what.0
+    # resolve the generics in 'what'
+    if Generic.isGroup what.1
+      what.1.generics |> map (g) ->
+        resolve-group query, (enqueue-into-array arr, query, loaded), [Generic.name g, {}]
 
   {
     resolve: (program, ld, done) ->
       resolved = []
-      enqueue = enqueue-into-array resolved, (gid) -> # do something... call callback or so
+      enqueue = enqueue-into-array resolved, ld.query, (gid) -> # do something... call callback or so
       res = resolve-group ld.query, enqueue
 
       obj-to-pairs program.groups |> map res

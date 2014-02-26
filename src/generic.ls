@@ -44,4 +44,8 @@ define (...) ->
         generic
       else
         generic.name
+
+    is-group: (generic) ->
+      #this should suffice for now
+      generic.generics? and generic.name?
   }

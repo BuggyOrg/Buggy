@@ -37,10 +37,21 @@ describe "Buggy Groups / Symbol Resolve", (...) !->
     it "should contain given groups in the environment", !->
       env = Environment.create!
       grp = Group.create name: "GRP1"
-      gnr = Generic.create "SUBGRP"
+      gnr = Generic.create "GRP"
       Group.add-generic grp, gnr
       Environment.add-group env, grp
 
       Resolve.resolve env, ld, (res) ->
-        generic = Group.get-generics-by-name res.GRP1, "SUBGRP"
+        generic = Group.get-generics-by-name res.GRP1, "GRP"
         generic.should.be.ok
+        generic.length.should.be.equal 1
+        generic.0.should.equal "GRP"
+
+    it "should fail if a group cannot be resolve", !->
+      env = Environment.create!
+      grp = Group.create name: "GRP2"
+      gnr = Generic.create "SUBGRP"
+      Group.add-generic grp, gnr
+      Environment.add-group env, grp
+
+      (-> Resolve.resolve env, ld).should.throw Error
