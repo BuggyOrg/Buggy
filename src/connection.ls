@@ -18,13 +18,20 @@
 define (...) ->
 
   { 
+    create: (in-connector, out-connector) ->
+      if out-connector.0 == ">"
+        input-connector: in-connector, output-connector: (out-connector[1 til].join "")
+      else
+        throw new Error "Non Connector Inputs not implemented yet"
+
     gather-connections: (group) ->
+      Connection = this
       connections = []
       group.generics |> map (generic) ->
         obj-to-pairs generic.inputs |> map (inputPair) ->
           inputID = inputPair.0
           inputGeneric = inputPair.1
-          connections.push in: generic.name, out: inputGeneric
+          connections.push Connection.create generic.name, inputGeneric
 
       return connections
   }

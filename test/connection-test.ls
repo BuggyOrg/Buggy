@@ -20,6 +20,7 @@ describe "Buggy Connections", !->
           },
           {
             name:"C",
+            # the > indicates that the input is another generic
             inputs: { "INPUT1": ">A", "INPUT2": ">B" }
           }
         ]
@@ -28,5 +29,5 @@ describe "Buggy Connections", !->
       cn = Connection.gather-connections grp
       cn.length.should.equal 2
       console.log cn
-      cn.should.include.something.that.deep.equals {in: "C", out: ">A"}
-      cn.should.include.something.that.deep.equals {in: "C", out: ">B"}
+      cn.should.include.something.that.deep.equals {input-connector: "C", output-connector: "A"}
+      cn.should.include.something.that.deep.equals {input-connector: "C", output-connector: "B"}
