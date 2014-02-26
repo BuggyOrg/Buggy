@@ -23,7 +23,7 @@
 #
 # Groups shouldn't define exactly how everything works in detail, but should referenc to
 # other groups that solve problems on a lower abstraction level.
-define ["ls!src/generic"] (Generic) ->
+define ["ls!src/generic", "ls!src/util/clone"] (Generic, Clone) ->
   empty-group = {
     name: "Unnamed Group"
     # generics are a concept that be an object that
@@ -41,11 +41,8 @@ define ["ls!src/generic"] (Generic) ->
     # all necessary fields are defined in the empty-group
     # so create-group can be run without an argument
     create: (group-details) ->
-      new-group = {}
-      new-group <<< empty-group
-      new-group <<< group-details
-      new-group.generics = []
-      return new-group 
+      new-group = Clone empty-group
+      new-group <<< Clone group-details
 
     # gets the identifier for the group
     identifier: (group) ->

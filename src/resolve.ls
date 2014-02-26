@@ -68,7 +68,11 @@ define ["ls!src/environment",
       enqueue = enqueue-into-array resolved, ld.query, (gid) -> # do something... call callback or so
       res = resolve-group ld.query, enqueue
 
-      obj-to-pairs program.groups |> map res
+      program.entry |> map (entry) ->
+        if typeof! entry == "String"
+          res [entry, {}]
+        else if entry.name?
+          res [entry.name, entry]
 
       done? (resolved |> pairs-to-obj)
       

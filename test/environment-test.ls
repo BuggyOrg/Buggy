@@ -11,7 +11,7 @@ describe "Buggy Environment", !->
       env = Environment.create!
       env.should.be.ok
       # environment should contain 
-      env.should.have.property "groups"
+      env.should.have.property "entry"
       env.should.have.property "dependencies"
 
   describe "Loading an exising environment", (...) !->
@@ -20,15 +20,16 @@ describe "Buggy Environment", !->
       env = Environment.load json-env
       env.should.be.ok
       # environment should contain 
-      env.should.have.property "groups"
+      env.should.have.property "entry"
       env.should.have.property "dependencies"
 
     it "should not overwrite existing groups", !->
-      json-env = {groups: {"A":"B"}}
+      json-env = {entry: ["A"]}
       env = Environment.load json-env
       env.should.be.ok
-      env.should.have.property "groups"
-      env.groups.A.should.equal "B"
+      env.should.have.property "entry"
+      env.entry.length.should.equal 1
+      env.entry.0.should.equal "A"
 
     it "should not overwrite existing dependencies", !->
       json-env = {dependencies: ["A","B"]}
@@ -38,20 +39,21 @@ describe "Buggy Environment", !->
       ("A" in env.dependencies).should.equal true
       ("B" in env.dependencies).should.equal true
 
-    it "should fail on wrong formatted groups", !->
-      json-env = {groups: ["A"]}
+    it "should fail on wrong formatted entry", !->
+      json-env = {entry: {"A"} }
       (-> Environment.load json-env).should.throw Error
 
     it "should fail on wrong formatted dependencies", !->
       json-env = {dependencies: "A"}
       (-> Environment.load json-env).should.throw Error
 
-  describe "Adding groups", (...) ->
-    it "should be able to add new groups", !->
+  describe "Adding generics", (...) ->
+    it "should be able to add new group", !->
       env = Environment.create!
       new-group = Group.create name: "GROUP"
       Environment.add-group env, new-group
-      env.groups.should.have.property "GROUP"
+      env.entry.length.should.equal 1
+      env.entry.0.should.eql new-group
 
     it "shouldn't affect other created instances", !->
       group-name = "GROUPNAME"
@@ -61,15 +63,7 @@ describe "Buggy Environment", !->
       Environment.add-group env1, grp
 
       env2 = Environment.create!
-      env2.groups.should.not.have.property group-name
-
-    it "should fail if a group with the same identifier is inserted more than once", !->
-      env = Environment.create!
-      grp1 = Group.create name: "GROUP"
-      grp2 = Group.create name: "GROUP"
-      
-      Environment.add-group env, grp1
-      (-> Environment.add-group env, grp2).should.throw Error
+      env2.entry.length.should.equal 0
 
 
 

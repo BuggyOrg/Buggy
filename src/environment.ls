@@ -17,14 +17,10 @@
 
 pkg = require "json!src/../package.json"
 
-define ["ls!src/group"], (Group) ->
+define ["ls!src/group","ls!src/util/clone"], (Group, Clone) ->
   minimal-environment = {
-    # groups are an essential part of buggy as they describe the 
-    # program flow, the environment can only contain groups, no generics!
-    groups: {}
-    # a set (list) of dependencies
+    entry: []
     dependencies: []
-    # some meta information
     meta: {
       description: "Buggy Environment Description"
       version: pkg.version
@@ -32,39 +28,23 @@ define ["ls!src/group"], (Group) ->
   }
 
   sanity-check = (env) ->
-    if typeof! env.groups != "Object"
-      throw new Error "Groups must be an Object"
-    else if typeof! env.dependencies != "Array"
-      throw new Error "Dependencies must be an Array"
-
-  # always do an sanity check on the minimal environment
-  # otherwise it would be stupid to continue
-  sanity-check minimal-environment
+    if typeof! env.entry != "Array"
+      throw new Error "The Environment Entry must be a valid Array"
+    if typeof! env.dependencies != "Array"
+      throw new Error "Dependencies for the environment must be an array"
 
   {
     # Environments are a kind of program descriptors
     # they contain the important parts of the program
     create: (...) ->
-      new-environment = {}
-      new-environment <<< minimal-environment
-      return new-environment
+      new-environment = Clone minimal-environment
     
     load: (env) ->
-      new-environment = {}
-      new-environment <<< minimal-environment
-      new-environment <<< env
+      new-environment = this.create!
+      new-environment <<< Clone env
       sanity-check new-environment
       return new-environment
 
     add-group: (env, group) ->
-      id = Group.identifier group
-      if id of env.groups
-        throw new Error "Group #id already contained in environment"
-      else
-        # make sure to not override the existing group object!
-        groups = {}
-        groups <<< env.groups
-        groups[id] = {}
-        groups[id] <<< group
-        env.groups = groups
+      env.entry.push group
   }
