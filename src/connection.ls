@@ -18,9 +18,20 @@
 define (...) ->
 
   { 
-    create: (in-connector, out-connector) ->
-      if out-connector.0 == ">"
-        input-connector: in-connector, output-connector: (out-connector[1 til].join "")
+    create: (in-generic, in-connector, out) ->
+      if out.0 == ">"
+        out-string = (out[1 til].join "")
+        [out-generic, out-connector] = out-string.split ":"
+        return {
+          input: {
+            generic: in-generic
+            connector: in-connector
+          }
+          output: {
+            generic: out-generic
+            connector: out-connector
+          }
+        }
       else
         throw new Error "Non Connector Inputs not implemented yet"
 
@@ -31,7 +42,7 @@ define (...) ->
         obj-to-pairs generic.inputs |> map (inputPair) ->
           inputID = inputPair.0
           inputGeneric = inputPair.1
-          connections.push Connection.create generic.name, inputGeneric
+          connections.push Connection.create generic.name, inputID, inputGeneric
 
       return connections
   }

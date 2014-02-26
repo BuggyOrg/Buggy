@@ -12,22 +12,49 @@ describe "Buggy Connections", !->
     it "should list all connections", !->
       grp = Group.create {
         generics: [
+          { name:"A" }
           {
-            name:"A"
-          },
-          {
-            name:"B"
-          },
+            name:"B",
+            # the > indicates that the input is another generic
+            # it is not necessary to resolve A (to know that A has an outgoing connector OUT)
+            # at Connection creation. !!??
+            inputs: { "INPUT": ">A:OUT" }
+          }
+        ]
+      }
+
+      cn = Connection.gather-connections grp
+      cn.length.should.equal 1
+      cn.should.include.something.that.deep.equals {
+        input: {
+          generic: "B"
+          connector: "INPUT"
+        }
+        output: {
+          generic: "A"
+          connector: "OUT"
+        }
+      }
+
+    it "should handle multiple inputs", !->
+      grp = Group.create {
+        generics: [
+          { name:"A" }
+          { name:"B" }
           {
             name:"C",
-            # the > indicates that the input is another generic
-            inputs: { "INPUT1": ">A", "INPUT2": ">B" }
+            inputs: { "INPUT1": ">A:OUT1", "INPUT2": ">B:OUT1" }
           }
         ]
       }
 
       cn = Connection.gather-connections grp
       cn.length.should.equal 2
-      console.log cn
-      cn.should.include.something.that.deep.equals {input-connector: "C", output-connector: "A"}
-      cn.should.include.something.that.deep.equals {input-connector: "C", output-connector: "B"}
+      cn.should.include.something.that.deep.equals { 
+        input: { generic: "C", connector: "INPUT1"}
+        output: { generic: "A", connector: "OUT1"}
+      }
+      cn.should.include.something.that.deep.equals {
+        input: { generic: "C", connector: "INPUT2"}
+        output: { generic: "B", connector: "OUT1"}
+      }
