@@ -58,3 +58,20 @@ describe "Buggy Connections", !->
         input: { generic: "C", connector: "INPUT2"}
         output: { generic: "B", connector: "OUT1"}
       }
+
+    it "should work without specifing input connector", !->
+      grp = Group.create {
+        generics: [
+          { name:"A" }
+          {
+            name:"B"
+            # the > indicates that the input is another generic
+            # it is not necessary to resolve A (to know that A has an outgoing connector OUT)
+            # at Connection creation. !!??
+            inputs: { "INPUT": ">A" }
+          }
+        ]
+      }
+
+      cn = Connection.gather-connections grp
+      cn.length.should.equal 1

@@ -48,14 +48,20 @@ define ["ls!src/environment",
       enqueue ["#group-id", query-resolved]
       resolved = true
     else if typeof! query-resolved == "Array" and query-resolved.length != 0
-      query-resolved |> map (res) -> enqueue ["#group-id", res]
+      query-resolved |> map (res) ->
+        enqueue ["#group-id", res]
       resolved = true
 
     if not resolved
       throw new Error "Symbol #group-id couldn't be resolved"
 
   enqueue-into-array = (arr, query, loaded, what) -->
-    arr.push what
+    id = what.0
+    if !what.1.name?
+      what.1.name = id
+    if ! arr[id]?
+      arr[id] = []
+    arr[id].push what.1
     loaded what.0
     # resolve the generics in 'what'
     if Generic.isGroup what.1
@@ -64,7 +70,7 @@ define ["ls!src/environment",
 
   {
     resolve: (program, ld, done) ->
-      resolved = []
+      resolved = {}
       enqueue = enqueue-into-array resolved, ld.query, (gid) -> # do something... call callback or so
       res = resolve-group ld.query, enqueue
 
@@ -74,7 +80,7 @@ define ["ls!src/environment",
         else if entry.name?
           res [entry.name, entry]
 
-      done? (resolved |> pairs-to-obj)
+      done? resolved
       
 
     # resolves everything necessary for a given output.. creates a dependency tree

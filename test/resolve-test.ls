@@ -22,10 +22,9 @@ describe "Buggy Groups / Symbol Resolve", (...) !->
       grp = Group.create name: "GRP"
       Environment.add-group env, grp
 
-      # language definition is necessary, but not implemented yet ;)
-      Resolve.resolve env, ld, (res) ->
+      Resolve.resolve env, ld, (res) !->
         res.should.have.property "GRP"
-        res.GRP.should.eql {"atomic" : true}
+        res.GRP.should.include.something.that.has.property "atomic"
 
     /*it "should fail?! if a symbol cannot be resolved", !->
       env = Environment.create!
@@ -36,16 +35,14 @@ describe "Buggy Groups / Symbol Resolve", (...) !->
 
     it "should contain given groups in the environment", !->
       env = Environment.create!
+      # this group is created in the environment and though must have a implementation!
       grp = Group.create name: "GRP1"
       gnr = Generic.create "GRP"
       Group.add-generic grp, gnr
       Environment.add-group env, grp
 
       Resolve.resolve env, ld, (res) ->
-        generic = Group.get-generics-by-name res.GRP1, "GRP"
-        generic.should.be.ok
-        generic.length.should.be.equal 1
-        generic.0.should.equal "GRP"
+        res.should.have.property "GRP"
 
     it "should fail if a group cannot be resolve", !->
       env = Environment.create!
