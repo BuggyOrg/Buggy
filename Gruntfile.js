@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 
     mochacli: {
         options: {
-          require: ["src/require"],
+          require: ["test/require"],
           reporter: 'mocha-unfunk-reporter'
         },
         any: {
@@ -71,7 +71,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-livescript');
-  //grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-mocha-cli');
 
   require('mocha-unfunk-reporter').option('reportPending', true);
