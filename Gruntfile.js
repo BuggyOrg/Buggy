@@ -25,7 +25,7 @@ module.exports = function(grunt) {
     clean: {
       web:  ['build'],
       app:  ['build'],
-      test: ['test/*.js']
+      test: ['test/*-test.js']
     },
 
     livescript: { 
