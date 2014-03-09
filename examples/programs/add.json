@@ -1,0 +1,33 @@
+{
+	"entry": [
+		{
+			"name": "main",
+			"comment":"Takes one number and adds it to itself",
+		    "generics": [
+		    	{
+		    		"name" : "input",
+		    		"meta" : {
+		    			"type" : "number"
+		    		}
+		    	},
+		    	{
+		    		"name" : "Add",
+		    		"inputs" : { "Term 1" : ">input", "Term 2" : ">input" }
+		    	},
+		    	{
+		    		"name" : "Output",
+		    		"inputs" : { "Output" : ">Add" }
+		    	}
+		    ],
+		    "meta": {
+		      "type": "group",
+		      "description": "Main Logic of 'Add'"
+		    }
+		}
+	],
+    "dependencies": [],
+    "meta": {
+      "description": "Buggy Environment Description",
+      "version": "3.0.0"
+    }
+}

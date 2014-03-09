@@ -1,0 +1,2 @@
+#!/bin/bash
+./buggy2anything.ls -l ../../languages/javascript/javascript.ld "$@"

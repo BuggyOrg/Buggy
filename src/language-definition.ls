@@ -21,7 +21,7 @@
 # of arbitrary sources (depending on the query function selected)
 define (...) ->
 
-  {
+  ld = {
     create: (query-function) ->
       { 
         # '## LanguageName' is a special function implemented by every language
@@ -32,7 +32,7 @@ define (...) ->
       }
 
     # returns a query function for a json specification
-    load-from-json: (json) ->
+    load-query-from-json: (json) ->
       # return the query function that uses the json
       # to look up entries/symbols
       (name) ->
@@ -41,4 +41,11 @@ define (...) ->
         else
           # also check distributed sources...
           json.symbols[name]
+
+    # returns a query function for a json specification
+    load-from-json: (json) ->
+      query = ld.load-query-from-json json
+      ld.create query
   }
+
+  return ld

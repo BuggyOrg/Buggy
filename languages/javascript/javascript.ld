@@ -2,6 +2,8 @@
 	"meta" : {
 		"LanguageName" : "JavaScript",
 		"Buggy-Version" : "3.0.0",
+		"Source-Extension" : "js",
+		"Interpreted" : true
 	},
 	"symbols" : {
 		"Add"	: [
