@@ -23,12 +23,19 @@ define (...) ->
 
   ld = {
     create: (query-function) ->
+      modules = []
       { 
         # '## LanguageName' is a special function implemented by every language
         # that simply gives the name of the implemented language
         name: query-function "## LanguageName"
         query: (name) ->
-          query-function name
+          module-q-functions = modules |> map -> it.query
+          q-functions = concat [query-function, module-q-functions]
+          
+          # remove all null values and return first non null value
+          first (filter (-> it?), (q-functions |> map -> it name))
+        add-module: (module) ->
+          modules.push module
       }
 
     # returns a query function for a json specification
@@ -38,14 +45,24 @@ define (...) ->
       (name) ->
         if (name.indexOf "## ") == 0
           json.meta[name.substring 3]
-        else
+        else if name of json.symbols
           # also check distributed sources...
           json.symbols[name]
+        else 
+          null
 
     # returns a query function for a json specification
     load-from-json: (json) ->
       query = ld.load-query-from-json json
       ld.create query
+
+    # returns a query function for a json specification
+    load-module-from-json: (json) ->
+      query = ld.load-query-from-json json
+      ld-module = ld.create query
+      ld-module.is-module = true
+      return ld-module
+
   }
 
   return ld

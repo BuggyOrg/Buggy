@@ -1,0 +1,38 @@
+{
+	"meta" : {
+		"LanguageName" : "JavaScript",
+		"Buggy-Version" : "3.0.0",
+		"Source-Extension" : "js",
+		"Interpreted" : true
+	},
+	"symbols" : {
+		"Input"	: [
+			{
+				"connectors" : [
+					{
+						"name" : "Value",
+						"connector-type" : "Output",
+						"data-type" : "string"
+					}
+				],
+				"external-dependencies" : "",
+				"setup" : "",
+				"implementation" : "{{Sum}} = {{Term 1}} + {{Term 2}};"
+			}
+		],
+		"Output" : [
+			{
+				"connectors" : [
+					{
+						"name" : "String",
+						"connector-type" : "Input",
+						"data-type" : "string"
+					}
+				],
+				"external-dependencies" : "",
+				"setup" : "",
+				"implementation" : "{{Number}} = Number({{String}});"
+			}
+		]
+	}
+}

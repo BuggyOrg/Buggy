@@ -5,7 +5,7 @@
 			"comment":"Takes one number and adds it to itself",
 		    "generics": [
 		    	{
-		    		"name" : "input",
+		    		"name" : "Input",
 		    		"meta" : {
 		    			"type" : "number"
 		    		}

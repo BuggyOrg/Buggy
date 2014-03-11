@@ -1,0 +1,31 @@
+{
+	"start-group" : "main",
+	"groups"	  :	{
+		"main" : {
+			"name" : "Main Program",
+			"generics" : [ 
+				"Input",
+				{
+					"name": "Constant",
+					"inputs" : [ 5 ]
+				}, 
+				{
+					"name" : "Add",
+					"inputs" : [ "Input", "Constant" ]
+				}, 
+				{
+					"name" : "Output",
+					"inputs" : [ "Add" ]
+				}
+			]
+		},
+		"meta" : {
+			"Description" : "Simple program that adds 5 to a number (in short notation)"
+		}
+	},
+	"dependencies"	: [],
+	"meta" : {
+		"description"	: "Simple example on how to add two numbers. Input/Output elements must be provided by your app!",
+		"version"		: "3.0.0"
+	}
+}
