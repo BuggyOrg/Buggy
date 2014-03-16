@@ -33,35 +33,51 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic"], (Resolve, Group, Ge
     resolved = get-best-match id, resolve
     if resolved.atomic? and resolved.atomic
       sources[id] = resolved.implementation
+    else if resolved.module? and resolved.module
+      sources[id] = resolved.implementation
     else
-      group.generics |> map (g) ->
-        identifier = Generic.name g
-        grp = resolve[identifier]
-        if typeof! grp == "Array"
-          grp |> map -> generate-source-map-for &0, resolve, sources
-        else
-          generate-source-map-for grp, resolve, sources
-      sources[id] = ""
+      if group.generics?
+        group.generics |> map (g) ->
+          identifier = Generic.name g
+          grp = resolve[identifier]
+          if typeof! grp == "Array"
+            grp |> map -> generate-source-map-for &0, resolve, sources
+          else
+            generate-source-map-for grp, resolve, sources
+        sources[id] = "{{group #id}}"
 
-
-  # generates source code for the program and resolved objects
-  program-to-source = (program, resolve) ->
+  find-main-entry = (program) ->
     main-entry-group = program.entry |> find (entry) -> entry.name == "main"
     if typeof! main-entry-group == "Undefined"
       throw new Error "Program must have a 'main' group"
+    return main-entry-group
+
+  generate-dependency-graph = (main, resolve, sources) ->
+    # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
+    # this case should be dealt with somewhere .. probably here
+
+    
+
+  # generates source code for the program and resolved objects
+  program-to-source = (program, resolve) ->
+    main-entry-group = find-main-entry program
+    dependency-graph = generate-dependency-graph main-entry-group, program, resolve
 
     sources = {}
     generate-source-map-for main-entry-group, resolve, sources
     source = ""
     keys sources |> map (id) !->
+      source += "// begin source for #id \n"
       source += sources[id]
+      source += "\n// end source for #id \n"
 
     return source
 
   {
     compose: (program, ld, done) ->
+      # create ld including program environment!
       Resolve.resolve program, ld, (resolve) ->
         source = program-to-source program, resolve
-        done source
+        done? source
       
   }

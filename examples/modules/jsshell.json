@@ -8,6 +8,7 @@
 	"symbols" : {
 		"Input"	: [
 			{
+				"module" : true,
 				"connectors" : [
 					{
 						"name" : "Value",
@@ -22,6 +23,7 @@
 		],
 		"Output" : [
 			{
+				"module" : true,
 				"connectors" : [
 					{
 						"name" : "String",

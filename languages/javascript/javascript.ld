@@ -51,6 +51,10 @@
 	"transformations" : {
 		"string -> number" : [ "StringToNumber"	]
 	},
+	"construction" : {
+		"atomic" : "function {{id}} ({{commaSeparated inputNames}}){\n {{implementation}}\n return{{commaSeperated outputNames}}\n}",
+		"group" : "function {{id}} ({{commaSeparated inputNames}}){\n {{implement generics}} {{implement connections}} \n}"
+	},
 	"sources" : [
 		{
 			"comment" : "Additional (Distributed) Source for symbols",

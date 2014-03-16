@@ -39,5 +39,7 @@ if args.m?
   module-file = requirejs "json!" + args.m
   ld-module = LD.load-module-from-json module-file
   ld.add-module ld-module
-compose.compose env, ld
+compose.compose env, ld, (program) ->
+  console.log "program generated"
+  console.log program
 
