@@ -35,14 +35,11 @@ define (...) ->
       else
         throw new Error "Non Connector Inputs not implemented yet"
 
-    gather-connections: (group) ->
+    gather: (group) ->
       Connection = this
-      connections = []
-      group.generics |> map (generic) ->
+      flatten (group.generics |> map (generic) ->
         obj-to-pairs generic.inputs |> map (inputPair) ->
           inputID = inputPair.0
           inputGeneric = inputPair.1
-          connections.push Connection.create generic.name, inputID, inputGeneric
-
-      return connections
+          Connection.create generic.name, inputID, inputGeneric)
   }

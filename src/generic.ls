@@ -34,7 +34,7 @@ define (...) ->
 
     copy: (generic) ->
       if typeof! generic == "String"
-        "#generic"
+        generic
       else
         copy = {}
         copy <<< generic

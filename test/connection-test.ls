@@ -23,7 +23,7 @@ describe "Buggy Connections", !->
         ]
       }
 
-      cn = Connection.gather-connections grp
+      cn = Connection.gather grp
       cn.length.should.equal 1
       cn.should.include.something.that.deep.equals {
         input: {
@@ -48,7 +48,7 @@ describe "Buggy Connections", !->
         ]
       }
 
-      cn = Connection.gather-connections grp
+      cn = Connection.gather grp
       cn.length.should.equal 2
       cn.should.include.something.that.deep.equals { 
         input: { generic: "C", connector: "INPUT1"}
@@ -73,5 +73,5 @@ describe "Buggy Connections", !->
         ]
       }
 
-      cn = Connection.gather-connections grp
+      cn = Connection.gather grp
       cn.length.should.equal 1
