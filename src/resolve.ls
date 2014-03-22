@@ -26,10 +26,9 @@
 # exact implementation). One should be able to provide those information beforehand or
 # the resolve-process be able to request a choice for every such situation (which is most certainly
 # necessary due to changes done by others to the implementation of such semantic groups)
-define ["ls!src/environment", 
-        "ls!src/language-definition", 
+define ["ls!src/language-definition", 
         "ls!src/group",
-        "ls!src/generic"], (Env, Ld, Group, Generic) ->
+        "ls!src/generic"], (Ld, Group, Generic) ->
 
   is-empty = (obj) ->
     (keys obj).length == 0
@@ -69,16 +68,13 @@ define ["ls!src/environment",
         resolve-group query, (enqueue-into-array arr, query, loaded), [Generic.name g, {}]
 
   {
-    resolve: (program, ld, done) ->
+    resolve: (ld, done) ->
       resolved = {}
       enqueue = enqueue-into-array resolved, ld.query, (gid) -> # do something... call callback or so
       res = resolve-group ld.query, enqueue
 
-      program.entry |> map (entry) ->
-        if typeof! entry == "String"
-          res [entry, {}]
-        else if entry.name?
-          res [entry.name, entry]
+      # resolve everythin needed for "main"
+      res ["main", {}]
 
       done? resolved
       
@@ -87,6 +83,6 @@ define ["ls!src/environment",
     # and only resolves necessary elements with optional lazy "resolvation"
     # if a path might not be necessary for the calculation
     resolve-output: (output, program, ld, done, lazy = false) ->
-      # do other stuff
+      # TODO: resolve everything necessary for output!?
   }
   

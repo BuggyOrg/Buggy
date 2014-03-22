@@ -15,5 +15,5 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/environment", "ls!src/language-definition"], (Env, Ld) ->
+define ["ls!src/language-definition"], (Ld) ->
   

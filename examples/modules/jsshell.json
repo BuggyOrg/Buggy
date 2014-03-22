@@ -9,6 +9,7 @@
 		"Input"	: [
 			{
 				"module" : true,
+				"implemented" : true,
 				"connectors" : [
 					{
 						"name" : "Value",
@@ -24,6 +25,7 @@
 		"Output" : [
 			{
 				"module" : true,
+				"implemented" : true,
 				"connectors" : [
 					{
 						"name" : "String",

@@ -24,16 +24,17 @@ define (...) ->
   ld = {
     create: (query-function) ->
       modules = []
+      query-f = (name) ->
+        module-q-functions = modules |> map -> it.query
+        q-functions = concat [query-function, module-q-functions]
+        
+        # remove all null values and return first non null value
+        first (filter (-> it?), (q-functions |> map -> it name))
       { 
         # '## LanguageName' is a special function implemented by every language
         # that simply gives the name of the implemented language
         name: query-function "## LanguageName"
-        query: (name) ->
-          module-q-functions = modules |> map -> it.query
-          q-functions = concat [query-function, module-q-functions]
-          
-          # remove all null values and return first non null value
-          first (filter (-> it?), (q-functions |> map -> it name))
+        query: query-f          
         add-module: (module) ->
           modules.push module
       }

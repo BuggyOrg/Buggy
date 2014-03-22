@@ -15,7 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/resolve", "ls!src/group", "ls!src/generic"], (Resolve, Group, Generic) ->
+define ["ls!src/resolve", "ls!src/group", "ls!src/generic", "ls!src/graph"], (Resolve, Group, Generic, Graph) ->
   
   get-best-match = (id, resolve) ->
     r = resolve[id]
@@ -46,22 +46,26 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic"], (Resolve, Group, Ge
             generate-source-map-for grp, resolve, sources
         sources[id] = "{{group #id}}"
 
-  find-main-entry = (program) ->
-    main-entry-group = program.entry |> find (entry) -> entry.name == "main"
-    if typeof! main-entry-group == "Undefined"
-      throw new Error "Program must have a 'main' group"
-    return main-entry-group
-
-  generate-dependency-graph = (main, resolve, sources) ->
+  generate-dependency-graph = (generic-name, resolve) ->
     # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
     # this case should be dealt with somewhere .. probably here
 
-    
+    console.log resolve
+    console.log "best match for #generic-name"
+    grp = get-best-match generic-name, resolve
+    console.log grp
+    grp-graph = Graph.from-group grp
+    grp-graph.nodes |> map (n) ->
+      console.log "node found #n"
+
+    name: "DEPENDENCYGRAPH"
+
 
   # generates source code for the program and resolved objects
-  program-to-source = (program, resolve) ->
-    main-entry-group = find-main-entry program
-    dependency-graph = generate-dependency-graph main-entry-group, program, resolve
+  generate-source-for = (entry, resolve) ->
+    dependency-graph = generate-dependency-graph entry, resolve
+
+    console.log dependency-graph
 
     sources = {}
     generate-source-map-for main-entry-group, resolve, sources
@@ -74,10 +78,9 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic"], (Resolve, Group, Ge
     return source
 
   {
-    compose: (program, ld, done) ->
-      # create ld including program environment!
-      Resolve.resolve program, ld, (resolve) ->
-        source = program-to-source program, resolve
+    compose: (ld, done) ->
+      Resolve.resolve ld, (resolve) ->
+        source = generate-source-for "main" resolve
         done? source
       
   }
