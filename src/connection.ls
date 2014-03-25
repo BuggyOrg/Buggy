@@ -23,6 +23,7 @@ define (...) ->
         out-string = (out[1 til].join "")
         [out-generic, out-connector] = out-string.split ":"
         return {
+          id: "#out-generic -> #in-generic"
           input: {
             generic: in-generic
             connector: in-connector
@@ -37,6 +38,7 @@ define (...) ->
 
     gather: (group) ->
       Connection = this
+      if !group.generics? then return []
       flatten (group.generics |> map (generic) ->
         obj-to-pairs generic.inputs |> map (inputPair) ->
           inputID = inputPair.0

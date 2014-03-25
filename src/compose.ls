@@ -24,63 +24,52 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic", "ls!src/graph"], (Re
     else
       r
 
-  generate-source-map-for = (group, resolve, sources) ->
-    id = Group.identifier group
-    # if we already found the source for this group skip it
-    if sources[id]?
-      return
+  get-source-for-node = (node, resolve, ld) ->
+    node-group = get-best-match node.id, resolve
+    if node-group.atomic? and node-group.atomic or node-group.implemented && node-group.implemented
+      ld.query "--> atomic"
 
-    resolved = get-best-match id, resolve
-    if resolved.atomic? and resolved.atomic
-      sources[id] = resolved.implementation
-    else if resolved.module? and resolved.module
-      sources[id] = resolved.implementation
-    else
-      if group.generics?
-        group.generics |> map (g) ->
-          identifier = Generic.name g
-          grp = resolve[identifier]
-          if typeof! grp == "Array"
-            grp |> map -> generate-source-map-for &0, resolve, sources
-          else
-            generate-source-map-for grp, resolve, sources
-        sources[id] = "{{group #id}}"
+  generate-source-map-for = (d-graph, resolve, ld) ->
+    n-source = d-graph.nodes |> map (n) ->
+      [n.id, id: n.id, tag: n.tag, source: get-source-for-node n, resolve, ld]
+
+    c-source = d-graph.connections |> map (c) ->
+      [c.id, ""]
+
+    console.log n-source
+    pairs-to-obj (union n-source, c-source)
 
   generate-dependency-graph = (generic-name, resolve) ->
     # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
     # this case should be dealt with somewhere .. probably here
 
-    console.log resolve
-    console.log "best match for #generic-name"
     grp = get-best-match generic-name, resolve
-    console.log grp
     grp-graph = Graph.from-group grp
-    grp-graph.nodes |> map (n) ->
-      console.log "node found #n"
+    sub-graphs = grp-graph.nodes |> map (n) ->
+      generate-dependency-graph n.id, resolve
 
-    name: "DEPENDENCYGRAPH"
-
+    fold Graph.union, grp-graph, sub-graphs
 
   # generates source code for the program and resolved objects
-  generate-source-for = (entry, resolve) ->
+  generate-source-for = (entry, resolve, ld) ->
     dependency-graph = generate-dependency-graph entry, resolve
-
     console.log dependency-graph
+    # TODO: calculate distance from entry to generate source in the right order (for languages that require that)
+    sources = generate-source-map-for dependency-graph, resolve, ld
 
-    sources = {}
-    generate-source-map-for main-entry-group, resolve, sources
-    source = ""
-    keys sources |> map (id) !->
-      source += "// begin source for #id \n"
-      source += sources[id]
-      source += "\n// end source for #id \n"
+    console.log sources
+
+#    keys sources |> map (id) !->
+#      source += "// begin source for #id \n"
+#      source += sources[id]
+#      source += "\n// end source for #id \n"
 
     return source
 
   {
     compose: (ld, done) ->
       Resolve.resolve ld, (resolve) ->
-        source = generate-source-for "main" resolve
+        source = generate-source-for "main", resolve, ld
         done? source
       
   }

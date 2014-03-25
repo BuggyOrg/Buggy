@@ -13,7 +13,7 @@
 			    	},
 			    	{
 			    		"name" : "Add",
-			    		"inputs" : { "Term 1" : ">input", "Term 2" : ">input" }
+			    		"inputs" : { "Term 1" : ">Input", "Term 2" : ">Input" }
 			    	},
 			    	{
 			    		"name" : "Output",

@@ -44,10 +44,12 @@ define (...) ->
       # return the query function that uses the json
       # to look up entries/symbols
       (name) ->
-        if (name.indexOf "## ") == 0
+        if (name.indexOf "## ") == 0 and json.meta?
           json.meta[name.substring 3]
+        else if  (name.indexOf "--> ") == 0 and json.construction?
+          json.construction[name.substring 4]
         else if name of json.symbols
-          # also check distributed sources...
+          # TODO: also check distributed sources...
           json.symbols[name]
         else 
           null

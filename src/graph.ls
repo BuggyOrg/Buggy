@@ -15,12 +15,23 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define [\ls!src/connection, \ls!src/generic], (Connection, Generic) ->
+define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generic, Group) ->
 
   { 
     from-group: (grp) ->
       {
-        nodes: grp.generics |> map (g) -> Generic.name g
+        nodes: if !grp.generics? then [] else
+            grp.generics |> map (g) ->
+              { 
+                id: Generic.name g
+                parent-group: Group.identifier grp
+              }
         connections: Connection.gather grp
+      }
+
+    union: (graph1, graph2) ->
+      {
+        nodes: union graph1.nodes, graph2.nodes
+        connections: union graph1.connections, graph2.connections
       }
   }
