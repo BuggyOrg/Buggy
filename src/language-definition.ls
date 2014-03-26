@@ -41,6 +41,8 @@ define (...) ->
 
     # returns a query function for a json specification
     load-query-from-json: (json) ->
+      # TODO: perform a sanity check !!
+      # sanity-check json
       # return the query function that uses the json
       # to look up entries/symbols
       (name) ->

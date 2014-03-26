@@ -18,6 +18,19 @@
 			    	{
 			    		"name" : "Output",
 			    		"inputs" : { "Output" : ">Add" }
+			    	},
+			    	{
+			    		"name" : "Add",
+			    		"comment" : "if a name is used multiple times, there must be an id for each all but one generic to distinguish them",
+			    		"id" : "Add2",
+			    		"inputs" : { "Term 1" : ">Input", "Term 2" : ">Input" }
+			    	},
+			    	{
+			    		"name" : "Add",
+			    		"comment" : "the default behaviour is that name is the display name, but only if there is no explicit display-name specified",
+			    		"id" : "Add3",
+			    		"display-name" : "+",
+			    		"inputs" : { "Term 1" : ">Input", "Term 2" : ">Input" }
 			    	}
 			    ],
 			    "meta": {

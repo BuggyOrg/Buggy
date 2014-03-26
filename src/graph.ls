@@ -23,10 +23,16 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
         nodes: if !grp.generics? then [] else
             grp.generics |> map (g) ->
               { 
-                id: Generic.name g
+                name: Generic.name g
+                id: Generic.identifier g
                 parent-group: Group.identifier grp
               }
-        connections: Connection.gather grp
+        connections: (Connection.gather grp) |> map (c) ->
+          {
+            from: c.input
+            to: c.output
+            parent-group: Group.identifier grp
+          }
       }
 
     union: (graph1, graph2) ->

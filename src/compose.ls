@@ -24,20 +24,30 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic", "ls!src/graph"], (Re
     else
       r
 
-  get-source-for-node = (node, resolve, ld) ->
-    node-group = get-best-match node.id, resolve
+  get-source-for-generic = (name, resolve, ld) ->
+    node-group = get-best-match name, resolve
+    console.log name
+    console.log node-group
     if node-group.atomic? and node-group.atomic or node-group.implemented && node-group.implemented
       ld.query "--> atomic"
 
+  get-source-for-node = (node, resolve, ld) ->
+    ld.query "--> group"
+
   generate-source-map-for = (d-graph, resolve, ld) ->
-    n-source = d-graph.nodes |> map (n) ->
+    name-source = d-graph.nodes |> map (n) ->
+      [n.name, id: n.id, tag: n.tag, source: get-source-for-generic n.name, resolve, ld]
+    node-source = d-graph.nodes |> map (n) ->
       [n.id, id: n.id, tag: n.tag, source: get-source-for-node n, resolve, ld]
 
     c-source = d-graph.connections |> map (c) ->
       [c.id, ""]
 
-    console.log n-source
-    pairs-to-obj (union n-source, c-source)
+    {
+      implementations: pairs-to-obj name-source
+      groups: pairs-to-obj node-source
+      connections: pairs-to-obj c-source
+    }
 
   generate-dependency-graph = (generic-name, resolve) ->
     # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
@@ -46,7 +56,7 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic", "ls!src/graph"], (Re
     grp = get-best-match generic-name, resolve
     grp-graph = Graph.from-group grp
     sub-graphs = grp-graph.nodes |> map (n) ->
-      generate-dependency-graph n.id, resolve
+      generate-dependency-graph n.name, resolve
 
     fold Graph.union, grp-graph, sub-graphs
 

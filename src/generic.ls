@@ -45,6 +45,14 @@ define (...) ->
       else
         generic.name
 
+    identifier: (generic) ->
+      if typeof! generic == "String"
+        generic
+      else if "id" of generic
+        generic.id
+      else
+        generic.name
+
     is-group: (generic) ->
       #this should suffice for now
       generic.generics? and generic.name?
