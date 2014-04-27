@@ -25,42 +25,35 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating"] (Depende
     else
       r
 
-  get-source-for-generic = (name, resolve, ld) ->
-    node-group = get-best-match name, resolve
-    console.log name
-    if node-group.atomic? and node-group.atomic or node-group.implemented? && node-group.implemented
-      ld.query "--> atomic"
+  is-implemented = (node) ->
+    node.atomic? and node.atomic or node.implemented? and node.implemented
 
-  get-source-for-node = (node, resolve, ld) ->
-    ld.query "--> node"
+  pack-with = (attribute, node, src) -->
+    console.log node
+    [node[attribute], id: node.id, source: src]
 
-  get-source-for-group = (name, resolve, ld) ->
-    console.log name
-    node-group = get-best-match name, resolve
-    if (!node-group.atomic? and !node-group.atomic) and (!node-group.implemented? and !node-group.implemented)
-      # shorties should be replaced by some uri form..
-      console.log name  + " is a group"
-      Templating.process (ld.query "--> group"), node-group
+  pack-with-name = pack-with "name"
+  pack-with-id = pack-with "id"
+
+  get-source = (resolve, ld, node, query, pack-function, filter-function) -->
+    name = node.name
+    resolved-node = get-best-match name, resolve
+    if !filter-function? or filter-function resolved-node
+      source = Templating.process (ld.query query), node, resolved-node
+      pack-function node, source
+
+  get-sources = (resolve, ld, nodes, query, pack-function, filter-function) -->
+    nodes |> map (n) ->
+      get-source resolve, ld, n, query, pack-function, filter-function
 
   generate-source-map-for = (d-graph, resolve, ld) ->
-    valid-source = (src) -> typeof! src != "Undefined"
-
+    get-srcs = get-sources resolve, ld, d-graph.nodes
     console.log "########### atomics"
-    name-source = d-graph.nodes |> map (n) ->
-      src = get-source-for-generic n.name, resolve, ld
-      if valid-source src
-        then [n.name, id: n.id, source: src]
+    name-source = get-srcs "--> atomic", pack-with-name, is-implemented
     console.log "########### nodes"
-    node-source = d-graph.nodes |> map (n) ->
-      src = get-source-for-node n.name, resolve, ld
-      if valid-source src
-        then [n.id, id: n.id, source: src]
+    node-source = get-srcs "--> node", pack-with-id, null
     console.log "########### groups"
-    group-source = d-graph.nodes |> map (n) ->
-      src = get-source-for-group n.name, resolve, ld
-      if valid-source src
-        then [n.id, id: n.id, source: src]
-
+    group-source = get-srcs "--> group", pack-with-id, -> !is-implemented it
     console.log "###########"
 
     c-source = d-graph.connections |> map (c) ->
@@ -72,6 +65,11 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating"] (Depende
       groups: pairs-to-obj (group-source |> filter -> it?)
       connections: pairs-to-obj c-source
     }
+
+  gather-sources = (map-entry, source-map) ->
+    sub = source-map[map-entry]
+    srcs = (keys sub) |> map (id) -> sub[id].source
+    fold (+), "", srcs
 
   {
 
@@ -86,11 +84,13 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating"] (Depende
 
       console.log sources
 
+      source = (gather-sources "implementations", sources) + 
+               (gather-sources "nodes", sources) + 
+               (gather-sources "groups", sources)
   #    keys sources |> map (id) !->
   #      source += "// begin source for #id \n"
   #      source += sources[id]
   #      source += "\n// end source for #id \n"
 
-      source = ""
       return source
   }

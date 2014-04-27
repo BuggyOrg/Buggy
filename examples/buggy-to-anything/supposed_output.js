@@ -5,7 +5,7 @@ function Input(callback){
 	var stdin = process.openStdin();
 
 	listener = function(Value) {
-		# perhaps substring of d without newline?
+		// # perhaps substring of d without newline?
 	    callback({Value: Value});
 	};
 
@@ -96,5 +96,6 @@ function Group_Main(_, _){
 		"Add2:Sum" : new Queue(),
 		"Add3:Sum" : new Queue(),
 	}
+
 	
 }

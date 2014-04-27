@@ -17,9 +17,22 @@
 
 define ["handlebars"] (Handlebars) ->
 
+  install-helper = (...) ->
+    Handlebars.registerHelper 'if_eq', (a, b, opts) ->
+      if a == b
+        opts.fn this
+      else
+        opts.inverse this
+
+  install-helper!
+
   { 
-    process: (text, context) ->
-      console.log context
+    process: (text, generic, node) ->
+      context = {
+        generic: generic
+        node: node
+      }
+      console.log context.node
       template = Handlebars.compile(text)
       template(context)
   }
