@@ -17,7 +17,7 @@
 
 define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generic, Group) ->
 
-  { 
+  Graph = { 
     from-group: (grp) ->
       {
         nodes: if !grp.generics? then [] else
@@ -40,4 +40,10 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
         nodes: union graph1.nodes, graph2.nodes
         connections: union graph1.connections, graph2.connections
       }
+
+    add-node: (graph, node) ->
+      node-graph = { nodes: [{ name: node, id: node }], connections: []}
+      Graph.union graph, node-graph
   }
+
+  return Graph

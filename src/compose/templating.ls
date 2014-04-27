@@ -15,12 +15,11 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/resolve", "ls!src/compose/source"], (Resolve, Source) ->
-  
-  {
-    compose: (ld, done) ->
-      Resolve.resolve ld, (resolve) ->
-        source = Source.generate-for "main", resolve, ld
-        done? source
-      
+define ["handlebars"] (Handlebars) ->
+
+  { 
+    process: (text, context) ->
+      console.log context
+      template = Handlebars.compile(text)
+      template(context)
   }
