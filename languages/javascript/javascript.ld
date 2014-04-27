@@ -52,8 +52,9 @@
 		"string -> number" : [ "StringToNumber"	]
 	},
 	"construction" : {
-		"atomic" : "function {{id}} ({{commaSeparated inputNames}}){\n {{implementation}}\n return{{commaSeperated outputNames}}\n}",
-		"group" : "function {{id}} ({{commaSeparated inputNames}}){\n {{implement generics}} {{implement connections}} \n}"
+		"atomic" : "function {{id}} ({{commaSeparated inputNames}}, callback){\n {{implementation}}\n callback{{commaSeperated outputNames}}\n}",
+		"node" : "function Node_{{id}} (InQueues, OutQueues){\n var InValues = {};\n    for(var key in InQueues){\n     InValues[key] = InQueues[key].dequeue();\n    }\n  {{id}}(InValues, function(returnVals){ \n      for(var key in OutQueues){\n           OutQueues[key].enqueue(returnVals[key]);\n        }\n    });\n}",
+		"group" : "function Group_{{id}} (InQueues, OutQueues){\n {{create_queues}}\n {{implement_connections}}\n {{activate_inputs}} \n}"
 	},
 	"sources" : [
 		{

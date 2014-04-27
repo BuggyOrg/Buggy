@@ -29,8 +29,8 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
               }
         connections: (Connection.gather grp) |> map (c) ->
           {
-            from: c.input
-            to: c.output
+            from: c.output
+            to: c.input
             parent-group: Group.identifier grp
           }
       }

@@ -63,7 +63,8 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic", "ls!src/graph"], (Re
   # generates source code for the program and resolved objects
   generate-source-for = (entry, resolve, ld) ->
     dependency-graph = generate-dependency-graph entry, resolve
-    console.log dependency-graph
+    console.log dependency-graph.nodes
+    console.log dependency-graph.connections
     # TODO: calculate distance from entry to generate source in the right order (for languages that require that)
     sources = generate-source-map-for dependency-graph, resolve, ld
 
@@ -74,6 +75,7 @@ define ["ls!src/resolve", "ls!src/group", "ls!src/generic", "ls!src/graph"], (Re
 #      source += sources[id]
 #      source += "\n// end source for #id \n"
 
+    source = ""
     return source
 
   {

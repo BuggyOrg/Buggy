@@ -15,15 +15,21 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define (...) ->
+define ["ls!src/generic"], (Generic) ->
 
-  { 
+  connections = { 
     create: (in-generic, in-connector, out) ->
       if out.0 == ">"
+        # TODO: the string version  ">NODE:CONNECTOR" should be translated to { "Node" : NODE, "Connector" : CONNECTOR }
+        # and the logic for doing that should be here!
         out-string = (out[1 til].join "")
         [out-generic, out-connector] = out-string.split ":"
+        connections.create(in-generic, in-connector, { generic: out-generic, connector: out-connector })
+      else
+        out-generic = out.generic
+        out-connector = out.connector;
         return {
-          id: "#out-generic -> #in-generic"
+          id: "#out-generic:#out-connector -> #in-generic:#in-connector"
           input: {
             generic: in-generic
             connector: in-connector
@@ -33,8 +39,6 @@ define (...) ->
             connector: out-connector
           }
         }
-      else
-        throw new Error "Non Connector Inputs not implemented yet"
 
     gather: (group) ->
       Connection = this
@@ -43,5 +47,7 @@ define (...) ->
         obj-to-pairs generic.inputs |> map (inputPair) ->
           inputID = inputPair.0
           inputGeneric = inputPair.1
-          Connection.create generic.name, inputID, inputGeneric)
+          Connection.create (Generic.identifier generic), inputID, inputGeneric)
   }
+
+  return connections
