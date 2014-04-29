@@ -15,7 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/graph"] (DependencyGraph, Templating, Graph) ->
+define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/graph", "ls!src/util/clone"] (DependencyGraph, Templating, Graph, Clone) ->
 
   get-best-match = (id, resolve) ->
     r = resolve[id]
@@ -29,18 +29,30 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
     node.atomic? and node.atomic or node.implemented? and node.implemented
 
   pack-with = (attribute, node, src) -->
-    console.log node
     [node[attribute], id: node.id, source: src]
 
   pack-with-name = pack-with "name"
   pack-with-id = pack-with "id"
 
+  # connectors are unique in a node!
+  get-group-connectors = (nodes, resolve) ->
+    cns = nodes |> map (n) ->
+      r = get-best-match n.name, resolve
+      r.connectors |> map (c) ->
+        cn = Clone(c)
+        cn.generic = n.id
+        return cn
+    flatten cns
+
   get-source = (resolve, ld, node, graph, query, pack-function, filter-function) -->
     name = node.name
     resolved-node = get-best-match name, resolve
+    console.log resolved-node
     if !filter-function? or filter-function resolved-node
+      grp-nodes = Graph.get-group-nodes graph, resolved-node
+      grp-connectors = get-group-connectors grp-nodes, resolve
       grp-connections = Graph.get-group-connections graph, resolved-node
-      source = Templating.process (ld.query query), node, resolved-node, grp-connections 
+      source = Templating.process (ld.query query), node, resolved-node, grp-connections, grp-connectors, grp-nodes
       pack-function node, source
 
   get-sources = (resolve, ld, graph, query, pack-function, filter-function) -->

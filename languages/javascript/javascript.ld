@@ -26,7 +26,7 @@
 						"data-type" : "number"
 					}
 				],
-				"implementation" : "{{Sum}} = {{Term 1}} + {{Term 2}};"
+				"implementation" : "{{var 'Sum'}} = {{var 'Term 1'}} + {{var 'Term 2'}};"
 			}
 		],
 		"StringToNumber" : [
@@ -44,7 +44,7 @@
 						"data-type" : "number"
 					}
 				],
-				"implementation" : "{{Number}} = Number({{String}});"
+				"implementation" : "{{var 'Number'}} = Number({{var 'String'}});"
 			}
 		]
 	},
@@ -52,9 +52,9 @@
 		"string -> number" : [ "StringToNumber"	]
 	},
 	"construction" : {
-		"atomic" : "function {{generic.name}} ({{#each node.connectors}}{{#if_eq connector-type \"Input\"}}{{name}}, {{/if_eq}}{{/each}}callback){\n {{implementation}}\n callback({{commaSeperated_outputNames}});\n}\n",
+		"atomic" : "function {{generic.name}} ({{#each node.connectors}}{{#if_eq connector-type \"Input\"}}{{name}}, {{/if_eq}}{{/each}}callback){\n {{node.implementation}}\n callback({{commaSeperated_outputNames}});\n}\n",
 		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){\n var InValues = {};\n    for(var key in InQueues){\n     InValues[key] = InQueues[key].dequeue();\n    }\n  {{generic.name}}(InValues, function(returnVals){ \n      for(var key in OutQueues){\n           OutQueues[key].enqueue(returnVals[key]);\n        }\n    });\n}\n",
-		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){\n    qInput = {\n{{#each connections}}        \"{{to.generic}}:{{to.connector}}\" : new Queue(),\n{{/each}}    };\n    qOutput = {\n{{#each connections}}        \"{{from.generic}}:{{from.connector}}\" : new Queue(),\n{{/each}}    };\n {{implement_connections}}\n {{activate_inputs}} \n}\n"
+		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){\n    qInput = {\n{{#each connectors}}{{#if_eq connector-type \"Input\"}}        \"{{generic}}:{{name}}\" : new Queue(),\n{{/if_eq}}{{/each}}    };\n    qOutput = {\n{{#each connectors}}        \"{{generic}}:{{name}}\" : new Queue(),\n{{/each}}    };\n {{implement_connections}}\n {{activate_inputs}} \n}\n"
 	},
 	"sources" : [
 		{

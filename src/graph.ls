@@ -36,10 +36,12 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
       }
 
     get-group-connections: (graph, grp) ->
-      grp-connections = []
       grp-id = Group.identifier grp
       graph.connections |> filter (c) -> c.parent-group == grp-id
 
+    get-group-nodes: (graph, grp) ->
+      grp-id = Group.identifier grp
+      graph.nodes |> filter (n) -> n.parent-group == grp-id
 
     union: (graph1, graph2) ->
       {

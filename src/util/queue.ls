@@ -15,25 +15,11 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["handlebars"] (Handlebars) ->
+define (...) ->
+  () ->
+    {
+      enqueue: (item) ->
 
-  install-helper = (...) ->
-    Handlebars.registerHelper 'if_eq', (a, b, opts) ->
-      if a == b
-        opts.fn this
-      else
-        opts.inverse this
-
-  install-helper!
-
-  { 
-    process: (text, generic, node, connections, connectors, inner-nodes) ->
-      context = {
-        generic: generic
-        node: node
-        connections: connections
-        connectors: connectors
-      }
-      template = Handlebars.compile(text)
-      template(context)
-  }
+      on-dequeue: (callback) ->
+        
+    }
