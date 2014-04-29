@@ -53,8 +53,8 @@
 	},
 	"construction" : {
 		"atomic" : "function {{generic.name}} ({{#each node.connectors}}{{#if_eq connector-type \"Input\"}}{{name}}, {{/if_eq}}{{/each}}callback){\n {{implementation}}\n callback({{commaSeperated_outputNames}});\n}\n",
-		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){\n var InValues = {};\n    for(var key in InQueues){\n     InValues[key] = InQueues[key].dequeue();\n    }\n  {{id}}(InValues, function(returnVals){ \n      for(var key in OutQueues){\n           OutQueues[key].enqueue(returnVals[key]);\n        }\n    });\n}\n",
-		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){\n {{create_queues}}\n {{implement_connections}}\n {{activate_inputs}} \n}\n"
+		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){\n var InValues = {};\n    for(var key in InQueues){\n     InValues[key] = InQueues[key].dequeue();\n    }\n  {{generic.name}}(InValues, function(returnVals){ \n      for(var key in OutQueues){\n           OutQueues[key].enqueue(returnVals[key]);\n        }\n    });\n}\n",
+		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){\n    qInput = {\n{{#each connections}}        \"{{to.generic}}:{{to.connector}}\" : new Queue(),\n{{/each}}    };\n    qOutput = {\n{{#each connections}}        \"{{from.generic}}:{{from.connector}}\" : new Queue(),\n{{/each}}    };\n {{implement_connections}}\n {{activate_inputs}} \n}\n"
 	},
 	"sources" : [
 		{

@@ -27,12 +27,14 @@ define ["handlebars"] (Handlebars) ->
   install-helper!
 
   { 
-    process: (text, generic, node) ->
+    process: (text, generic, node, connections) ->
       context = {
         generic: generic
         node: node
+        connections: connections
       }
-      console.log context.node
+      console.log generic.name
+      console.log context.connections
       template = Handlebars.compile(text)
       template(context)
   }

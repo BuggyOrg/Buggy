@@ -15,7 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/compose/dependency-graph", "ls!src/compose/templating"] (DependencyGraph, Templating) ->
+define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/graph"] (DependencyGraph, Templating, Graph) ->
 
   get-best-match = (id, resolve) ->
     r = resolve[id]
@@ -35,19 +35,20 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating"] (Depende
   pack-with-name = pack-with "name"
   pack-with-id = pack-with "id"
 
-  get-source = (resolve, ld, node, query, pack-function, filter-function) -->
+  get-source = (resolve, ld, node, graph, query, pack-function, filter-function) -->
     name = node.name
     resolved-node = get-best-match name, resolve
     if !filter-function? or filter-function resolved-node
-      source = Templating.process (ld.query query), node, resolved-node
+      grp-connections = Graph.get-group-connections graph, resolved-node
+      source = Templating.process (ld.query query), node, resolved-node, grp-connections 
       pack-function node, source
 
-  get-sources = (resolve, ld, nodes, query, pack-function, filter-function) -->
-    nodes |> map (n) ->
-      get-source resolve, ld, n, query, pack-function, filter-function
+  get-sources = (resolve, ld, graph, query, pack-function, filter-function) -->
+    graph.nodes |> map (n) ->
+      get-source resolve, ld, n, graph, query, pack-function, filter-function
 
   generate-source-map-for = (d-graph, resolve, ld) ->
-    get-srcs = get-sources resolve, ld, d-graph.nodes
+    get-srcs = get-sources resolve, ld, d-graph
     console.log "########### atomics"
     name-source = get-srcs "--> atomic", pack-with-name, is-implemented
     console.log "########### nodes"
