@@ -38,7 +38,7 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
   get-group-connectors = (nodes, resolve) ->
     cns = nodes |> map (n) ->
       r = get-best-match n.name, resolve
-      r.connectors |> map (c) ->
+      r.connectors? |> map (c) ->
         cn = Clone(c)
         cn.generic = n.id
         return cn
@@ -62,7 +62,7 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
     get-srcs = get-sources resolve, ld, d-graph
     name-source = get-srcs "--> atomic", pack-with-name, is-implemented
     node-source = get-srcs "--> node", pack-with-id, null
-    group-source = get-srcs "--> group", pack-with-id, -> !is-implemented it
+    group-source = get-srcs "--> group", pack-with-id, -> !is-implemented it    
 
     c-source = d-graph.connections |> map (c) ->
       [c.id, ""]

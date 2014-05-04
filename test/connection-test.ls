@@ -26,6 +26,7 @@ describe "Buggy Connections", !->
       cn = Connection.gather grp
       cn.length.should.equal 1
       cn.should.include.something.that.deep.equals {
+        id : "A:OUT -> B:INPUT"
         input: {
           generic: "B"
           connector: "INPUT"
@@ -51,10 +52,12 @@ describe "Buggy Connections", !->
       cn = Connection.gather grp
       cn.length.should.equal 2
       cn.should.include.something.that.deep.equals { 
+        id : "A:OUT1 -> C:INPUT1"
         input: { generic: "C", connector: "INPUT1"}
         output: { generic: "A", connector: "OUT1"}
       }
       cn.should.include.something.that.deep.equals {
+        id : "B:OUT1 -> C:INPUT2"
         input: { generic: "C", connector: "INPUT2"}
         output: { generic: "B", connector: "OUT1"}
       }

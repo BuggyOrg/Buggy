@@ -16,5 +16,7 @@ describe "Graph Features" !->
 
       graph = Graph.from-group grp
 
-      graph.nodes.should.include.something.that.equals "A"
-      graph.nodes.should.include.something.that.equals "B"
+      graph.nodes.should.contain.an.item.with.property "name", "A"
+      graph.nodes.should.contain.an.item.with.property "name", "B"
+      graph.nodes.should.contain.an.item.with.property "id", "A"
+      graph.nodes.should.contain.an.item.with.property "id", "B"

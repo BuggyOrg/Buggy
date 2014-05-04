@@ -14,8 +14,11 @@ describe "Compose", !->
   min-ld = Ld.create (query) ->
     switch query
     | "## LanguageName" => "TESTLANG"
+    | "--> atomic" => "{{node.implementation}}"
+    | "--> node" => ""
+    | "--> group" => ""
     | "min-gen" => [{ "atomic" : true, "implementation" : "min-impl" }]
-    | otherwise => {}
+    | otherwise => null 
 
   describe "Composing a Scene", (...) !->
     it "should fail if the program contains no 'main' Method", !->
@@ -25,6 +28,8 @@ describe "Compose", !->
       main = Group.create name: "main"
       min-generic = Generic.create "min-gen"
       Group.add-generic main, min-generic
-      
+      module = Ld.load-module-from-json symbols: { "main" : main }
+      min-ld.add-module module
+
       Compose.compose min-ld, (source) ->
-        source.should.include "min-gen"
+        source.should.include "min-impl"
