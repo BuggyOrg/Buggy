@@ -16,10 +16,32 @@
 */
 
 define (...) ->
-  () ->
-    {
-      enqueue: (item) ->
+  # crappy queue implementation
+  # TODO: improve!!
+  (...) ->
+    items = []
 
-      on-dequeue: (callback) ->
-        
+    # first version uses callbacks.. probably not such a good idea.. but sufficient..
+    enqueue-callbacks = []
+    call-enqueue-callbacks = (item) !->
+      enqueue-callbacks |> map !-> it item
+    
+    Queue = {      
+      enqueue: (item) !->
+        items.push item
+        call-enqueue-callbacks item
+
+      is-empty: (...) ->
+        items.length == 0
+
+      dequeue: (...) ->
+        if Queue.is-empty!
+          null
+        else
+          item = items[0]
+          items := items.splice(1)
+          return item
+
+      add-enqueue-callback: (callback) ->
+        enqueue-callbacks.push callback
     }

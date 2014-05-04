@@ -47,7 +47,6 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
   get-source = (resolve, ld, node, graph, query, pack-function, filter-function) -->
     name = node.name
     resolved-node = get-best-match name, resolve
-    console.log resolved-node
     if !filter-function? or filter-function resolved-node
       grp-nodes = Graph.get-group-nodes graph, resolved-node
       grp-connectors = get-group-connectors grp-nodes, resolve
@@ -61,13 +60,9 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
 
   generate-source-map-for = (d-graph, resolve, ld) ->
     get-srcs = get-sources resolve, ld, d-graph
-    console.log "########### atomics"
     name-source = get-srcs "--> atomic", pack-with-name, is-implemented
-    console.log "########### nodes"
     node-source = get-srcs "--> node", pack-with-id, null
-    console.log "########### groups"
     group-source = get-srcs "--> group", pack-with-id, -> !is-implemented it
-    console.log "###########"
 
     c-source = d-graph.connections |> map (c) ->
       [c.id, ""]
@@ -91,11 +86,8 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
       dependency-graph = DependencyGraph.generate-for entry, resolve, get-best-match
       
       # TODO: calculate "distance" from entry-point to generate source in the right order (for languages that require that)
-      console.log dependency-graph.nodes
-      console.log dependency-graph.connections
       sources = generate-source-map-for dependency-graph, resolve, ld
 
-      console.log sources
 
       source = (gather-sources "implementations", sources) + 
                (gather-sources "nodes", sources) + 

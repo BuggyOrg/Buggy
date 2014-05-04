@@ -22,7 +22,7 @@ yargs = yargs.usage "Usage: $0 -i <buggy-file> -l <language-definition> -o <exec
 yargs = yargs.describe "m", "additional (optional) module that will be loaded into the language definition (currently only one module is possible due to lazyness)"
 yargs = yargs.describe "l", "expects a language definition file containing compilation information"
 yargs = yargs.describe "o", "output file of the executable (which file type it produces depends on the chosen language"
-yargs = yargs.demand <[ m l o ]>
+yargs = yargs.demand <[ m l ]>
 args = yargs.argv
 
 ld-file = requirejs "json!" + args.l
@@ -34,16 +34,15 @@ ld = LD.load-from-json ld-file
 if args.m?
   if typeof! args.m != "Array"
     module-file = requirejs "json!" + args.m
-    console.log "adding module " + args.m
     ld-module = LD.load-module-from-json module-file
     ld.add-module ld-module
   else if typeof! args.m == "Array"
     args.m |> map (file) ->
       module-file = requirejs "json!" + file
-      console.log "adding module #file"
       ld-module = LD.load-module-from-json module-file
       ld.add-module ld-module
 compose.compose ld, (program) ->
-  console.log "program generated"
+  console.log "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls'));\nrequire(\"./queue.js\");"
   console.log program
+  console.log "var queues = Group_main();\nNode_Input(queues.input, queues.output);\n";
 

@@ -26,7 +26,7 @@
 						"data-type" : "number"
 					}
 				],
-				"implementation" : "{{var 'Sum'}} = {{var 'Term 1'}} + {{var 'Term 2'}};"
+				"implementation" : "{{output 'Sum'}} = {{input 'Term 1'}} + {{input 'Term 2'}};"
 			}
 		],
 		"StringToNumber" : [
@@ -44,7 +44,7 @@
 						"data-type" : "number"
 					}
 				],
-				"implementation" : "{{var 'Number'}} = Number({{var 'String'}});"
+				"implementation" : "{{output 'Number'}} = Number({{input 'String'}});"
 			}
 		]
 	},
@@ -52,9 +52,9 @@
 		"string -> number" : [ "StringToNumber"	]
 	},
 	"construction" : {
-		"atomic" : "function {{generic.name}} ({{#each node.connectors}}{{#if_eq connector-type \"Input\"}}{{name}}, {{/if_eq}}{{/each}}callback){\n {{node.implementation}}\n callback({{commaSeperated_outputNames}});\n}\n",
-		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){\n var InValues = {};\n    for(var key in InQueues){\n     InValues[key] = InQueues[key].dequeue();\n    }\n  {{generic.name}}(InValues, function(returnVals){ \n      for(var key in OutQueues){\n           OutQueues[key].enqueue(returnVals[key]);\n        }\n    });\n}\n",
-		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){\n    qInput = {\n{{#each connectors}}{{#if_eq connector-type \"Input\"}}        \"{{generic}}:{{name}}\" : new Queue(),\n{{/if_eq}}{{/each}}    };\n    qOutput = {\n{{#each connectors}}        \"{{generic}}:{{name}}\" : new Queue(),\n{{/each}}    };\n {{implement_connections}}\n {{activate_inputs}} \n}\n"
+		"atomic" : "function {{generic.name}} (input, callback){\n  var output = {};\n  {{node.implementation}}\n{{#unless node.explicit-callback}}  callback(output);\n{{/unless}} }\n",
+		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){ \n  if({{#each node.connectors}}{{#if_eq connector-type \"Input\"}} InQueues[\"{{../../generic.id}}:{{name}}\"].isEmpty() || {{/if_eq}}{{/each}} false){ \n    return; \n  } \n  var InValues = { \n{{#each node.connectors}}{{#if_eq connector-type \"Input\"}}    \"{{name}}\" : InQueues[\"{{../../generic.id}}:{{name}}\"].dequeue(), \n{{/if_eq}}{{/each}}  } \n  {{generic.name}}(InValues, function(returnVals){ \n    for(var key in returnVals){ \n      OutQueues[\"{{generic.id}}:\" + key].enqueue(returnVals[key]); \n    } \n  }); \n} \n \n",
+		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){ \n  qInput = { \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/each}}  }; \n  qOutput = { \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/each}}  }; \n{{#each connections}}  qOutput[\"{{from.generic}}:{{from.connector}}\"].addEnqueueCallback(function(item){ qInput[\"{{to.generic}}:{{to.connector}}\"].enqueue(item);}); \n{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}  qOutput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ qOutput[\"{{generic}}:{{name}}\"].dequeue(); }); \n{{/if_eq}}{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}  qInput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ Node_{{generic}}(qInput,qOutput); }); \n{{/if_eq}}{{/each}} \n  return {input:qInput, output:qOutput}; \n} \n \n"
 	},
 	"sources" : [
 		{

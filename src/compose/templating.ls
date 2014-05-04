@@ -24,6 +24,12 @@ define ["handlebars"] (Handlebars) ->
       else
         opts.inverse this
 
+    Handlebars.registerHelper 'input', (a) ->
+      "input[\"#a\"]"
+
+    Handlebars.registerHelper 'output', (a) ->
+      "output[\"#a\"]"
+
   install-helper!
 
   { 
@@ -34,6 +40,11 @@ define ["handlebars"] (Handlebars) ->
         connections: connections
         connectors: connectors
       }
-      template = Handlebars.compile(text)
-      template(context)
+
+      # apply implementation templates
+      if context.node.implementation?
+        implTempl = Handlebars.compile context.node.implementation, noEscape: true
+        context.node.implementation = implTempl context
+      template = Handlebars.compile text, noEscape: true
+      template context
   }
