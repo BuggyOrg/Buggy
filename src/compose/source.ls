@@ -38,11 +38,13 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
   get-group-connectors = (nodes, resolve) ->
     cns = nodes |> map (n) ->
       r = get-best-match n.name, resolve
-      r.connectors? |> map (c) ->
-        cn = Clone(c)
-        cn.generic = n.id
-        return cn
-    flatten cns
+      if r.connectors?
+        r.connectors |> map (c) ->
+          cn = Clone(c)
+          cn.generic = n.id
+          return cn
+      else null
+    (flatten cns) |> filter -> it?
 
   get-source = (resolve, ld, node, graph, query, pack-function, filter-function) -->
     name = node.name

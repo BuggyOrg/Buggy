@@ -26,7 +26,7 @@
 						"data-type" : "number"
 					}
 				],
-				"implementation" : "{{output 'Sum'}} = {{input 'Term 1'}} + {{input 'Term 2'}};"
+				"implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
 			}
 		],
 		"StringToNumber" : [
