@@ -4,44 +4,14 @@
   <meta charset="utf-8">
   <title>Buggy</title>
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,100italic,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-  <script src="lib/snap.svg-min.js"></script>
+  <script data-main="buggy.js" src="lib/require.js"></script>
 </head>
 <body>
 
-<svg id="svg">
-	
+<input type="text" id="name" value="Group Name"> <input type="button" id="addGroup" value="Add Semantic Group">
+<svg id="svg">	
 </svg>
  
 
-<script>
-	var fun = function () {
-		var s = Snap("#svg");
-		Snap.load("resources/button.svg", function(f){
-			var tC = f.select("#textContainer");
-			tC.attr({text: "recht langer Text!!"});
-			tC.hover(function(){
-				tC.animate({transform:"t0,0 s1.35"}, 500);
-			}, function(){
-				tC.animate({transform:"t0,0 s1"}, 500);
-			});
-			var dragArea = f.select("#drag");
-			var g = f.select("g");
-			s.append(g);
-			var move = function(dx,dy) {
-				g.attr({
-            transform: g.data('origTransform') + (g.data('origTransform') ? "T" : "t") + [dx, dy]
-        });
-			}
-			var start = function() {
-				g.data('origTransform', g.transform().local );
-			}
-			var stop = function() {
-				g.data('origTransform', g.transform().local );
-			}
-			dragArea.drag(move,start,stop);
-		});
-	};
-	fun();
-</script>
 </body>
 </html>
