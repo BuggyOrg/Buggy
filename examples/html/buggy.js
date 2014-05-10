@@ -15,6 +15,8 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}
+import$(window, require('prelude-ls'));
 
 requirejs.config({
   paths: {
@@ -25,36 +27,33 @@ requirejs.config({
     'livescript': "lib/livescript",
     'ls': "lib/ls",
     'prelude': "lib/prelude-browser",
-    'snap': 'lib/snap.svg-min',
-    'jquery': 'lib/jquery.2.1.1.min'
+    'snap': 'lib/snap.svg-min'
   }
 });
 
-require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy-ui", "snap", "jquery"], function(Buggy, Group, Generic, BuggyUI, Snap, $){
-  exports.installPrelude(window);
+requirejs([
+  "ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/language-definition",
+   "ls!src/browser/buggy-ui", "snap", 
+  "json!languages/javascript/javascript.ld"],
+  function(Buggy, Group, Generic, LD, BuggyUI, Snap, jsDef){
+
+  var jsLD = LD.loadFromJson(jsDef);
 
   var uglyGlobalCounter = 1;
+  var setupView = function(scene){
+    $("#version").html(scene.meta.version);
+    $(".logo").addClass("visible");
+  }
 
-  var scene = Buggy.create();
-  $("#version").html(scene.meta.version);
-  $(".logo").addClass("visible").fadeIn("slow");
-  var groupName = $("#semanticGroup").val();
-  var newGroup = Group.create({name: groupName});
-  Buggy.addGroup(scene, newGroup);
+  var setupScene = function (scene, groupName){
+    var newGroup = Group.create({name: groupName});
+    Buggy.addGroup(scene, newGroup);
+  }
 
-  var UI = BuggyUI.create({
-    displayElement: "#svg",
-    resources: {
-      group: "resources/button.svg",
-    },
-    viewstate : {
-      activeGroup: groupName,
-      activeImplementation: 0,
-    }
-  }, function(UI){
+  var setupUI = function(UI){
     var addGroup = function(){
       // add a generic with the name we don't need to resolve it at first
-      var groupName = $("#name").val();
+      var groupName = $("#groupName").val();
       var newGeneric = Generic.create(groupName);
       newGeneric.id = groupName + "." + uglyGlobalCounter;
       uglyGlobalCounter++;
@@ -65,34 +64,52 @@ require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy
     }
 
     $("#addGroup").click(addGroup);
-  });
 
-  var add__Group = function () {
-    var name = $("#name").val();
-    var s = Snap("#svg");
-    Snap.load("resources/button.svg", function(f){
-      var tC = f.select("#textContainer");
-      tC.attr({text: name});
-      tC.hover(function(){
-        tC.animate({transform:"t0,0 s1.35"}, 500);
-      }, function(){
-        tC.animate({transform:"t0,0 s1"}, 500);
-      });
-      var dragArea = f.select("#drag");
-      var g = f.select("g");
-      s.append(g);
-      var move = function(dx,dy) {
-        g.attr({
-            transform: g.data('origTransform') + (g.data('origTransform') ? "T" : "t") + [dx, dy]
+    /*var searchNode = function(){
+      setTimeout(function(){
+        Buggy.search(jsLD, $("#groupName").val(), function(result){
+          console.log(result);
         });
+      },100);
+    }
+    $("#groupName").keypress(searchNode);*/
+    $("#groupName").autocomplete({
+      source: function(request, callback){
+        Buggy.search(jsLD, request.term, function(result){
+          callback(result);
+        });
+      },
+      focus: function( event, ui ) {
+        $( "#groupName" ).val( ui.item.name );
+        return false;
+      },
+      select: function(event, ui){
+        $( "#groupName" ).val( ui.item.name );
+        return false;
       }
-      var start = function() {
-        g.data('origTransform', g.transform().local );
-      }
-      var stop = function() {
-        g.data('origTransform', g.transform().local );
-      }
-      dragArea.drag(move,start,stop);
-    });
+    })
+    .data("ui-autocomplete")._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a>" + item.name + "</a>" )
+        .appendTo( ul );
+    };
   };
+
+  var scene = Buggy.create();
+  setupView(scene);
+  var groupName = $("#semanticGroup").val();
+  setupScene(scene, groupName)
+
+  var UI = BuggyUI.create({
+    displayElement: "#svg",
+    resources: {
+      group: "resources/button.svg",
+    },
+    viewstate : {
+      activeGroup: groupName,
+      activeImplementation: 0,
+    }
+  }, setupUI);
+
+
 });

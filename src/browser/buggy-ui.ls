@@ -37,7 +37,7 @@ define ["ls!src/util/clone"] (Clone) ->
       new-ui <<< Clone config
 
       # load the display driver
-      require ["ls!driver/"+new-ui.display.type], (display) ->
+      requirejs ["ls!driver/"+new-ui.display.type], (display) ->
         new-ui.display.driver = display
         new-ui.display.canvas = display.create new-ui
         callback(new-ui)
