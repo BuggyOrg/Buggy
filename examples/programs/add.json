@@ -10,6 +10,7 @@
 			    	},
 			    	{
 			    		"name" : "Add",
+			    		"comment" : "There should be a method that defines connections without syntactical 'sugar' :)",
 			    		"inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
 			    	},
 			    	{
@@ -18,7 +19,7 @@
 			    	},
 			    	{
 			    		"name" : "Add",
-			    		"comment" : "if a name is used multiple times, there must be an id for each all but one generic to distinguish them",
+			    		"comment" : "if a name is used multiple times, there must be an id for all but one generic to distinguish them",
 			    		"id" : "Add2",
 			    		"inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
 			    	},
@@ -30,6 +31,9 @@
 			    		"inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
 			    	}
 			    ],
+			    "connections" : {
+			    	"comment" : "define connections here.. much cleaner than in the generics"
+			    },
 			    "meta": {
 			      "type": "group",
 			      "description": "Main Logic of 'Add'"
