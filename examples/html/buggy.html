@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   <title>Buggy</title>
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,100italic,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="style.css"/>
   <script src="lib/prelude-browser.js"></script>
   <script data-main="buggy.js" src="lib/require.js"></script>
 </head>
 <body>
 
+<div class="controls">
 <center>
-	<span style="margin-right:50px">Currently Displaying <input type="text" id="semanticGroup" value="New Unnamed Group"></span>
+	<span>Currently Displaying: <input type="text" class="textbox" id="semanticGroup" value="New Unnamed Group"></span>
 	<hr style="width: 1px; height: 20px; display: inline;">
-	<span style="margin-left:50px"><input type="text" id="name" value="Group Name"> <input type="button" id="addGroup" value="Add Semantic Group"></span>
+	<span><input type="text" class="textbox" id="name" value="Group Name"> <input type="button" class="button" id="addGroup" value="Add Semantic Group"></span>
 </center>
+</div>
 <svg id="svg"></svg>
  
 
