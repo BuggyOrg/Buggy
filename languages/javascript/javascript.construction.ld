@@ -8,6 +8,7 @@
 	"symbols" : {
 		"Add"	: [
 			{
+				"name":  "Add",
 				"atomic": true,
 				"connectors": [
 					{ 
@@ -31,6 +32,7 @@
 		],
 		"StringToNumber" : [
 			{
+				"name" : "StringToNumber",
 				"atomic" : true,
 				"connectors" : [
 					{
