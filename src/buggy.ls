@@ -38,6 +38,8 @@ define ["ls!src/language-definition", "ls!src/group", "ls!src/util/clone"], (Ld,
       else
         buggy.symbols[id] = [ Clone group ]
 
-    resolve: (...) ->
-      
+    search: (ld, name, callback) ->
+      res = ld.search name
+      callback res
+
   }

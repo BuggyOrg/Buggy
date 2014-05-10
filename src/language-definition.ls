@@ -24,17 +24,22 @@ define (...) ->
   ld = {
     create: (query-function) ->
       modules = []
-      query-f = (name) ->
+      query-f = (name, type) ->
         module-q-functions = modules |> map -> it.query
         q-functions = concat [query-function, module-q-functions]
         
         # remove all null values and return first non null value
-        first (filter (-> it?), (q-functions |> map -> it name))
+        if type == "search"
+          flatten (filter (-> it?), (q-functions |> map -> it name, type))
+        else
+          first (filter (-> it?), (q-functions |> map -> it name, type))
       { 
         # '## LanguageName' is a special function implemented by every language
         # that simply gives the name of the implemented language
         name: query-function "## LanguageName"
-        query: query-f          
+        query: query-f
+        search: (name) ->
+          query-f name, "search"
         add-module: (module) ->
           modules.push module
       }
@@ -45,14 +50,20 @@ define (...) ->
       # sanity-check json
       # return the query function that uses the json
       # to look up entries/symbols
-      (name) ->
+      (name, type) ->
         if (name.indexOf "## ") == 0 and json.meta?
           json.meta[name.substring 3]
         else if  (name.indexOf "--> ") == 0 and json.construction?
           json.construction[name.substring 4]
-        else if name of json.symbols
+        else if type != "search" && name of json.symbols
           # TODO: also check distributed sources...
           json.symbols[name]
+        else if type == "search"
+          capName = name.toLowerCase!
+          result = (keys json.symbols) |> map ->
+            if ((it.toLowerCase!).search capName) != -1
+              json.symbols[it]
+          filter (-> it?), result
         else 
           null
 
