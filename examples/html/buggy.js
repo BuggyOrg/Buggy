@@ -36,6 +36,7 @@ require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy
   var uglyGlobalCounter = 1;
 
   var scene = Buggy.create();
+  $("#version").html(scene.meta.version);
   var groupName = $("#semanticGroup").val();
   var newGroup = Group.create({name: groupName});
   Buggy.addGroup(scene, newGroup);

@@ -20,7 +20,7 @@ default-config = {
   }
   meta: {
       "description": "Buggy Environment Description",
-      "version": "3.0.0"
+      "version": "3.0.1"
   }
 }
 
@@ -37,4 +37,7 @@ define ["ls!src/language-definition", "ls!src/group", "ls!src/util/clone"], (Ld,
         buggy.symbols[id].push Clone group
       else
         buggy.symbols[id] = [ Clone group ]
+
+    resolve: (...) ->
+      
   }
