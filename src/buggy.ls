@@ -15,5 +15,26 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/language-definition"], (Ld) ->
+default-config = {
+  symbols: {
+  }
+  meta: {
+      "description": "Buggy Environment Description",
+      "version": "3.0.0"
+  }
+}
+
+define ["ls!src/language-definition", "ls!src/group", "ls!src/util/clone"], (Ld, Group, Clone) ->
   
+  {
+    create: (config) ->
+      new-buggy = Clone default-config
+      new-buggy <<< Clone config
+
+    add-group: (buggy, group) ->
+      id = Group.identifier group
+      if id of buggy.symbols
+        buggy.symbols[id].push Clone group
+      else
+        buggy.symbols[id] = [ Clone group ]
+  }
