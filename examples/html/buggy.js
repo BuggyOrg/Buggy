@@ -37,6 +37,7 @@ require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy
 
   var scene = Buggy.create();
   $("#version").html(scene.meta.version);
+  $(".logo").addClass("visible").fadeIn("slow");
   var groupName = $("#semanticGroup").val();
   var newGroup = Group.create({name: groupName});
   Buggy.addGroup(scene, newGroup);
