@@ -1,49 +1,49 @@
 {
-	"symbols": {
-		"main" : [
-			{
-				"module" : true,
-				"comment":"Takes one number and adds it to itself, this group has no connectors!",
-			    "generics": [
-			    	{
-			    		"name" : "Input"
-			    	},
-			    	{
-			    		"name" : "Add",
-			    		"comment" : "There should be a method that defines connections without syntactical 'sugar' :)",
-			    		"inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
-			    	},
-			    	{
-			    		"name" : "Output",
-			    		"inputs" : { "Value" : ">Add:Sum" }
-			    	},
-			    	{
-			    		"name" : "Add",
-			    		"comment" : "if a name is used multiple times, there must be an id for all but one generic to distinguish them",
-			    		"id" : "Add2",
-			    		"inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
-			    	},
-			    	{
-			    		"name" : "Add",
-			    		"comment" : "the default behaviour is that name is the display name, but only if there is no explicit display-name specified",
-			    		"id" : "Add3",
-			    		"display-name" : "+",
-			    		"inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
-			    	}
-			    ],
-			    "connections" : {
-			    	"comment" : "define connections here.. much cleaner than in the generics"
-			    },
-			    "meta": {
-			      "type": "group",
-			      "description": "Main Logic of 'Add'"
-			    }
-			}
-		]
-	},
-    "dependencies": [],
-    "meta": {
-      "description": "Buggy Environment Description",
-      "version": "3.0.0"
-    }
+  "symbols": {
+    "main" : [
+      {
+        "module" : true,
+        "comment":"Takes one number and adds it to itself, this group has no connectors!",
+        "generics": [
+          {
+            "name" : "Input"
+          },
+          {
+            "name" : "Add",
+            "comment" : "There should be a method that defines connections without syntactical 'sugar' :)",
+            "inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
+          },
+          {
+            "name" : "Output",
+            "inputs" : { "Value" : ">Add:Sum" }
+          },
+          {
+            "name" : "Add",
+            "comment" : "if a name is used multiple times, there must be an id for all but one generic to distinguish them",
+            "id" : "Add2",
+            "inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
+          },
+          {
+            "name" : "Add",
+            "comment" : "the default behaviour is that name is the display name, but only if there is no explicit display-name specified",
+            "id" : "Add3",
+            "display-name" : "+",
+            "inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Input:Value" }
+          }
+        ],
+        "connections" : {
+          "comment" : "define connections here.. much cleaner than in the generics"
+        },
+        "meta": {
+          "type": "group",
+          "description": "Main Logic of 'Add'. Main itself is considered a bad name for groups as they don't communicate the real semantics other than beeing a starting point"
+        }
+      }
+    ]
+  },
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
 }
