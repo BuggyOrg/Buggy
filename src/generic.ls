@@ -21,13 +21,14 @@ define (...) ->
   {
     create: (thing) ->
       if typeof! thing == "String"
-        thing
+        {
+          name: thing
+          id: thing
+        }
       else if thing.meta?.type == "group"
         {
           name: thing.name
           id: thing.name
-          generic: true
-          type: "group"
         }
       else
         throw new Error "unkown generic type -- not supported (yet)"

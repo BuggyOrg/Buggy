@@ -15,24 +15,39 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["snap"] (Snap) ->
+define ["ls!src/generic", "snap"] (Generic, Snap) ->
 
   { 
     create: (config) ->
       Snap config.display-element
 
 
-    clear: (UI) ->
-      UI.clear!
+    clear: (canvas) ->
+      canvas.clear!
 
-    add-node: (UI, name) ->
+    # sync is called to request a metadata synchronization like positional data
+    # this is usually done before saving a document or context-switches
+    sync: (canvas, callback) ->
+      allGroups = canvas.selectAll "g\#all"
+      allGroups.items |> map !->
+        transform = it.attr "transform"
+
+        callback { 
+          type: "position"
+          id: it.attr "buggyNode"
+          x: transform.localMatrix.e
+          y : transform.localMatrix.f
+        }
+
+    add-node: (canvas, node, config) ->
       Snap.load "resources/button.svg", (f) !->
         tC = f.select "\#textContainer"
-        tC.attr text: name
+        tC.attr text: Generic.name node
         
         dragArea = f.select "\#drag"
         g = f.select "g"
-        UI.display.canvas.append g
+        g.attr buggy-node: Generic.identifier node
+        canvas.append g
         move = (dx,dy) !->
           g.attr {
             transform: (g.data 'origTransform') + "t" + [dx, dy]
@@ -42,6 +57,14 @@ define ["snap"] (Snap) ->
           g.data 'origTransform', g.transform!.local
         stop = !->
           g.data 'origTransform', g.transform!.local
+
+
+        g.data 'origTransform', g.transform!.local
+
+        if config? && "position" of config
+          g.attr {
+            transform: (g.data 'origTransform') + "t" + [config.position.x, config.position.y]
+          }
 
         dragArea.drag move,start,stop
 

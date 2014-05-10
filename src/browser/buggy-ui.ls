@@ -44,11 +44,22 @@ define ["ls!src/util/clone"] (Clone) ->
 
     refresh: (UI, scene) ->
       console.log "refreshing UI"
-      # first clear everything
-      UI.display.driver.clear UI.display.canvas
+      canvas = UI.display.canvas
+      # first sync everything
+      display = {}
+      UI.display.driver.sync canvas, !->
+        node-display = {}
+        # TODO: this shouldn't be hardcoded
+        node-display[it.type] = {
+          x: it.x
+          y: it.y
+        }
+        display[it.id] = node-display
+      # then clear everything
+      UI.display.driver.clear canvas
       # then recreate stuff..
       if "viewstate" of UI
         implementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
-        implementation.generics |> map !-> UI.display.driver.add-node UI, it
+        implementation.generics |> map !-> UI.display.driver.add-node canvas, it, display[it.id]
 
   }

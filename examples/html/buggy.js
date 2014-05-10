@@ -33,6 +33,8 @@ requirejs.config({
 require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy-ui", "snap", "jquery"], function(Buggy, Group, Generic, BuggyUI, Snap, $){
   exports.installPrelude(window);
 
+  var uglyGlobalCounter = 1;
+
   var scene = Buggy.create();
   var groupName = $("#semanticGroup").val();
   var newGroup = Group.create({name: groupName});
@@ -52,6 +54,8 @@ require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy
       // add a generic with the name we don't need to resolve it at first
       var groupName = $("#name").val();
       var newGeneric = Generic.create(groupName);
+      newGeneric.id = groupName + "." + uglyGlobalCounter;
+      uglyGlobalCounter++;
       var implementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
       Group.addGeneric(implementation, newGeneric);
       console.log(scene);
