@@ -24,4 +24,25 @@ define ["snap"] (Snap) ->
 
     clear: (UI) ->
       UI.clear!
+
+    add-node: (UI, name) ->
+      Snap.load "resources/button.svg", (f) !->
+        tC = f.select "\#textContainer"
+        tC.attr text: name
+        
+        dragArea = f.select "\#drag"
+        g = f.select "g"
+        UI.display.canvas.append g
+        move = (dx,dy) !->
+          g.attr {
+            transform: (g.data 'origTransform') + "t" + [dx, dy]
+          }
+
+        start = !->
+          g.data 'origTransform', g.transform!.local
+        stop = !->
+          g.data 'origTransform', g.transform!.local
+
+        dragArea.drag move,start,stop
+
   }

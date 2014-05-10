@@ -30,19 +30,35 @@ requirejs.config({
   }
 });
 
-require(["ls!src/browser/buggy-ui", "snap", "jquery"], function(BuggyUI, Snap, $){
-  UI = BuggyUI.create({
+require(["ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/browser/buggy-ui", "snap", "jquery"], function(Buggy, Group, Generic, BuggyUI, Snap, $){
+  exports.installPrelude(window);
+
+  var scene = Buggy.create();
+  var groupName = $("#semanticGroup").val();
+  var newGroup = Group.create({name: groupName});
+  Buggy.addGroup(scene, newGroup);
+
+  var UI = BuggyUI.create({
     displayElement: "#svg",
     resources: {
       group: "resources/button.svg",
-
+    },
+    viewstate : {
+      activeGroup: groupName,
+      activeImplementation: 0,
     }
   }, function(UI){
     var addGroup = function(){
-      BuggyUI.refresh(UI);
+      // add a generic with the name we don't need to resolve it at first
+      var groupName = $("#name").val();
+      var newGeneric = Generic.create(groupName);
+      var implementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
+      Group.addGeneric(implementation, newGeneric);
+      console.log(scene);
+      BuggyUI.refresh(UI, scene);
     }
 
-    document.getElementById ("addGroup").addEventListener ("click", addGroup, false);
+    $("#addGroup").click(addGroup);
   });
 
   var add__Group = function () {

@@ -42,9 +42,13 @@ define ["ls!src/util/clone"] (Clone) ->
         new-ui.display.canvas = display.create new-ui
         callback(new-ui)
 
-    refresh: (UI) ->
+    refresh: (UI, scene) ->
       console.log "refreshing UI"
       # first clear everything
       UI.display.driver.clear UI.display.canvas
       # then recreate stuff..
+      if "viewstate" of UI
+        implementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
+        implementation.generics |> map !-> UI.display.driver.add-node UI, it
+
   }
