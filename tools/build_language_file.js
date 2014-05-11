@@ -7,6 +7,11 @@ var _fs = require("fs");
 
 var _args = process.argv.slice(2);
 
+var path = _args[0].split("/").slice(0,-1).join("/");
+if(path.length == 0)
+	path = ".";
+path += "/";
+
 var files = { "group": "group.handlebars.js", "node" : "node.handlebars.js" };
 var templates = {};
 
@@ -42,7 +47,7 @@ function stringify(buffer) {
 }
 
 for( key in files ){
-	templates[key] = stringify(_fs.readFileSync("construction/" + files[key]).toString());
+	templates[key] = stringify(_fs.readFileSync(path+"construction/" + files[key]).toString());
 }
 
 var languageFile = _fs.readFileSync(_args[0]).toString();

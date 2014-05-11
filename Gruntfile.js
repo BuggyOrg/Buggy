@@ -66,17 +66,26 @@ module.exports = function(grunt) {
           src: ['test/**/*-test.js']
         }
     },
+
+    shell: {
+      buildLanguage: {
+        command: "node tools/build_language_file.js languages/javascript/javascript.construction.ld > languages/javascript/javascript.ld"
+      }
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-livescript');
   grunt.loadNpmTasks('grunt-mocha-cli');
+  grunt.loadNpmTasks('grunt-shell');
 
   require('mocha-unfunk-reporter').option('reportPending', true);
 
   grunt.registerTask('app', ['livescript:app']);
   grunt.registerTask('test', ['livescript:test', 'mochacli', 'clean:test']);
+
+  grunt.registerTask('lang', ['shell:buildLanguage']);
   
   // By default, lint and run all tests.
   grunt.registerTask('default', ['app', 'test-app']);
