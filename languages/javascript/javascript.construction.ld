@@ -27,6 +27,7 @@
 						"data-type" : "number"
 					}
 				],
+				"description" : "Adds two numbers",
 				"implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
 			}
 		],
@@ -46,6 +47,7 @@
 						"data-type" : "number"
 					}
 				],
+				"description" : "Converts a String into a number",
 				"implementation" : "{{output 'Number'}} = Number({{input 'String'}});"
 			}
 		]

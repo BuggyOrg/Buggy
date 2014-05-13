@@ -33,9 +33,9 @@ requirejs.config({
 
 requirejs([
   "ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/language-definition",
-   "ls!src/browser/buggy-ui", "snap", 
+   "ls!src/browser/buggy-ui", 
   "json!languages/javascript/javascript.ld"],
-  function(Buggy, Group, Generic, LD, BuggyUI, Snap, jsDef){
+  function(Buggy, Group, Generic, LD, BuggyUI, jsDef){
 
   var jsLD = LD.loadFromJson(jsDef);
 
@@ -57,22 +57,14 @@ requirejs([
       var newGeneric = Generic.create(groupName);
       newGeneric.id = groupName + "." + uglyGlobalCounter;
       uglyGlobalCounter++;
-      var implementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
-      Group.addGeneric(implementation, newGeneric);
+      var groupImplementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
+      Group.addGeneric(groupImplementation, newGeneric);
       console.log(scene);
       BuggyUI.refresh(UI, scene);
     }
 
     $("#addGroup").click(addGroup);
 
-    /*var searchNode = function(){
-      setTimeout(function(){
-        Buggy.search(jsLD, $("#groupName").val(), function(result){
-          console.log(result);
-        });
-      },100);
-    }
-    $("#groupName").keypress(searchNode);*/
     $("#groupName").autocomplete({
       source: function(request, callback){
         Buggy.search(jsLD, request.term, function(result){
@@ -90,9 +82,42 @@ requirejs([
     })
     .data("ui-autocomplete")._renderItem = function( ul, item ) {
       return $( "<li>" )
-        .append( "<a>" + item.name + "</a>" )
+        .append( "<a>" + item.name + '<div class="description">' + item.description + "</div></a>" )
         .appendTo( ul );
     };
+
+    $("#semanticGroup").autocomplete({
+      source: function(request, callback){
+        Buggy.search(jsLD, request.term, function(result){
+          callback(result);
+        });
+      },
+      focus: function( event, ui ) {
+        $( "#semanticGroup" ).val( ui.item.name );
+        console.log("focus!!");
+        UI.viewstate.activeGroup = ui.item.name;
+        BuggyUI.refresh(UI, scene);
+        return false;
+      },
+      select: function(event, ui){
+        $( "#semanticGroup" ).val( ui.item.name );
+        console.log("select!!");
+        UI.viewstate.activeGroup = ui.item.name;
+        BuggyUI.refresh(UI, scene);
+        return false;
+      }
+    })
+    .data("ui-autocomplete")._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a>" + item.name + '<div class="description">' + item.description + "</div></a>" )
+        .appendTo( ul );
+    };
+    $("#semanticGroup").keyup(function(){
+      console.log("change!!");
+      UI.viewstate.activeGroup = $("#semanticGroup").val();
+      BuggyUI.refresh(UI, scene);
+      return false;
+    })
   };
 
   var scene = Buggy.create();

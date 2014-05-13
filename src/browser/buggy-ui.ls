@@ -58,7 +58,7 @@ define ["ls!src/util/clone"] (Clone) ->
       # then clear everything
       UI.display.driver.clear canvas
       # then recreate stuff..
-      if "viewstate" of UI
+      if "viewstate" of UI and UI.viewstate.activeGroup of scene.symbols
         implementation = scene.symbols[UI.viewstate.activeGroup][UI.viewstate.activeImplementation];
         implementation.generics |> map !-> UI.display.driver.add-node canvas, it, display[it.id]
 
