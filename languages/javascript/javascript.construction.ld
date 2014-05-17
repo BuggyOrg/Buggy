@@ -46,6 +46,66 @@
 				"implementation" : "{{output 'Value'}} = {{meta 'Constant.value'}};"
 			}
 		],
+		"car" : [
+			{
+				"name" : "car",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Array",
+						"connector-type" : "Input",
+						"data-type" : "array"
+					},
+					{
+						"name" : "Value",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
+				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}[0];\n    callback(output);\n  }"
+			}
+		],
+		"cdr" : [
+			{
+				"name" : "car",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Array",
+						"connector-type" : "Input",
+						"data-type" : "array"
+					},
+					{
+						"name" : "Value",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
+				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
+			}
+		],
+		"Empty" : [
+			{
+				"comment" : "this node is not in its final stage. The empty function should ask the type with a query if it is empty and not simply implement the functionality.",
+				"name" : "Empty",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Array",
+						"connector-type" : "Input",
+						"data-type" : "array"
+					},
+					{
+						"name" : "IsEmpty",
+						"connector-type" : "Output",
+						"data-type" : "bool"
+					}
+				],
+				"implementation" : "{{output 'IsEmpty'}} = ({{input 'Array'}}.length == 0);"
+			}
+		],
 		"Fold"		: [
 			{
 				"name" : "Fold",
@@ -114,7 +174,8 @@
 						"connector-type" : "Output",
 						"data-type" : "array"
 					}
-				]
+				],
+				"implementation" : "{{output 'Array'}} = {{input 'String'}}.split(',');"
 			}
 		]
 	},

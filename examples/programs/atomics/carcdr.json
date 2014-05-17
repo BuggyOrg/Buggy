@@ -1,0 +1,49 @@
+{
+  "symbols": {
+    "main" : [
+      {
+        "module" : true,
+        "comment":"Takes one number and adds 4 to it, this group has no connectors!",
+        "generics": [
+          {
+            "name" : "Constant",
+            "meta" : {
+              "Constant" : {
+                "data-type" : "string",
+                "value" : "'1,2,3'"
+              }
+            }
+          },
+          {
+            "name" : "StringToArray",
+            "inputs" : { "String" : ">Constant:Value" }
+          },
+          {
+            "name" : "cdr",
+            "inputs" : { "Array" : ">StringToArray:Array" }
+          },
+          {
+            "name" : "car",
+            "inputs" : { "Array" : ">cdr:Value" }
+          },
+          {
+            "name" : "Output",
+            "inputs" : { "Value" : ">car:Value" }
+          }
+        ],
+        "connections" : {
+          "comment" : "define connections here.. much cleaner than in the generics"
+        },
+        "meta": {
+          "type": "group",
+          "description": "Main Logic of 'Add'. Main itself is considered a bad name for groups as they don't communicate the real semantics other than beeing a starting point"
+        }
+      }
+    ]
+  },
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
+}
