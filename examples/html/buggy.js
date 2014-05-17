@@ -15,6 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// we need all prelude functions on global scope
 function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}
 import$(window, require('prelude-ls'));
 
@@ -34,9 +35,10 @@ requirejs.config({
 requirejs([
   "ls!src/buggy", "ls!src/group", "ls!src/generic", "ls!src/language-definition",
    "ls!src/browser/buggy-ui", 
-  "json!languages/javascript/javascript.ld"],
-  function(Buggy, Group, Generic, LD, BuggyUI, jsDef){
+  "json!languages/javascript/javascript.ld", "ls!js/ui-controller"],
+  function(Buggy, Group, Generic, LD, BuggyUI, jsDef, UIController){
 
+  uiController = UIController.create({});
   var jsLD = LD.loadFromJson(jsDef);
 
   var uglyGlobalCounter = 1;
