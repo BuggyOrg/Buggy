@@ -31,6 +31,29 @@
 				"implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
 			}
 		],
+		"Constant" : [
+			{
+				"name" : "Constant",
+				"generics" : [
+					{
+						"name" : "ConstantValue",
+						"meta" : {
+							"ConstantValue" : {
+								"data-type" : "{{meta 'Constant.data-type'}}",
+								"value" : "{{meta 'Constant.value}}"
+							}
+						}
+					}
+				]
+				"connectors" : [
+					{
+						"name" : "Value",
+						"connector-type" : "Output",
+						"data-type" : "{{meta 'Constant.data-type'}}"
+					}
+				]
+			}
+		]
 		"Fold1"		: [
 			{
 				"name" : "Fold1",

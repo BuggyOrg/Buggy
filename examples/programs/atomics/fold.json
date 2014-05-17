@@ -3,7 +3,7 @@
     "main" : [
       {
         "module" : true,
-        "comment":"Takes one number and adds it to itself, this group has no connectors!",
+        "comment":"Takes a input string converts it and adds all its members!",
         "generics": [
           {
             "name" : "Input"
