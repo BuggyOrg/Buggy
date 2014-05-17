@@ -32,7 +32,7 @@
           {
             "name" : "Fold",
             "inputs" : { "Array" : ">StringToArray:Array", "Initial" : ">InitialConstant:Value", "FunctionResult" : ">Add:Sum" }
-          }
+          },
           {
             "name" : "Add",
             "inputs" : { "Term 1" : ">Fold:Value1", "Term 2" : ">Fold:Value2" }

@@ -3,32 +3,36 @@
     "main" : [
       {
         "module" : true,
-        "comment":"Takes one number and adds 4 to it, this group has no connectors!",
+        "comment":"If test program!",
         "generics": [
           {
+            "name" : "Input"
+          },
+          {
+            "name" : "StringToArray",
+            "inputs" : { "String" : ">Input:Value" }
+          },
+          {
+            "name" : "Empty",
+            "inputs" : { "Array" : ">StringToArray:Array" }
+          },
+          {
             "name" : "Constant",
+            "id" : "ConstantA",
             "meta" : {
               "Constant" : {
-                "data-type" : "string",
-                "value" : "'1,2,3'"
+                "data-type" : "Number",
+                "value" : 4
               }
             }
           },
           {
-            "name" : "StringToArray",
-            "inputs" : { "String" : ">Constant:Value" }
-          },
-          {
-            "name" : "cdr",
-            "inputs" : { "Array" : ">StringToArray:Array" }
-          },
-          {
-            "name" : "car",
-            "inputs" : { "Array" : ">cdr:Rest" }
+            "name" : "Switch",
+            "inputs" : { "Switch" : ">Empty:IsEmpty", "A" : ">ConstantA:Value" }
           },
           {
             "name" : "Output",
-            "inputs" : { "Value" : ">car:Value" }
+            "inputs" : { "Value" : ">Switch:Result" }
           }
         ],
         "connections" : {

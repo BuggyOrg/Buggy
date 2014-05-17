@@ -77,7 +77,7 @@
 						"data-type" : "array"
 					},
 					{
-						"name" : "Value",
+						"name" : "Rest",
 						"connector-type" : "Output"
 					}
 				],
@@ -104,6 +104,29 @@
 					}
 				],
 				"implementation" : "{{output 'IsEmpty'}} = ({{input 'Array'}}.length == 0);"
+			}
+		],
+		"Switch" : [
+			{
+				"name" : "Switch",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Switch",
+						"connector-type" : "Input",
+						"data-type" : "bool"
+					},
+					{
+						"name" : "A",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n    callback(output);\n  }"
 			}
 		],
 		"Mux" : [
@@ -135,7 +158,36 @@
 		"Fold"		: [
 			{
 				"name" : "Fold",
-				"atomic" : true,
+				"generics" : [
+					{
+						"name" : "Empty",
+						"id" : "EmptyInput",
+						"inputs" : { "Array" : ">Fold:Array" }
+					},
+					{
+						"name" : "car",
+						"inputs" : { "Array" : ">Fold:Array" }
+					},
+					{
+						"name" : "cdr",
+						"inputs" : { "Array" : ">Fold:Array" }
+					},
+					{
+						"name" : "Empty",
+						"id" : "EmptyCurrent",
+						"inputs" : { "Array" : ">cdr:Rest" }
+					},
+					{
+						"name" : "Switch",
+						"id" : "SwitchInput",
+						"inputs" : { "Switch" : ">EmptyInput:IsEmpty", "A" : ">Fold:Initial" }
+					},
+					{
+						"name" : "Switch",
+						"id" : "SwitchCurrent",
+						"inputs" : { "Switch" : ">EmptyCurrent:IsEmpty", "A" : ">Fold:FunctionResult" }
+					}
+				],
 				"connectors" : [
 					{
 						"name" : "Initial",
