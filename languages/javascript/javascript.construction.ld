@@ -34,17 +34,6 @@
 		"Constant" : [
 			{
 				"name" : "Constant",
-				"generics" : [
-					{
-						"name" : "ConstantValue",
-						"meta" : {
-							"ConstantValue" : {
-								"data-type" : "{{meta 'Constant.data-type'}}",
-								"value" : "{{meta 'Constant.value}}"
-							}
-						}
-					}
-				]
 				"connectors" : [
 					{
 						"name" : "Value",
@@ -53,7 +42,7 @@
 					}
 				]
 			}
-		]
+		],
 		"Fold1"		: [
 			{
 				"name" : "Fold1",
@@ -62,7 +51,7 @@
 					{
 						"name" : "Array",
 						"connector-type" : "Input",
-						"data-type" : "array",
+						"data-type" : "array"
 					},
 					{
 						"name" : "FunctionResult",
@@ -124,7 +113,7 @@
 	},
 	"transformations" : {
 		"string -> number" : [ "StringToNumber"	],
-		"string -> array" : [ "StringToArray"	],
+		"string -> array" : [ "StringToArray"	]
 	},
 	"construction" : {
 		"atomic" : "function {{generic.name}} (input, callback){\n  var output = {};\n  {{node.implementation}}\n{{#unless node.explicit-callback}}  callback(output);\n{{/unless}} }\n",

@@ -31,6 +31,47 @@
 				"implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
 			}
 		],
+		"Constant" : [
+			{
+				"name" : "Constant",
+				"connectors" : [
+					{
+						"name" : "Value",
+						"connector-type" : "Output",
+						"data-type" : "{{meta 'Constant.data-type'}}"
+					}
+				]
+			}
+		],
+		"Fold1"		: [
+			{
+				"name" : "Fold1",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Array",
+						"connector-type" : "Input",
+						"data-type" : "array"
+					},
+					{
+						"name" : "FunctionResult",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Value1",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Value2",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				]
+			}
+		],
 		"StringToNumber" : [
 			{
 				"name" : "StringToNumber",
@@ -50,10 +91,29 @@
 				"description" : "Converts a String into a number",
 				"implementation" : "{{output 'Number'}} = Number({{input 'String'}});"
 			}
+		],
+		"StringToArray" : [
+			{
+				"name" : "StringToArray",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "String",
+						"connector-type" : "Input",
+						"data-type" : "string"
+					},
+					{
+						"name" : "Array",
+						"connector-type" : "Output",
+						"data-type" : "array"
+					}
+				]
+			}
 		]
 	},
 	"transformations" : {
-		"string -> number" : [ "StringToNumber"	]
+		"string -> number" : [ "StringToNumber"	],
+		"string -> array" : [ "StringToArray"	]
 	},
 	"construction" : {
 		"atomic" : "function {{generic.name}} (input, callback){\n  var output = {};\n  {{node.implementation}}\n{{#unless node.explicit-callback}}  callback(output);\n{{/unless}} }\n",

@@ -70,6 +70,12 @@ module.exports = function(grunt) {
     shell: {
       buildLanguage: {
         command: "node tools/build_language_file.js languages/javascript/javascript.construction.ld > languages/javascript/javascript.ld"
+      },
+      checkLanguageFile: {
+       command: "jsonlint languages/javascript/javascript.ld",
+       options: {
+        stdout: false
+       }
       }
     },
   });
@@ -85,7 +91,7 @@ module.exports = function(grunt) {
   grunt.registerTask('app', ['livescript:app']);
   grunt.registerTask('test', ['livescript:test', 'mochacli', 'clean:test']);
 
-  grunt.registerTask('lang', ['shell:buildLanguage']);
+  grunt.registerTask('lang', ['shell:buildLanguage', 'shell:checkLanguageFile']);
   
   // By default, lint and run all tests.
   grunt.registerTask('default', ['app', 'test-app']);
