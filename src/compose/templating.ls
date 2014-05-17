@@ -15,7 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["handlebars"] (Handlebars) ->
+define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
 
   install-helper = (...) ->
     Handlebars.registerHelper 'if_eq', (a, b, opts) ->
@@ -32,6 +32,14 @@ define ["handlebars"] (Handlebars) ->
 
   install-helper!
 
+  install-node-helper = (node) ->
+    Handlebars.registerHelper 'meta', (a) ->
+      DeepFind node.meta, a
+
+  uninstall-node-helper = (...) ->
+    Handlebars.unregisterHelper 'meta'
+      
+
   { 
     process: (text, generic, node, connections, connectors, inner-nodes) ->
       context = {
@@ -41,10 +49,16 @@ define ["handlebars"] (Handlebars) ->
         connectors: connectors
       }
 
+      install-node-helper generic
+
       # apply implementation templates
       if context.node.implementation?
         implTempl = Handlebars.compile context.node.implementation, noEscape: true
         context.node.implementation = implTempl context
       template = Handlebars.compile text, noEscape: true
-      template context
+      result = template context
+
+      uninstall-node-helper!
+
+      result
   }

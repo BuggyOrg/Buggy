@@ -34,20 +34,27 @@
 		"Constant" : [
 			{
 				"name" : "Constant",
+				"atomic" : true,
 				"connectors" : [
 					{
 						"name" : "Value",
 						"connector-type" : "Output",
 						"data-type" : "{{meta 'Constant.data-type'}}"
 					}
-				]
+				],
+				"description" : "Represents a constant value. Set the value of the constant in the meta information",
+				"implementation" : "{{output 'Value'}} = {{meta 'Constant.value'}};"
 			}
 		],
-		"Fold1"		: [
+		"Fold"		: [
 			{
-				"name" : "Fold1",
+				"name" : "Fold",
 				"atomic" : true,
 				"connectors" : [
+					{
+						"name" : "Initial",
+						"connector-type" : "Input"
+					},
 					{
 						"name" : "Array",
 						"connector-type" : "Input",

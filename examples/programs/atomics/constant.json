@@ -6,25 +6,17 @@
         "comment":"Takes one number and adds 4 to it, this group has no connectors!",
         "generics": [
           {
-            "name" : "Input"
-          },
-          {
-            "name" : "Constant"
-            "meta" {
+            "name" : "Constant",
+            "meta" : {
               "Constant" : {
                 "data-type" : "Number",
                 "value" : 4
               }
             }
-          }
-          {
-            "name" : "Add",
-            "comment" : "There should be a method that defines connections without syntactical 'sugar' :)",
-            "inputs" : { "Term 1" : ">Input:Value", "Term 2" : ">Constant:Value" }
           },
           {
             "name" : "Output",
-            "inputs" : { "Value" : ">Add:Sum" }
+            "inputs" : { "Value" : ">Constant:Value" }
           }
         ],
         "connections" : {
