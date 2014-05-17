@@ -9,20 +9,40 @@
             "name" : "Input"
           },
           {
-            "name" : "StringToNumber",
+            "name" : "StringToArray",
             "inputs" : { "String" : ">Input:Value" }
           },
           {
-            "name" : "If",
-            "inputs" : { "Array" : ">StringToArray:Array", "FunctionResult" : ">Add:Sum" }
-          }
+            "name" : "Empty",
+            "inputs" : { "Array" : ">StringToArray:Array" }
+          },
           {
-            "name" : "Add",
-            "inputs" : { "Term 1" : ">Fold1:Value1", "Term 2" : ">Fold1:Value2" }
+            "name" : "Constant",
+            "id" : "ConstantA",
+            "meta" : {
+              "Constant" : {
+                "data-type" : "Number",
+                "value" : 4
+              }
+            }
+          },
+          {
+            "name" : "Constant",
+            "id" : "ConstantB",
+            "meta" : {
+              "Constant" : {
+                "data-type" : "Number",
+                "value" : 0
+              }
+            }
+          },
+          {
+            "name" : "Mux",
+            "inputs" : { "Switch" : ">Empty:IsEmpty", "A" : ">ConstantA:Value", "B" : ">ConstantB:Value" }
           },
           {
             "name" : "Output",
-            "inputs" : { "Value" : ">Fold1:Result" }
+            "inputs" : { "Value" : ">Mux:Result" }
           }
         ],
         "connections" : {

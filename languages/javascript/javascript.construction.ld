@@ -39,11 +39,11 @@
 					{
 						"name" : "Value",
 						"connector-type" : "Output",
-						"data-type" : "{{meta 'Constant.data-type'}}"
+						"data-type" : "{{meta-query 'Constant.data-type'}}"
 					}
 				],
 				"description" : "Represents a constant value. Set the value of the constant in the meta information",
-				"implementation" : "{{output 'Value'}} = {{meta 'Constant.value'}};"
+				"implementation" : "{{output 'Value'}} = {{meta-query 'Constant.value'}};"
 			}
 		],
 		"car" : [
@@ -104,6 +104,32 @@
 					}
 				],
 				"implementation" : "{{output 'IsEmpty'}} = ({{input 'Array'}}.length == 0);"
+			}
+		],
+		"Mux" : [
+			{
+				"name" : "Mux",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Switch",
+						"connector-type" : "Input",
+						"data-type" : "bool"
+					},
+					{
+						"name" : "A",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "B",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n  } else {\n    {{output 'Result'}} = {{input 'B'}};\n  }"
 			}
 		],
 		"Fold"		: [
@@ -175,7 +201,7 @@
 						"data-type" : "array"
 					}
 				],
-				"implementation" : "{{output 'Array'}} = {{input 'String'}}.split(',');"
+				"implementation" : "if({{input 'String'}}.length == 0){\n  {{output 'Array'}} = []\n  } else {\n    {{output 'Array'}} = String({{input 'String'}}).split(',');\n  }"
 			}
 		]
 	},
@@ -184,7 +210,7 @@
 		"string -> array" : [ "StringToArray"	]
 	},
 	"construction" : {
-		"atomic" : "function {{generic.name}} (input, callback){\n  var output = {};\n  {{node.implementation}}\n{{#unless node.explicit-callback}}  callback(output);\n{{/unless}} }\n",
+		"atomic" : "!!atomic!!",
 		"node" : "!!node!!",
 		"group" : "!!group!!"
 	},

@@ -39,11 +39,11 @@
 					{
 						"name" : "Value",
 						"connector-type" : "Output",
-						"data-type" : "{{meta 'Constant.data-type'}}"
+						"data-type" : "{{meta-query 'Constant.data-type'}}"
 					}
 				],
 				"description" : "Represents a constant value. Set the value of the constant in the meta information",
-				"implementation" : "{{output 'Value'}} = {{meta 'Constant.value'}};"
+				"implementation" : "{{output 'Value'}} = {{meta-query 'Constant.value'}};"
 			}
 		],
 		"car" : [
@@ -104,6 +104,32 @@
 					}
 				],
 				"implementation" : "{{output 'IsEmpty'}} = ({{input 'Array'}}.length == 0);"
+			}
+		],
+		"Mux" : [
+			{
+				"name" : "Mux",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Switch",
+						"connector-type" : "Input",
+						"data-type" : "bool"
+					},
+					{
+						"name" : "A",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "B",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n  } else {\n    {{output 'Result'}} = {{input 'B'}};\n  }"
 			}
 		],
 		"Fold"		: [
@@ -175,7 +201,7 @@
 						"data-type" : "array"
 					}
 				],
-				"implementation" : "{{output 'Array'}} = {{input 'String'}}.split(',');"
+				"implementation" : "if({{input 'String'}}.length == 0){\n  {{output 'Array'}} = []\n  } else {\n    {{output 'Array'}} = String({{input 'String'}}).split(',');\n  }"
 			}
 		]
 	},
@@ -184,8 +210,8 @@
 		"string -> array" : [ "StringToArray"	]
 	},
 	"construction" : {
-		"atomic" : "function {{generic.name}} (input, callback){\n  var output = {};\n  {{node.implementation}}\n{{#unless node.explicit-callback}}  callback(output);\n{{/unless}} }\n",
-		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){ \n  if({{#each node.connectors}}{{#if_eq connector-type \"Input\"}} InQueues[\"{{../../generic.id}}:{{name}}\"].isEmpty() || {{/if_eq}}{{/each}} false){ \n    return; \n  } \n  var InValues = { \n{{#each node.connectors}}{{#if_eq connector-type \"Input\"}}    \"{{name}}\" : InQueues[\"{{../../generic.id}}:{{name}}\"].dequeue(), \n{{/if_eq}}{{/each}}  } \n  {{generic.name}}(InValues, function(returnVals){ \n    for(var key in returnVals){ \n      OutQueues[\"{{generic.id}}:\" + key].enqueue(returnVals[key]); \n    } \n  }); \n} \n \n",
+		"atomic" : "function {{generic.name}} (input, meta, callback){ \n  var output = {}; \n  {{node.implementation}} \n{{#unless node.explicit-callback}}  callback(output); \n{{/unless}} \n}",
+		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){ \n  if({{#each node.connectors}}{{#if_eq connector-type \"Input\"}} InQueues[\"{{../../generic.id}}:{{name}}\"].isEmpty() || {{/if_eq}}{{/each}} false){ \n    return; \n  } \n  var InValues = { \n{{#each node.connectors}}{{#if_eq connector-type \"Input\"}}    \"{{name}}\" : InQueues[\"{{../../generic.id}}:{{name}}\"].dequeue(), \n{{/if_eq}}{{/each}}  } \n  {{generic.name}}(InValues, {{meta}}, function(returnVals){ \n    for(var key in returnVals){ \n      OutQueues[\"{{generic.id}}:\" + key].enqueue(returnVals[key]); \n    } \n  }); \n} \n \n",
 		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){ \n  qInput = { \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/each}}  }; \n  qOutput = { \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/each}}  }; \n{{#each connections}}  qOutput[\"{{from.generic}}:{{from.connector}}\"].addEnqueueCallback(function(item){ qInput[\"{{to.generic}}:{{to.connector}}\"].enqueue(item);}); \n{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}  qOutput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ qOutput[\"{{generic}}:{{name}}\"].dequeue(); }); \n{{/if_eq}}{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}  qInput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ Node_{{generic}}(qInput,qOutput); }); \n{{/if_eq}}{{/each}} \n  return {input:qInput, output:qOutput}; \n} \n \n"
 	},
 	"sources" : [

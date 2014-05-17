@@ -33,11 +33,11 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
   install-helper!
 
   install-node-helper = (node) ->
-    Handlebars.registerHelper 'meta', (a) ->
-      DeepFind node.meta, a
+    Handlebars.registerHelper 'meta-query', (a) ->
+      "meta."+a
 
   uninstall-node-helper = (...) ->
-    Handlebars.unregisterHelper 'meta'
+    Handlebars.unregisterHelper 'meta-query'
       
 
   { 
@@ -47,7 +47,10 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
         node: node
         connections: connections
         connectors: connectors
+        meta: "{}"
       }
+      if generic.meta?
+        context.meta = JSON.stringify generic.meta
 
       install-node-helper generic
 

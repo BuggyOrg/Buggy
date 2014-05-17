@@ -7,7 +7,7 @@ function Node_{{generic.id}} (InQueues, OutQueues){
     "{{name}}" : InQueues["{{../../generic.id}}:{{name}}"].dequeue(),
 {{/if_eq}}{{/each}}\
   }
-  {{generic.name}}(InValues, function(returnVals){
+  {{generic.name}}(InValues, {{meta}}, function(returnVals){
     for(var key in returnVals){
       OutQueues["{{generic.id}}:" + key].enqueue(returnVals[key]);
     }

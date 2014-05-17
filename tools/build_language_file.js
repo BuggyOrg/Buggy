@@ -12,7 +12,7 @@ if(path.length == 0)
 	path = ".";
 path += "/";
 
-var files = { "group": "group.handlebars.js", "node" : "node.handlebars.js" };
+var files = { "group": "group.handlebars.js", "node" : "node.handlebars.js", "atomic" : "atomic.handlebars.js" };
 var templates = {};
 
 
