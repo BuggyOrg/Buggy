@@ -51,7 +51,8 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
     resolved-node = get-best-match name, resolve
     if !filter-function? or filter-function resolved-node
       grp-nodes = Graph.get-group-nodes graph, resolved-node
-      grp-connectors = get-group-connectors grp-nodes, resolve
+      all-grp-nodes = union grp-nodes, [node]
+      grp-connectors = get-group-connectors all-grp-nodes,  resolve
       grp-connections = Graph.get-group-connections graph, resolved-node
       source = Templating.process (ld.query query), node, resolved-node, grp-connections, grp-connectors, grp-nodes
       pack-function node, source

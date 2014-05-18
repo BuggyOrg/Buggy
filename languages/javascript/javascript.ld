@@ -83,7 +83,7 @@
 				],
 				"explicit-callback" : true,
 				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
-				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
+				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Rest'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
 			}
 		],
 		"Empty" : [
@@ -188,6 +188,43 @@
 						"inputs" : { "Switch" : ">EmptyCurrent:IsEmpty", "A" : ">Fold:FunctionResult" }
 					}
 				],
+				"connections" : [
+					{ 
+						"id": "Fold:Initial -> Fold:Value1",
+				     	"input": { "generic": "Fold", "connector": "Value1" },
+					    "output": { "generic": "Fold", "connector": "Initial" }
+					},
+					{ 
+						"id": "Fold:FunctionResult -> Fold:Value1",
+				     	"input": { "generic": "Fold", "connector": "Value1" },
+					    "output": { "generic": "Fold", "connector": "FunctionResult" }
+					},
+					{ 
+						"id": "car:Value -> Fold:Value2",
+				     	"input": { "generic": "Fold", "connector": "Value2" },
+					    "output": { "generic": "car", "connector": "Value" }
+					},
+					{ 
+						"id": "cdr:Rest -> car:Array",
+				     	"input": { "generic": "car", "connector": "Array" },
+					    "output": { "generic": "cdr", "connector": "Rest" }
+					},
+					{ 
+						"id": "cdr:Rest -> cdr:Array",
+				     	"input": { "generic": "cdr", "connector": "Array" },
+					    "output": { "generic": "cdr", "connector": "Rest" }
+					},
+					{
+						"id": "SwitchInput:Result -> Fold:Result",
+				     	"input": { "generic": "Fold", "connector": "Result" },
+					    "output": { "generic": "SwitchInput", "connector": "Result" }	
+					},
+					{
+						"id": "SwitchCurrent:Result -> Fold:Result",
+				     	"input": { "generic": "Fold", "connector": "Result" },
+					    "output": { "generic": "SwitchCurrent", "connector": "Result" }	
+					}
+				],
 				"connectors" : [
 					{
 						"name" : "Initial",
@@ -262,9 +299,9 @@
 		"string -> array" : [ "StringToArray"	]
 	},
 	"construction" : {
-		"atomic" : "function {{generic.name}} (input, meta, callback){ \n  var output = {}; \n  {{node.implementation}} \n{{#unless node.explicit-callback}}  callback(output); \n{{/unless}} \n}",
-		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){ \n  if({{#each node.connectors}}{{#if_eq connector-type \"Input\"}} InQueues[\"{{../../generic.id}}:{{name}}\"].isEmpty() || {{/if_eq}}{{/each}} false){ \n    return; \n  } \n  var InValues = { \n{{#each node.connectors}}{{#if_eq connector-type \"Input\"}}    \"{{name}}\" : InQueues[\"{{../../generic.id}}:{{name}}\"].dequeue(), \n{{/if_eq}}{{/each}}  } \n  {{generic.name}}(InValues, {{meta}}, function(returnVals){ \n    for(var key in returnVals){ \n      OutQueues[\"{{generic.id}}:\" + key].enqueue(returnVals[key]); \n    } \n  }); \n} \n \n",
-		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){ \n  qInput = { \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/each}}  }; \n  qOutput = { \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/each}}  }; \n{{#each connections}}  qOutput[\"{{from.generic}}:{{from.connector}}\"].addEnqueueCallback(function(item){ qInput[\"{{to.generic}}:{{to.connector}}\"].enqueue(item);}); \n{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}  qOutput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ qOutput[\"{{generic}}:{{name}}\"].dequeue(); }); \n{{/if_eq}}{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}  qInput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ Node_{{generic}}(qInput,qOutput); }); \n{{/if_eq}}{{/each}} \n  return {input:qInput, output:qOutput}; \n} \n \n"
+		"atomic" : " \nfunction {{generic.name}} (input, meta, callback){ \n  var output = {}; \n  {{node.implementation}} \n{{#unless node.explicit-callback}}  callback(output); \n{{/unless}} \n} \n",
+		"node" : "function Node_{{generic.id}} (InQueues, OutQueues){ \n{{#ifCond node.atomic node.implemented}}  if({{#each node.connectors}}{{#if_eq connector-type \"Input\"}} InQueues[\"{{../../generic.id}}:{{name}}\"].isEmpty() || {{/if_eq}}{{/each}} false){ \n    return; \n  } \n  var InValues = { \n{{#each node.connectors}}{{#if_eq connector-type \"Input\"}}    \"{{name}}\" : InQueues[\"{{../../generic.id}}:{{name}}\"].dequeue(), \n{{/if_eq}}{{/each}}  } \n  {{generic.name}}(InValues, {{meta}}, function(returnVals){ \n    for(var key in returnVals){ \n      OutQueues[\"{{generic.id}}:\" + key].enqueue(returnVals[key]); \n    } \n  }); \n{{else}}//  Group_{{generic.id}}(InQueues, OutQueues); \n{{/ifCond}} \n} \n \n",
+		"group" : "function Group_{{generic.id}} (InQueues, OutQueues){ \n  var qInput = { \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}{{#if_neq ../../generic.id generic}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_neq}}{{/if_eq}}{{#if_eq connector-type \"Output\"}}{{#if_eq ../../generic.id generic}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/if_eq}}{{/each}}  }; \n  var qOutput = { \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}{{#if_neq ../../generic.id generic}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_neq}}{{/if_eq}}{{#if_eq connector-type \"Input\"}}{{#if_eq ../../generic.id generic}}    \"{{generic}}:{{name}}\" : Queue(), \n{{/if_eq}}{{/if_eq}}{{/each}}  }; \n{{#each connections}}  qOutput[\"{{from.generic}}:{{from.connector}}\"].addEnqueueCallback(function(item){ qInput[\"{{to.generic}}:{{to.connector}}\"].enqueue(item);}); \n{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Output\"}}{{#if_neq ../../generic.id generic}}  qOutput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ qOutput[\"{{generic}}:{{name}}\"].dequeue(); }); \n{{/if_neq}}{{/if_eq}}{{#if_eq connector-type \"Input\"}}{{#if_eq ../../generic.id generic}}  qOutput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ qOutput[\"{{generic}}:{{name}}\"].dequeue(); }); \n  InQueues[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(item){ \n    qOutput[\"{{generic}}:{{name}}\"].enqueue(item); \n    InQueues[\"{{generic}}:{{name}}\"].dequeue(); \n  }); \n{{/if_eq}}{{/if_eq}}{{/each}} \n{{#each connectors}}{{#if_eq connector-type \"Input\"}}{{#if_neq ../../generic.id generic}}  qInput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(){ Node_{{generic}}(qInput,qOutput); }); \n{{/if_neq}}{{/if_eq}}{{#if_eq connector-type \"Output\"}}{{#if_eq ../../generic.id generic}}  qInput[\"{{generic}}:{{name}}\"].addEnqueueCallback(function(item){ \n    OutQueues[\"{{generic}}:{{name}}\"].enqueue(item); \n    qInput[\"{{generic}}:{{name}}\"].dequeue(); \n  }); \n{{/if_eq}}{{/if_eq}}{{/each}} \n  return {input:qInput, output:qOutput}; \n} \n \n"
 	},
 	"sources" : [
 		{

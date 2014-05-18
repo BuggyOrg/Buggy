@@ -15,7 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/generic"], (Generic) ->
+define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
 
   connections = { 
     create: (in-generic, in-connector, out) ->
@@ -42,12 +42,17 @@ define ["ls!src/generic"], (Generic) ->
 
     gather: (group) ->
       Connection = this
-      if !group.generics? then return []
-      flatten (group.generics |> map (generic) ->
-        obj-to-pairs generic.inputs |> map (inputPair) ->
-          inputID = inputPair.0
-          inputGeneric = inputPair.1
-          Connection.create (Generic.identifier generic), inputID, inputGeneric)
+      connections = []
+      if group.generics?
+        connections = flatten (group.generics |> map (generic) ->
+          obj-to-pairs generic.inputs |> map (inputPair) ->
+            inputID = inputPair.0
+            inputGeneric = inputPair.1
+            Connection.create (Generic.identifier generic), inputID, inputGeneric)
+      if group.connections?
+        connections = union connections, Clone group.connections
+      return connections
+
   }
 
   return connections

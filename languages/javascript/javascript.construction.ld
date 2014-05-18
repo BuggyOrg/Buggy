@@ -83,7 +83,7 @@
 				],
 				"explicit-callback" : true,
 				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
-				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
+				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Rest'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
 			}
 		],
 		"Empty" : [
@@ -186,6 +186,43 @@
 						"name" : "Switch",
 						"id" : "SwitchCurrent",
 						"inputs" : { "Switch" : ">EmptyCurrent:IsEmpty", "A" : ">Fold:FunctionResult" }
+					}
+				],
+				"connections" : [
+					{ 
+						"id": "Fold:Initial -> Fold:Value1",
+				     	"input": { "generic": "Fold", "connector": "Value1" },
+					    "output": { "generic": "Fold", "connector": "Initial" }
+					},
+					{ 
+						"id": "Fold:FunctionResult -> Fold:Value1",
+				     	"input": { "generic": "Fold", "connector": "Value1" },
+					    "output": { "generic": "Fold", "connector": "FunctionResult" }
+					},
+					{ 
+						"id": "car:Value -> Fold:Value2",
+				     	"input": { "generic": "Fold", "connector": "Value2" },
+					    "output": { "generic": "car", "connector": "Value" }
+					},
+					{ 
+						"id": "cdr:Rest -> car:Array",
+				     	"input": { "generic": "car", "connector": "Array" },
+					    "output": { "generic": "cdr", "connector": "Rest" }
+					},
+					{ 
+						"id": "cdr:Rest -> cdr:Array",
+				     	"input": { "generic": "cdr", "connector": "Array" },
+					    "output": { "generic": "cdr", "connector": "Rest" }
+					},
+					{
+						"id": "SwitchInput:Result -> Fold:Result",
+				     	"input": { "generic": "Fold", "connector": "Result" },
+					    "output": { "generic": "SwitchInput", "connector": "Result" }	
+					},
+					{
+						"id": "SwitchCurrent:Result -> Fold:Result",
+				     	"input": { "generic": "Fold", "connector": "Result" },
+					    "output": { "generic": "SwitchCurrent", "connector": "Result" }	
 					}
 				],
 				"connectors" : [

@@ -24,21 +24,28 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
       else
         opts.inverse this
 
+    Handlebars.registerHelper 'if_neq', (a, b, opts) ->
+      if a != b
+        opts.fn this
+      else
+        opts.inverse this
+
+    Handlebars.registerHelper 'ifCond' (v1, v2, options) ->
+      if v1 or v2
+        return options.fn this
+      return options.inverse this
+
     Handlebars.registerHelper 'input', (a) ->
       "input[\"#a\"]"
 
     Handlebars.registerHelper 'output', (a) ->
       "output[\"#a\"]"
 
-  install-helper!
-
-  install-node-helper = (node) ->
     Handlebars.registerHelper 'meta-query', (a) ->
       "meta."+a
 
-  uninstall-node-helper = (...) ->
-    Handlebars.unregisterHelper 'meta-query'
-      
+  install-helper!
+
 
   { 
     process: (text, generic, node, connections, connectors, inner-nodes) ->
@@ -52,16 +59,10 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
       if generic.meta?
         context.meta = JSON.stringify generic.meta
 
-      install-node-helper generic
-
       # apply implementation templates
       if context.node.implementation?
         implTempl = Handlebars.compile context.node.implementation, noEscape: true
         context.node.implementation = implTempl context
       template = Handlebars.compile text, noEscape: true
-      result = template context
-
-      uninstall-node-helper!
-
-      result
+      template context
   }

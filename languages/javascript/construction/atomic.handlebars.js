@@ -1,3 +1,4 @@
+
 function {{generic.name}} (input, meta, callback){
   var output = {};
   {{node.implementation}}

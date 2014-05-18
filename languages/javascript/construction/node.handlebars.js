@@ -1,4 +1,5 @@
 function Node_{{generic.id}} (InQueues, OutQueues){
+{{#ifCond node.atomic node.implemented}}\
   if({{#each node.connectors}}{{#if_eq connector-type "Input"}} InQueues["{{../../generic.id}}:{{name}}"].isEmpty() || {{/if_eq}}{{/each}} false){
     return;
   }
@@ -12,5 +13,8 @@ function Node_{{generic.id}} (InQueues, OutQueues){
       OutQueues["{{generic.id}}:" + key].enqueue(returnVals[key]);
     }
   });
+{{else}}\
+//  Group_{{generic.id}}(InQueues, OutQueues);
+{{/ifCond}}
 }
 
