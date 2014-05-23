@@ -21,17 +21,17 @@
 
 define ["ls!src/database/database", "src/util/map"] (Database, MapUtil) ->
 
-	Database.create-model	{
-		create: ->
-			{}
-		query: (db, what) ->
-			MapUtil.find db, what
+  Database.create-model	{
+    create: ->
+      {}
+    query: (db, what) ->
+      MapUtil.find db, what
 
-		# at this point it is already ensured that the value doesn't exist
-		add: (db, what, content) ->
-			# what specifies the name of the object not the actual content eg. "Index"
-			# what can be a path like "Reports.Users.Activity"
-			MapUtil.assign db, what, content
+    # at this point it is already ensured that the value doesn't exist
+    add: (db, what, content) ->
+      # what specifies the name of the object not the actual content eg. "Index"
+      # what can be a path like "Reports.Users.Activity"
+      MapUtil.assign db, what, content
 
 
-	}
+  }
