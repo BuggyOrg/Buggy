@@ -44,6 +44,9 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
     Handlebars.registerHelper 'meta-query', (a) ->
       "meta."+a
 
+    Handlebars.registerHelper 'metadata', (a) ->
+      "var meta "
+
   install-helper!
 
 

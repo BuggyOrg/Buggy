@@ -46,6 +46,25 @@
 				"implementation" : "{{output 'Value'}} = {{meta-query 'Constant.value'}};"
 			}
 		],
+		"Each" : [
+			{
+				"name" : "Each",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Array",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Element",
+						"connector-type" : "Output"
+					}
+				],
+				"description" : "Iterates over an array",
+				"explicit-callback" : true,
+				"implementation" : "for (var i = 0; i < {{input 'Array'}}.length; i++) {\n    {{output 'Element'}} = {{input 'Array'}}[i];\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
+			}
+		],
 		"car" : [
 			{
 				"name" : "car",
