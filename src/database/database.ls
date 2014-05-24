@@ -28,6 +28,6 @@ define ->
           else
             model.add db,what,content
         contains: (db, what) ->
-          (database-model.query db, what) != 'Undefined'
+          (typeof! database-model.query db, what) != 'Undefined'
       }
   }
