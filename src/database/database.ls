@@ -24,7 +24,7 @@ define ->
         query: model.query
         add: (db, what, content) ->
           if database-model.contains db, what
-            console.log "Value #what already exists. \n Values are immutable, it is impossible to update them. Create a new Datatype and hope for a good automatic optimization... or improve it yourself!"
+            throw new Error "Value #what already exists. \n Values are immutable, it is impossible to update them. Create a new Datatype and hope for a good automatic optimization... or improve it yourself!"
           else
             model.add db,what,content
         contains: (db, what) ->
