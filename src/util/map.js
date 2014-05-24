@@ -1,5 +1,5 @@
 
-/** Thanks to qiao 
+/** Thanks to qiao
 (http://stackoverflow.com/questions/8817394/javascript-get-deep-value-from-object-by-passing-path-to-it-as-string)
 **/
 
@@ -20,7 +20,8 @@ define(function() {
       return current;
     },
 
-    assign: function(obj, keyPath, value) {
+    assign: function(obj, path, value) {
+      keyPath = path.split(".");
       lastKeyIndex = keyPath.length-1;
       for (var i = 0; i < lastKeyIndex; ++ i) {
        key = keyPath[i];
