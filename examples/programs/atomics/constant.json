@@ -3,7 +3,6 @@
     "main" : [
       {
         "module" : true,
-        "comment":"Takes one number and adds 4 to it, this group has no connectors!",
         "generics": [
           {
             "name" : "Constant",
