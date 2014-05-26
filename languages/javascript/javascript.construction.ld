@@ -65,6 +65,79 @@
 				"implementation" : "for (var i = 0; i < {{input 'Array'}}.length; i++) {\n    {{output 'Element'}} = {{input 'Array'}}[i];\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
 			}
 		],
+		"Select" : [
+			{
+				"name" : "Select",
+				"connectors" : [
+					{
+						"name" : "Array",
+						"connector-type" : "Input",
+						"data-type" : "array"
+					},
+					{
+						"name" : "Data",
+						"connector-type" : "Output",
+						"data-type" : "array"
+					}
+				],
+				"generics" : [
+					{
+						"name" : "Each",
+						"inputs" :  { "Array" : ">Select:Array" }
+					},
+					{
+						"name" : "Switch",
+						"inputs" : { "A" : ">Each:Element", "Switch" : ">Less:Result" }
+					},
+					{
+						"name" : "Constant",
+						"meta" : {
+              "Constant" : {
+                "data-type" : "number",
+                "value" : 10
+              }
+            }
+					},
+					{
+						"name" : "Less",
+						"inputs" : { "what" : ">Each:Element", "lessThan" : ">Constant:Value" }
+					}
+				],
+				"connections" : [
+					{ 
+						"id": "Switch:Result -> Select:Data",
+			     	"input": { "generic": "Select", "connector": "Data" },
+				    "output": { "generic": "Switch", "connector": "Result" }
+					}
+				]
+			}
+		],
+		"Less" : [
+			{
+				"name" : "Less",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "what",
+						"connector-type" : "Input",
+						"comment" : "Less could work on other data too, but for some an explicit method is needed..",
+						"data-type" : "number"
+					},
+					{
+						"name" : "lessThan",
+						"connector-type" : "Input",
+						"comment" : "Less could work on other data too, but for some an explicit method is needed..",
+						"data-type" : "number"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output",
+						"data-type" : "bool"
+					}
+				],
+				"implementation" : "{{output 'Result'}} = {{input 'what'}} < {{input 'lessThan'}};"
+			}
+		],
 		"car" : [
 			{
 				"name" : "car",
@@ -290,7 +363,8 @@
 					}
 				],
 				"description" : "Converts a String into a number",
-				"implementation" : "{{output 'Number'}} = Number({{input 'String'}});"
+				"explicit-callback" : true,
+				"implementation" : "var num = Number({{input 'String'}});\n  if(!isNaN(num)){\n    {{output 'Number'}} = num;\n    callback(output);\n  }"
 			}
 		],
 		"StringToArray" : [

@@ -1,0 +1,53 @@
+{
+  "symbols": {
+    "main" : [
+      {
+        "module" : true,
+        "generics": [
+          {
+            "name" : "Input"
+          },
+          {
+            "name" : "StringToArray",
+            "comment" : "StringToArray filters all not convertible input strings by not forwarding them"
+          },
+          {
+            "name" : "Output"
+          },
+          {
+            "name" : "Select",
+            "meta" : {
+              "query" : { "what" : "value", "compare" : "less", "value" : "10" },
+              "comment" : "this is a kind of dsl that should translate to some buggy graph stuff, currently unused!!"
+            }
+          }
+        ],
+        "connections" : [
+          {
+            "id" : "Input:Value -> StringToArray:String",
+            "input" : { "generic" : "StringToArray", "connector" : "String" },
+            "output" : { "generic" : "Input", "connector" : "Value" } 
+          },
+          {
+            "id" : "StringToArray:Array -> Select:Data",
+            "input" : { "generic" : "Select", "connector" : "Array" },
+            "output" : { "generic" : "StringToArray", "connector" : "Array" }
+          },
+          {
+            "id" : "Select:Result -> Output:Value",
+            "input" : { "generic" : "Output", "connector" : "Value" },
+            "output" : { "generic" : "Select", "connector" : "Data" }
+          }
+        ],
+        "meta": {
+          "type": "group"
+        }
+      }
+    ]
+  },
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
+}
