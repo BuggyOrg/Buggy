@@ -46,7 +46,7 @@
           "comment" : "define connections here.. much cleaner than in the generics"
         },
         "meta": {
-          "type": "group",
+          "type": "group"
         }
       }
     ]
