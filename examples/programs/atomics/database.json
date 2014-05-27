@@ -1,0 +1,65 @@
+{
+  "symbols": {
+    "main" : [
+      {
+        "module" : true,
+        "generics": [
+          {
+            "name" : "Input"
+          },
+          {
+            "name" : "StringToNumber",
+            "comment" : "StringToNumber filters all not convertible input strings by not forwarding them"
+          },
+          {
+            "name" : "Output"
+          },
+          {
+            "name" : "database"
+          },
+          {
+            "name" : "Select",
+            "meta" : {
+              "query" : { "what" : "value", "compare" : "less", "value" : "10" }
+            }
+          }
+        ],
+        "connections" : [
+          {
+            "id" : "main:Sync -> database:Sync",
+            "input" : { "generic" : "database", "connector" : "Sync" },
+            "output" : { "generic" : "main", "connector" : "Sync" }
+          },
+          {
+            "id" : "Input:Value -> StringToNumber:String",
+            "input" : { "generic" : "StringToNumber", "connector" : "String" },
+            "output" : { "generic" : "Input", "connector" : "Value" } 
+          },
+          {
+            "id" : "StringToNumber:Number -> database:Add",
+            "input" : { "generic" : "database", "connector" : "Add" },
+            "output" : { "generic" : "StringToNumber", "connector" : "Number" }
+          },
+          {
+            "id" : "database:Database -> Select:Data",
+            "input" : { "generic" : "Select", "connector": "Data"},
+            "output" : { "generic" : "database", "connector" : "Data"}
+          },
+          {
+            "id" : "Select:Result -> Output:Value",
+            "input" : { "generic" : "Ouptut", "connector" : "Value" },
+            "output" : { "generic" : "Select", "connector" : "Result" }
+          }
+        ],
+        "meta": {
+          "type": "group"
+        }
+      }
+    ]
+  },
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
+}
