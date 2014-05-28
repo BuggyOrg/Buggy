@@ -4,6 +4,7 @@
 
 * Loading other sources as started in languages/javascript/construction/javascript.construction
 * Create more than one file for all the core nodes (we probably need some structuring)
+    - Strictly divide language dependent definitions from language independet! (All groups with an implementation are language specific)
 * The name in the group description is uneccessary (eg. "Each" : [ {  **"name" : "Each"**, ... } ...]). It can be removed if it is added during composition as it is (currently??) required there.
 
 ## Composition
