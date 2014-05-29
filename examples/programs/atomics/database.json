@@ -32,8 +32,8 @@
         ],
         "connections" : [
           {
-            "id" : "main:Sync -> database:Sync",
-            "input" : { "generic" : "database", "connector" : "Sync" },
+            "id" : "main:Sync -> database:Create",
+            "input" : { "generic" : "database", "connector" : "Create" },
             "output" : { "generic" : "main", "connector" : "Sync" }
           },
           {

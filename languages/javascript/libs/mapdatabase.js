@@ -62,6 +62,23 @@ MapUtil = {
      obj = obj[key];
     }
     obj[keyPath[lastKeyIndex]] = value;
+    return obj[keyPath[lastKeyIndex]];
+  },
+
+  // assigns only if path doesn't exist
+  softAssign: function(obj, path, value) {
+    keyPath = path.split(".");
+    lastKeyIndex = keyPath.length-1;
+    for (var i = 0; i < lastKeyIndex; ++ i) {
+     key = keyPath[i];
+     if (!(key in obj))
+       obj[key] = {}
+     obj = obj[key];
+    }
+    if(!(keyPath[lastKeyIndex] in obj)){
+      obj[keyPath[lastKeyIndex]] = value;
+    }
+    return obj[keyPath[lastKeyIndex]];
   }
 };
 
@@ -72,8 +89,22 @@ Mapdatabase = Database.createModel({
   query: function(db, what){
     return MapUtil.find(db, what);
   },
+  queryFuture: function(db, what, callback){
+    var cur = MapUtil.find(db, "internal.futures.add-callback." + what);
+    if(cur == undefined){
+      cur = MapUtil.assign(db, "internal.future.add-callback." + what, [callback])
+    } else {
+      cur.append(callback);
+    }
+  },
   add: function(db, what, content){
-    return MapUtil.assign(db, what, content);
+    MapUtil.assign(db, what, content);
+    var callbacks = MapUtil.find(db, "internal.future.add-callback." + what);
+    if(callbacks){
+      for(var i=0; i<callbacks.length; i++){
+        callbacks[i](content);
+      }
+    }
   }
 });
 

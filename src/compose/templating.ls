@@ -37,7 +37,7 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
 
     #these handlers must be defined in the language file!!
     Handlebars.registerHelper 'input', (a) ->
-      "input[\"#a\"]"
+      "input[\"#a\"].Value"
 
     Handlebars.registerHelper 'output', (a) ->
       "output[\"#a\"]"

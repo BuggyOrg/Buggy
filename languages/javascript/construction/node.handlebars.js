@@ -10,7 +10,7 @@ function Node_{{generic.id}} (InQueues, OutQueues){
   }
   {{generic.name}}(InValues, {{meta}}, function(returnVals){
     for(var key in returnVals){
-      OutQueues["{{generic.id}}:" + key].enqueue(returnVals[key]);
+      OutQueues["{{generic.id}}:" + key].enqueue({ Value: returnVals[key] });
     }
   });
 {{else}}\

@@ -52,7 +52,7 @@
 		  	"atomic" : true,
 		  	"connectors" : [
 		  		{
-		  			"name" : "Database",
+		  			"name" : "Array",
 		  			"connector-type" : "Input",
 		  			"data-type" : "database"
 		  		},
@@ -62,7 +62,7 @@
 		  		}
 		  	],
 	  		"explicit-callback" : true,
-	  		"implementation" : "var db = {{input 'Database'}};\n var each_keys = {{database-query '\"each\"' 'db'}};\n for (var key in each_keys) {\n    {{output 'Element'}} = {{database-query '\"each.\"+key' 'db'}};\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
+	  		"implementation" : "var db = {{input 'Array'}};\n var each_keys = {{database-query '\"each\"' 'db'}};\n for (var key in each_keys) {\n    {{output 'Element'}} = {{database-query '\"each.\"+key' 'db'}};\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
 		  },
 			{
 				"name" : "Each",
@@ -170,31 +170,23 @@
 					{
 						"name" : "Database",
 						"connector-type" : "Output"
-					},
-					{
-						"name" : "Sync",
-						"connector-type" : "Input"
 					}
 				],
 				"generics" : [
 					{
-						"name" : "UUID",
-						"inputs" : { "Sync" : ">database:Create" }
-					},
-					{
 						"name" : "database_storage",
-						"inputs" : { "new" : ">UUID:ID" }
+						"inputs" : { "new_db" : ">database:Create" }
 					},
 					{
 						"name" : "add_to_database",
-						"inputs" : { "databeses" : ">database_storage:all", "what" : ">database:Add" }
+						"inputs" : { "databases" : ">database_storage:db", "what" : ">database:Add" }
 					}
 				],
 				"connections" : [
 					{
-						"id" : "UUID:ID -> database:Database",
+						"id" : "database:Create -> database:Database",
 						"input" : { "generic" : "database", "connector" : "Database" },
-						"output" : { "generic" : "UUID", "connector" : "ID" }
+						"output" : { "generic" : "database", "connector" : "Create" }
 					}
 				]
 			}
@@ -227,11 +219,11 @@
 						"connector-type" : "Input"
 					},
 					{
-						"name" : "all",
+						"name" : "db",
 						"connector-type" : "Output"
 					}
 				],
-				"implementation" : "var new_db = {{input 'new_db'}};\n {{create-database 'new_db'}};"
+				"implementation" : "var new_db = {{input 'new_db'}};\n {{create-database 'new_db'}};\n  {{output 'db'}} = new_db;"
 			}
 		],
 		"add_to_database" : [
@@ -244,11 +236,11 @@
 						"connector-type" : "Input"
 					},
 					{
-						"name" : "databases",
-						"connector-type" : "Input"
-					}
+            "name" : "databases",
+            "connector-type" : "Input"
+          }
 				],
-				"implementation" : "var what = {{input 'what'}};\n  var dbs = {{input 'databases'}};\n  {{database-add 'what' 'dbs'}};"
+				"implementation" : "var what = {{input 'what'}};\n  {{database-add 'what' 'databases'}};"
 			}
 		],
 		"car" : [
