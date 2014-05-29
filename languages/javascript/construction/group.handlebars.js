@@ -1,4 +1,7 @@
 function Group_{{generic.id}} (InQueues, OutQueues){
+{{#ifCond node.atomic node.implemented}}\
+{{else}}
+  {{#if generic.parentGroup}}{{else}}InQueues["{{generic.id}}:Sync"] = Queue();{{/if}}
   var qInput = {
 {{#each connectors}}{{#if_eq connector-type "Input"}}\
 {{#if_neq ../../generic.id generic}}\
@@ -47,6 +50,14 @@ function Group_{{generic.id}} (InQueues, OutQueues){
   });
 {{/if_eq}}\
 {{/if_eq}}{{/each}}
+{{#each node.generics}}\
+  Group_{{name}}(qInput,qOutput);
+{{/each}}
+{{#if generic.parentGroup}}{{else}}\
+  // currently sync is simply an empty message...
+  InQueues["{{generic.id}}:Sync"].enqueue({});
   return {input:qInput, output:qOutput};
+{{/if}}\
+{{/ifCond}}
 }
 

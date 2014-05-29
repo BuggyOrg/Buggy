@@ -3,6 +3,12 @@
     "main" : [
       {
         "module" : true,
+        "connectors" : [
+          {
+            "name" : "Sync",
+            "connector-type" : "Input"
+          }
+        ],
         "generics": [
           {
             "name" : "Input"
@@ -41,14 +47,14 @@
             "output" : { "generic" : "StringToNumber", "connector" : "Number" }
           },
           {
-            "id" : "database:Database -> Select:Data",
-            "input" : { "generic" : "Select", "connector": "Data"},
-            "output" : { "generic" : "database", "connector" : "Data"}
+            "id" : "database:Database -> Select:Array",
+            "input" : { "generic" : "Select", "connector": "Array"},
+            "output" : { "generic" : "database", "connector" : "Database"}
           },
           {
-            "id" : "Select:Result -> Output:Value",
+            "id" : "Select:Data -> Output:Value",
             "input" : { "generic" : "Ouptut", "connector" : "Value" },
-            "output" : { "generic" : "Select", "connector" : "Result" }
+            "output" : { "generic" : "Select", "connector" : "Data" }
           }
         ],
         "meta": {

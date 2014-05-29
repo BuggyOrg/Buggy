@@ -42,7 +42,7 @@ if args.m?
       ld-module = LD.load-module-from-json module-file
       ld.add-module ld-module
 compose.compose ld, (program) ->
-  console.log "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls'));\nrequire(\"./queue.js\");"
+  console.log "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls'));"
   console.log program
-  console.log "var queues = Group_main();\nNode_Input(queues.input, queues.output);\n";
+  console.log "var queues = Group_main({},{});\nNode_Input(queues.input, queues.output);\n";
 

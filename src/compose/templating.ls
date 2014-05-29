@@ -35,6 +35,7 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
         return options.fn this
       return options.inverse this
 
+    #these handlers must be defined in the language file!!
     Handlebars.registerHelper 'input', (a) ->
       "input[\"#a\"]"
 
@@ -46,6 +47,16 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
 
     Handlebars.registerHelper 'metadata', (a) ->
       "var meta "
+
+    Handlebars.registerHelper 'create-database', (db_var) ->
+      "databases[#db_var] = Mapdatabase.create();\n  Mapdatabase.add(databases[#db_var], 'meta.database.uuid', #db_var)"
+
+    Handlebars.registerHelper 'database-add', (what, dbs) ->
+      "var uuid = #what.meta.database.uuid;\n  var where = '0';\n  if('path' in #what.meta){ where = #what.meta.path; }\n  Mapdatabase.add(#dbs[uuid], where, #what)"
+
+    Handlebars.registerHelper 'database-query', (what, db) ->
+      "MapUtil.find(#db, #what)"
+
 
   install-helper!
 

@@ -21,7 +21,7 @@
 
 define ["ls!src/database/database", "src/util/map"] (Database, MapUtil) ->
 
-  Database.create-model	{
+  Database.create-model  {
     create: ->
       {}
     query: (db, what) ->

@@ -47,6 +47,23 @@
 			}
 		],
 		"Each" : [
+		  {
+		  	"name" : "Each",
+		  	"atomic" : true,
+		  	"connectors" : [
+		  		{
+		  			"name" : "Database",
+		  			"connector-type" : "Input",
+		  			"data-type" : "database"
+		  		},
+		  		{
+		  			"name" : "Element",
+		  			"connector-type" : "Output"
+		  		}
+		  	],
+	  		"explicit-callback" : true,
+	  		"implementation" : "var db = {{input 'Database'}};\n var each_keys = {{database-query '\"each\"' 'db'}};\n for (var key in each_keys) {\n    {{output 'Element'}} = {{database-query '\"each.\"+key' 'db'}};\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
+		  },
 			{
 				"name" : "Each",
 				"atomic" : true,
@@ -136,6 +153,102 @@
 					}
 				],
 				"implementation" : "{{output 'Result'}} = {{input 'what'}} < {{input 'lessThan'}};"
+			}
+		],
+		"database" : [
+			{
+				"name" : "database",
+				"connectors" : [
+					{
+						"name" : "Create",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Add",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Database",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Sync",
+						"connector-type" : "Input"
+					}
+				],
+				"generics" : [
+					{
+						"name" : "UUID",
+						"inputs" : { "Sync" : ">database:Create" }
+					},
+					{
+						"name" : "database_storage",
+						"inputs" : { "new" : ">UUID:ID" }
+					},
+					{
+						"name" : "add_to_database",
+						"inputs" : { "databeses" : ">database_storage:all", "what" : ">database:Add" }
+					}
+				],
+				"connections" : [
+					{
+						"id" : "UUID:ID -> database:Database",
+						"input" : { "generic" : "database", "connector" : "Database" },
+						"output" : { "generic" : "UUID", "connector" : "ID" }
+					}
+				]
+			}
+		],
+		"UUID" : [
+			{
+				"name" : "UUID",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Sync",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "ID",
+						"connector-type" : "Output"
+					}
+				],
+				"require" : [ "guid.js" ],
+				"implementation" : "{{output 'ID'}} = guid();"
+			}
+		],
+		"database_storage" : [
+			{
+				"name" : "database_storage",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "new_db",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "all",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "var new_db = {{input 'new_db'}};\n {{create-database 'new_db'}};"
+			}
+		],
+		"add_to_database" : [
+			{
+				"name" : "add_to_database",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "what",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "databases",
+						"connector-type" : "Input"
+					}
+				],
+				"implementation" : "var what = {{input 'what'}};\n  var dbs = {{input 'databases'}};\n  {{database-add 'what' 'dbs'}};"
 			}
 		],
 		"car" : [
