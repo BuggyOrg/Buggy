@@ -53,7 +53,7 @@
           },
           {
             "id" : "Select:Data -> Output:Value",
-            "input" : { "generic" : "Ouptut", "connector" : "Value" },
+            "input" : { "generic" : "Output", "connector" : "Value" },
             "output" : { "generic" : "Select", "connector" : "Data" }
           }
         ],
