@@ -59,7 +59,7 @@ function Group_{{generic.id}} (InQueues, OutQueues){
 {{/each}}
 {{#if generic.parentGroup}}{{else}}\
   // currently sync is simply an empty message...
-  InQueues["{{generic.id}}:Sync"].enqueue({guid: dbID});
+  InQueues["{{generic.id}}:Sync"].enqueue({Value: {guid: dbID} });
   return {input:qInput, output:qOutput};
 {{/if}}\
 {{/ifCond}}

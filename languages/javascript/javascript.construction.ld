@@ -62,7 +62,7 @@
 		  		}
 		  	],
 	  		"explicit-callback" : true,
-	  		"implementation" : "var db = {{input 'Array'}};\n var each_keys = {{database-query '\"each\"' 'db'}};\n for (var key in each_keys) {\n    {{output 'Element'}} = {{database-query '\"each.\"+key' 'db'}};\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
+	  		"implementation" : "var db = {{input 'Array'}};\n Mapdatabase.queryFuture(db, '', function(item){\n    {{output 'Element'}} = item;\n    callback(output);\n  });"
 		  },
 			{
 				"name" : "Each",
@@ -179,14 +179,14 @@
 					},
 					{
 						"name" : "add_to_database",
-						"inputs" : { "databases" : ">database_storage:db", "what" : ">database:Add" }
+						"inputs" : { "what" : ">database:Add" }
 					}
 				],
 				"connections" : [
 					{
-						"id" : "database:Create -> database:Database",
+						"id" : "database_storage:db -> database:Database",
 						"input" : { "generic" : "database", "connector" : "Database" },
-						"output" : { "generic" : "database", "connector" : "Create" }
+						"output" : { "generic" : "database_storage", "connector" : "db" }
 					}
 				]
 			}
@@ -223,7 +223,7 @@
 						"connector-type" : "Output"
 					}
 				],
-				"implementation" : "var new_db = {{input 'new_db'}};\n {{create-database 'new_db'}};\n  {{output 'db'}} = new_db;"
+				"implementation" : "var new_db = {{input 'new_db'}};\n {{create-database 'new_db'}};\n  {{output 'db'}} = {{database-by-guid 'new_db'}};"
 			}
 		],
 		"add_to_database" : [
@@ -234,11 +234,7 @@
 					{
 						"name" : "what",
 						"connector-type" : "Input"
-					},
-					{
-            "name" : "databases",
-            "connector-type" : "Input"
-          }
+					}
 				],
 				"implementation" : "var what = {{input 'what'}};\n  {{database-add 'what' 'databases'}};"
 			}

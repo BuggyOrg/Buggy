@@ -22,6 +22,7 @@ var Database = {
     return databaseModel = {
       create: model.create,
       query: model.query,
+      queryFuture: model.queryFuture,
       add: function(db, what, content){
         if (databaseModel.contains(db, what)) {
           throw new Error("Value " + what + " already exists. \n Values are immutable, it is impossible to update them. Create a new Datatype and hope for a good automatic optimization... or improve it yourself!");
@@ -83,23 +84,31 @@ MapUtil = {
 };
 
 Mapdatabase = Database.createModel({
-  create: function(){
-    return {};
+  create: function(guid){
+    return {guid: guid, meta: {database: {uuid: guid} } };
   },
   query: function(db, what){
     return MapUtil.find(db, what);
   },
   queryFuture: function(db, what, callback){
-    var cur = MapUtil.find(db, "internal.futures.add-callback." + what);
+    var path = (what == "") ? "internal.futures.add-callbacks" : "internal.futures.add-callback." + what
+    var cur = MapUtil.find(db, path);
     if(cur == undefined){
-      cur = MapUtil.assign(db, "internal.future.add-callback." + what, [callback])
+      cur = MapUtil.assign(db, path, [callback]);
     } else {
       cur.append(callback);
     }
   },
   add: function(db, what, content){
     MapUtil.assign(db, what, content);
+    // TODO : Callbacks are ugly!!
     var callbacks = MapUtil.find(db, "internal.future.add-callback." + what);
+    if(callbacks){
+      for(var i=0; i<callbacks.length; i++){
+        callbacks[i](content);
+      }
+    }
+    callbacks = MapUtil.find(db, "internal.futures.add-callbacks");
     if(callbacks){
       for(var i=0; i<callbacks.length; i++){
         callbacks[i](content);
