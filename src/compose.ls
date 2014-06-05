@@ -15,12 +15,25 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/resolve", "ls!src/compose/source"], (Resolve, Source) ->
+define ["ls!src/compose/dependency-graph", "ls!src/resolve", "ls!src/compose/source"], (DependencyGraph, Resolve, Source) ->
   
+  get-best-match = (id, resolve) ->
+    r = resolve[id]
+    # TODO: currently the best match is the first match ;)
+    if typeof! r == "Array"
+      r.0
+    else
+      r
+
   {
     compose: (ld, done) ->
       Resolve.resolve ld, (resolve) ->
         source = Source.generate-for "main", resolve, ld
         done? source
+
+
+    create-dependency-graph: (ld, done) ->
+      Resolve.resolve ld, (resolve) ->
+        done? DependencyGraph.generate-for "main", resolve, get-best-match
       
   }
