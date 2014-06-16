@@ -32,6 +32,7 @@
     "grunt-mocha-cli": "~1.6.0",
     "grunt-shell": "~0.7.0",
     "handlebars": "~2.0.0-alpha.2",
+    "jsonlint": "^1.6.0",
     "mocha": "~1.17.1",
     "mocha-unfunk-reporter": "~0.4.0",
     "prelude-ls": "~1.0.3",
