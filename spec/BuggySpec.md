@@ -122,5 +122,20 @@ The implementations are explained in more detail in section ???. The
  * **explicit-callback = false** Buggy should send the data after the of the
  implementation automatically
  * **explicit-callback = true** Buggy should not send the data after running the
- implementation. The User is responsible for calling the callback via the ouput language
+ implementation. The User is responsible for calling the callback via the output language
  dependent method
+
+ ## Functional Semantic Groups
+
+ A non atomic Semantic Group is a functional Unit that has no State and thus is
+ referentially transparent. This cannot be guaranteed for atomic Semantic Groups,
+ but all optimization processes and the whole idea is based on this property
+ thus it is possible that an implementation that uses a cache shows unexpected
+ behavior.
+
+ # Data flow
+  
+
+ # Databases
+
+ # Language Definitions
