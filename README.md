@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/LittleHelicase/Buggy.png)](https://travis-ci.org/LittleHelicase/Buggy)
+[![Build Status](https://travis-ci.org/BuggyOrg/Buggy.svg?branch=master)](https://travis-ci.org/BuggyOrg/Buggy)
 
 Buggy
 =====
