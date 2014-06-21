@@ -1,8 +1,8 @@
 # Buggy Specification Draft 0.1
 
-Buggy is a system that translates an abstract description of an problem description
-into a program via a Database containing implementations information that is
-dependent or independent of the output programming language. Buggy is not
+Buggy is a system that translates an abstract description of a problem
+into a program via a Database containing information about the implementation
+that can be dependent on the output programming language. Buggy is not
 restricted to a specific output language and it is possible to translate
 a problem description into a program in any supported language.
 
@@ -125,7 +125,7 @@ The implementations are explained in more detail in section ???. The
  implementation. The User is responsible for calling the callback via the output language
  dependent method
 
- ## Functional Semantic Groups
+## Functional Semantic Groups
 
  A non atomic Semantic Group is a functional Unit that has no State and thus is
  referentially transparent. This cannot be guaranteed for atomic Semantic Groups,
@@ -133,9 +133,9 @@ The implementations are explained in more detail in section ???. The
  thus it is possible that an implementation that uses a cache shows unexpected
  behavior.
 
- # Data flow
-  
+# Streams / Data flow
 
- # Databases
 
- # Language Definitions
+# Databases
+
+# Language Definitions
