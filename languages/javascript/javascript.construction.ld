@@ -11,7 +11,7 @@
 				"name":  "Add",
 				"atomic": true,
 				"connectors": [
-					{ 
+					{
 						"name" : "Term 1",
 						"connector-type" : "Input",
 						"data-type"	: "number"
@@ -121,7 +121,7 @@
 					}
 				],
 				"connections" : [
-					{ 
+					{
 						"id": "Switch:Result -> Select:Data",
 			     	"input": { "generic": "Select", "connector": "Data" },
 				    "output": { "generic": "Switch", "connector": "Result" }
@@ -237,6 +237,43 @@
 					}
 				],
 				"implementation" : "var what = {{input 'what'}};\n  {{database-add 'what' 'databases'}};"
+			}
+		],
+		"Take" : [
+			{
+				"name" : "Take",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "N",
+						"connector-type" : "Input",
+						"data-type" : "number"
+					},
+					{
+						"name" : "Sequence",
+						"connector-type" : "Input",
+						"data-type" : "sequence"
+					},
+					{
+						"name" : "Data",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "var arr = [];\n  var cur = {{input 'Sequence'}}.start;\n  for(var i=0; i<{{input 'N'}}; i++){\n    cur = arr.push({{input 'Sequence'}}.next(cur));\n  }\n  {{output 'Data'}} = arr;"
+			}
+		],
+		"NaturalNumbers" : [
+			{
+				"name" : "Natural Numbers",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Value",
+						"connector-type" : "Output",
+						"data-type" : "sequence"
+					}
+				],
+				"implementation" : "{{output 'Value'}} = { start: 0, next: function(value){ return value + 1; } };"
 			}
 		],
 		"car" : [
@@ -382,27 +419,27 @@
 					}
 				],
 				"connections" : [
-					{ 
+					{
 						"id": "Fold:Initial -> Fold:Value1",
 				     	"input": { "generic": "Fold", "connector": "Value1" },
 					    "output": { "generic": "Fold", "connector": "Initial" }
 					},
-					{ 
+					{
 						"id": "Fold:FunctionResult -> Fold:Value1",
 				     	"input": { "generic": "Fold", "connector": "Value1" },
 					    "output": { "generic": "Fold", "connector": "FunctionResult" }
 					},
-					{ 
+					{
 						"id": "car:Value -> Fold:Value2",
 				     	"input": { "generic": "Fold", "connector": "Value2" },
 					    "output": { "generic": "car", "connector": "Value" }
 					},
-					{ 
+					{
 						"id": "cdr:Rest -> car:Array",
 				     	"input": { "generic": "car", "connector": "Array" },
 					    "output": { "generic": "cdr", "connector": "Rest" }
 					},
-					{ 
+					{
 						"id": "cdr:Rest -> cdr:Array",
 				     	"input": { "generic": "cdr", "connector": "Array" },
 					    "output": { "generic": "cdr", "connector": "Rest" }
@@ -410,12 +447,12 @@
 					{
 						"id": "SwitchInput:Result -> Fold:Result",
 				     	"input": { "generic": "Fold", "connector": "Result" },
-					    "output": { "generic": "SwitchInput", "connector": "Result" }	
+					    "output": { "generic": "SwitchInput", "connector": "Result" }
 					},
 					{
 						"id": "SwitchCurrent:Result -> Fold:Result",
 				     	"input": { "generic": "Fold", "connector": "Result" },
-					    "output": { "generic": "SwitchCurrent", "connector": "Result" }	
+					    "output": { "generic": "SwitchCurrent", "connector": "Result" }
 					}
 				],
 				"connectors" : [
