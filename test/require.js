@@ -1,5 +1,5 @@
 
-requirejs = require("../node_modules/.bin/r.js");
+requirejs = require("../node_modules/requirejs/bin/r.js");
 
 requirejs.config({
   nodeRequire: require,
