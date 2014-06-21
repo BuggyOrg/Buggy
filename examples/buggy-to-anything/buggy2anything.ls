@@ -3,7 +3,7 @@
 require! yargs
 global <<< require \prelude-ls
 
-requirejs = require \../../node_modules/.bin/r.js
+requirejs = require \../../node_modules/requirejs/bin/r.js
 
 requirejs.config {
   nodeRequire: require
@@ -50,4 +50,3 @@ else
     console.log "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls')); var databases = {};"
     console.log program
     console.log "var queues = Group_main({},{});\nNode_Input(queues.input, queues.output);\n";
-
