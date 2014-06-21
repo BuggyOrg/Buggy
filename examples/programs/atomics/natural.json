@@ -1,0 +1,54 @@
+{
+  "symbols": {
+    "main" : [
+      {
+        "module" : true,
+        "generics": [
+          {
+            "name" : "NaturalNumbers"
+          },
+          {
+            "name" : "Output"
+          },
+          {
+            "name" : "Take"
+          },
+          {
+            "name" : "Constant",
+            "meta" : {
+              "Constant" : {
+                "data-type" : "Number",
+                "value" : 10
+              }
+            }
+          }
+        ],
+        "connections" : [
+          {
+            "id" : "NaturalNumbers:Value -> Take:Sequence",
+            "input" : { "generic" : "Take", "connector" : "Sequence" },
+            "output" : { "generic" : "NaturalNumbers", "connector" : "Value" } 
+          },
+          {
+            "id" : "Take:Data -> Output:Value",
+            "input" : { "generic" : "Output", "connector" : "Value" },
+            "output" : { "generic" : "Take", "connector" : "Data" }
+          },
+          {
+            "id" : "Constant:Value -> Take:N",
+            "input" : { "generic" : "Take", "connector" : "N" },
+            "output" : { "generic" : "Constant", "connector" : "Value" }
+          }
+        ],
+        "meta": {
+          "type": "group"
+        }
+      }
+    ]
+  },
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
+}
