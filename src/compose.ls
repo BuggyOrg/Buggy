@@ -16,7 +16,7 @@
 */
 
 define ["ls!src/compose/dependency-graph", "ls!src/resolve", "ls!src/compose/source"],
-        (DependencyGraph, Resolve, Source) ->
+  (DependencyGraph, Resolve, Source) ->
 
   get-best-match = (id, resolve) ->
     r = resolve[id]
