@@ -39,6 +39,9 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
     Handlebars.registerHelper 'input', (a) ->
       "input[\"#a\"].Value"
 
+    Handlebars.registerHelper 'input-data', (a) ->
+      "input[\"#a\"] = yield csp.take(InQueues[name + \":#a\"]);"
+
     Handlebars.registerHelper 'output', (a) ->
       "output[\"#a\"].Value"
 

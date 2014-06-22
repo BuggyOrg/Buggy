@@ -1,0 +1,76 @@
+{
+  "symbols": {
+    "main" : [
+      {
+        "module" : true,
+        "generics": [
+          {
+            "name" : "Input"
+          },
+          {
+            "name" : "StringToArray"
+          },
+          {
+            "name" : "Output"
+          },
+          {
+            "name" : "Select",
+            "inputs" : { "Stream" : ">Serialize:Result" },
+            "meta" : {
+              "Select" : {
+                "Selection" : 2
+              }
+            }
+          },
+          {
+            "name" : "Set",
+            "inputs" : { "Stream" : ">Select:OutStream", "Selection" : ">Select:Selection" },
+            "meta" : {
+              "Set" : {
+                "Selection" : 0
+              }
+            }
+          },
+          {
+            "name" : "Serialize",
+            "inputs" : { "Data" : ">StringToArray:Array" }
+          },
+          {
+            "name" : "Deserialize",
+            "inputs" : { "Data" : ">Set:OutStream" }
+          }
+        ],
+        "connections" : [
+          {
+            "id" : "Input:Value -> StringToArray:String",
+            "input" : { "generic" : "StringToArray", "connector" : "String" },
+            "output" : { "generic" : "Input", "connector" : "Value" }
+          },
+          {
+            "id" : "StringToArray:Array -> Serialize:Data",
+            "input" : { "generic" : "Serialize", "connector" : "Data" },
+            "output" : { "generic" : "StringToArray", "connector" : "Array" }
+          },
+          {
+            "id" : "Select:Selection -> Output:Value",
+            "input" : { "generic" : "Output", "connector" : "Value" },
+            "output" : { "generic" : "Select", "connector" : "Selection" }
+          },
+          {
+            "id" : "Deserialize:Result -> Output:Value",
+            "input" : { "generic" : "Output", "connector" : "Value" },
+            "output" : { "generic" : "Deserialize", "connector" : "Result" }
+          }
+        ],
+        "meta": {
+          "type": "group"
+        }
+      }
+    ]
+  },
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
+}

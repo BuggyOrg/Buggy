@@ -167,8 +167,8 @@
 						"connector-type" : "Input"
 					}
 				],
-				"explicit-callback" : true,
-				"implementation" : "if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Set.Selection'}}){ {{output 'OutStream'}} = {{input 'Selection'}}; }\n {{merge-meta 'OutStream' 'Stream'}}; {{output 'OutStream'}} = {{input 'Stream'}}; {{output-data 'OutStream'}};"
+				"explicit-input" : true,
+				"implementation" : "{{input-data 'Stream'}}; if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Set.Selection'}}){ {{input-data 'Selection'}}; {{output 'OutStream'}} = {{input 'Selection'}}; }\nelse{ {{output 'OutStream'}} = {{input 'Stream'}};}\n {{merge-meta 'OutStream' 'Stream'}};"
 			}
 		],
 		"Take" : [
