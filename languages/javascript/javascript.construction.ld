@@ -46,7 +46,7 @@
 					}
 				],
 				"explicit-callback" : true,
-				"implementation" : "for(var i=0; i<{{input 'Data'}}.length-1; i++){\n  {{output 'Result'}} = {{input 'Data'}}[i];\n {{output-data 'Result'}};\n  }\n  {{output 'Result'}} = {{input 'Data'}}[{{input 'Data'}}.length - 1];\n {{set-meta 'Result' 'last' true}};\n {{output-data 'Result'}};"
+				"implementation" : "for(var i=0; i<{{input 'Data'}}.length; i++){\n  {{output 'Result'}} = {{input 'Data'}}[i];\n  if(i == {{input 'Data'}}.length -1){ {{set-meta 'Result' 'last' true}};}  {{set-meta 'Result' 'StreamComponent' 'i'}}; {{output-data 'Result'}};\n  }\n"
 			}
 		],
 		"Deserialize" : [
@@ -125,6 +125,50 @@
 						"output" : { "generic" : "Deserialize", "connector" : "Result" }
 					}
 				]
+			}
+		],
+		"Select" : [
+			{
+				"name" : "Select",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Stream",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "OutStream",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Selection",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Select.Selection'}}){ {{output 'Selection'}} = {{input 'Stream'}}; {{output-data 'Selection'}} }\n {{merge-meta 'OutStream' 'Stream'}}; {{output 'OutStream'}} = {{input 'Stream'}}; {{output-data 'OutStream'}};"
+			}
+		],
+		"Set" : [
+			{
+				"name" : "Set",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Stream",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "OutStream",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Selection",
+						"connector-type" : "Input"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Set.Selection'}}){ {{output 'OutStream'}} = {{input 'Selection'}}; }\n {{merge-meta 'OutStream' 'Stream'}}; {{output 'OutStream'}} = {{input 'Stream'}}; {{output-data 'OutStream'}};"
 			}
 		],
 		"Take" : [

@@ -46,7 +46,7 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
       else null
     (flatten cns) |> filter -> it?
 
-  get-source = (resolve, ld, node, graph, query, pack-function, filter-function) -->
+  get-source = (resolve, ld, node, graph, query, pack-function, filter-function, debug) -->
     name = node.name
     resolved-node = get-best-match name, resolve
     if !filter-function? or filter-function resolved-node
@@ -54,15 +54,15 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
       all-grp-nodes = union grp-nodes, [node]
       grp-connectors = get-group-connectors all-grp-nodes,  resolve
       grp-connections = Graph.get-group-connections graph, resolved-node
-      source = Templating.process (ld.query query), node, resolved-node, grp-connections, grp-connectors, grp-nodes
+      source = Templating.process (ld.query query), node, resolved-node, grp-connections, grp-connectors, grp-nodes, debug
       pack-function node, source
 
-  get-sources = (resolve, ld, graph, query, pack-function, filter-function) -->
+  get-sources = (debug, resolve, ld, graph, query, pack-function, filter-function) -->
     graph.nodes |> map (n) ->
-      get-source resolve, ld, n, graph, query, pack-function, filter-function
+      get-source resolve, ld, n, graph, query, pack-function, filter-function, debug
 
-  generate-source-map-for = (d-graph, resolve, ld) ->
-    get-srcs = get-sources resolve, ld, d-graph
+  generate-source-map-for = (d-graph, resolve, ld, debug) ->
+    get-srcs = get-sources debug, resolve, ld, d-graph
     name-source = get-srcs "--> atomic", pack-with-name, is-implemented
     node-source = get-srcs "--> node", pack-with-id, null
     group-source = get-srcs "--> group", pack-with-id, null
@@ -85,11 +85,11 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
   {
 
     # generates source code for the program and resolved objects
-    generate-for: (entry, resolve, ld) ->
+    generate-for: (entry, resolve, ld, debug) ->
       dependency-graph = DependencyGraph.generate-for entry, resolve, get-best-match
 
       # TODO: calculate "distance" from entry-point to generate source in the right order (for languages that require that)
-      sources = generate-source-map-for dependency-graph, resolve, ld
+      sources = generate-source-map-for dependency-graph, resolve, ld, debug
 
       lang-lib-path = "../../languages/javascript/libs/"
       require-list = ['queue.js','guid.js','mapdatabase.js']
