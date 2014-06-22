@@ -1,6 +1,7 @@
 #!/usr/bin/env lsc
 
 require! yargs
+beautify = (require "js-beautify").js_beautify
 global <<< require \prelude-ls
 
 requirejs = require \../../node_modules/requirejs/bin/r.js
@@ -31,6 +32,7 @@ ld-file = requirejs "json!" + args.l
 compose = requirejs "ls!src/compose"
 LD = requirejs "ls!src/language-definition"
 
+
 ld = LD.load-from-json ld-file
 if args.m?
   if typeof! args.m != "Array"
@@ -47,6 +49,9 @@ if args.d?
     console.log JSON.stringify graph
 else
   compose.compose ld, (program) ->
-    console.log "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls')); var databases = {};"
-    console.log program
-    console.log "var queues = Group_main({},{});\nNode_Input(queues.input, queues.output);\n";
+    output = "";
+    output += "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls'));\n var csp = require('js-csp');\nfunction* id(input, out){\n  while(true){yield csp.put(out, yield csp.take(input));}\n}\n"
+    output += "function do_callback(c,o){csp.go(c,[o]);}"
+    output += program
+    output += "csp.go(Group_main);\n";
+    console.log beautify output, indent_size: 2

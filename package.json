@@ -33,10 +33,13 @@
     "grunt-mocha-cli": "~1.6.0",
     "grunt-shell": "~0.7.0",
     "handlebars": "~2.0.0-alpha.2",
+    "js-beautify": "^1.5.1",
+    "js-csp": "^0.2.3",
     "jsonlint": "^1.6.0",
     "mocha": "~1.17.1",
     "mocha-unfunk-reporter": "~0.4.0",
     "prelude-ls": "~1.0.3",
+    "readline-sync": "^0.2.2",
     "requirejs": "~2.1.10",
     "yargs": "~1.2.1"
   }

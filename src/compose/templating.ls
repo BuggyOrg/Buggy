@@ -40,10 +40,19 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
       "input[\"#a\"].Value"
 
     Handlebars.registerHelper 'output', (a) ->
-      "output[\"#a\"]"
+      "output[\"#a\"].Value"
 
-    Handlebars.registerHelper 'meta-query', (a) ->
-      "meta."+a
+    Handlebars.registerHelper 'set-meta', (node, what, val) ->
+      "output[\"#node\"].meta."+ what + " = " + val
+
+    Handlebars.registerHelper 'has-meta', (node, what) ->
+      "'" + what + "' in input['" + node + "'].meta"
+
+    Handlebars.registerHelper 'meta-query', (node, what) ->
+      "input['" + node + "'].meta."+what
+
+    Handlebars.registerHelper 'node-meta', (what) ->
+      "meta."+what
 
     Handlebars.registerHelper 'metadata', (a) ->
       "var meta "
@@ -64,7 +73,7 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
   install-helper!
 
 
-  { 
+  {
     process: (text, generic, node, connections, connectors, inner-nodes) ->
       context = {
         generic: generic
