@@ -12,11 +12,22 @@ var {{generic.name}} = function(){
     var input = {};
 {{#each node.connectors}}{{#if_eq connector-type "Input"}}\
     input["{{name}}"] = yield csp.take(InQueues[name + ":{{name}}"]);
+{{#if ../../debug}}\
+    console.log("logging after taking {{../../../generic.name}}->{{name}} ");
+    console.log(input["{{name}}"]);
+{{/if}}\
 {{/if_eq}}{{/each}}\
     {{node.implementation}}
 {{#unless node.explicit-callback}}\
     {{#each node.connectors}}{{#if_eq connector-type "Output"}}\
+{{#if ../../debug}}
+        console.log("putting after {{../../../generic.name}}->{{name}}");
+        console.log(output["{{name}}"]);
+{{/if}}
         yield csp.put(OutQueues[name + ":{{name}}"], output["{{name}}"]);
+{{#if ../../debug}}
+  console.log("put done");
+{{/if}}
     {{/if_eq}}{{/each}}\
 {{/unless}}
   }

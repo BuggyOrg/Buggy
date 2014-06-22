@@ -26,9 +26,9 @@ define ["ls!src/compose/dependency-graph", "ls!src/resolve", "ls!src/compose/sou
       r
 
   {
-    compose: (ld, done) ->
+    compose: (ld, debug, done) ->
       Resolve.resolve ld, (resolve) ->
-        source = Source.generate-for "main", resolve, ld
+        source = Source.generate-for "main", resolve, ld, debug
         done? source
 
 
