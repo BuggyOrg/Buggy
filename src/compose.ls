@@ -15,8 +15,7 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/compose/dependency-graph", "ls!src/resolve", "ls!src/compose/source"],
-        (DependencyGraph, Resolve, Source) ->
+define ["ls!src/compose/dependency-graph", "ls!src/resolve", "ls!src/compose/source"], (DependencyGraph, Resolve, Source) ->
 
   get-best-match = (id, resolve) ->
     r = resolve[id]
