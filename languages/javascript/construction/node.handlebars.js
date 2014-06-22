@@ -1,4 +1,4 @@
-function* Node_{{generic.id}} (InQueues, OutQueues){
+function Node_{{generic.id}} (InQueues, OutQueues){
 {{#ifCond node.atomic node.implemented}}\
   var name = "{{generic.id}}";
   var meta = {{meta}};
