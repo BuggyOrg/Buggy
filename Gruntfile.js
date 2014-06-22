@@ -28,7 +28,7 @@ module.exports = function(grunt) {
       test: ['test/*-test.js']
     },
 
-    livescript: { 
+    livescript: {
       test: {
         expand: true,
         cwd: 'test/',
@@ -71,13 +71,34 @@ module.exports = function(grunt) {
       buildLanguage: {
         command: "node tools/build_language_file.js languages/javascript/javascript.construction.ld > languages/javascript/javascript.ld"
       },
+      jsonLintFile: {
+        command: function(file){
+          return "jsonlint " + file;
+        },
+        options : {
+          stdout: false
+        }
+      },
       checkLanguageFile: {
-       command: "jsonlint languages/javascript/javascript.ld",
-       options: {
-        stdout: false
-       }
+        command: "jsonlint languages/javascript/javascript.ld",
+        options: {
+          stdout: false
+        }
+      },
+      compose: {
+        command: function(file, file_output){
+          return "examples/buggy-to-anything/buggy2anything.ls -l ../../languages/javascript/javascript.ld -m ../modules/jsshell.json -m ../../" + file + " > " + file_output;
+        }
       }
     },
+
+    mkdir: {
+      buildFile: {
+        options: {
+          create: ['build']
+        }
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -85,6 +106,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-livescript');
   grunt.loadNpmTasks('grunt-mocha-cli');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-mkdir');
 
   require('mocha-unfunk-reporter').option('reportPending', true);
 
@@ -92,7 +114,29 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['livescript:test', 'mochacli', 'clean:test']);
 
   grunt.registerTask('lang', ['shell:buildLanguage', 'shell:checkLanguageFile']);
-  
+
+
+  grunt.registerTask('compose', "translates a buggy program into a executable. The output language defaults to Javascript", function(spec){
+    if(!spec){
+      grunt.fail.fatal("You have to specify a target file via 'grunt compose:path/to/file'");
+    }
+    var file = spec;
+    grunt.log.write("Building File " + file + " for target language 'Javascript'");
+
+    // at first update and check the language / program files
+    grunt.task.run("lang");
+    grunt.task.run("shell:jsonLintFile:"+file);
+
+    var file_out_path = file.substring(0, file.lastIndexOf("/") + 1);
+    // some ugly regex to replace (hopefully) the ending!
+    // taken from http://stackoverflow.com/questions/4250364/how-to-trim-a-file-extension-from-a-string-in-javascript thanks to John Harstock
+    var file_out = file.replace(/\.[^/.]+$/, ".js");;
+    grunt.config("mkdir.buildFile.options.create", [file_out_path]);
+    grunt.task.run("mkdir:buildFile");
+    grunt.task.run("shell:compose:"+file+":"+file_out);
+
+  });
+
   // By default, lint and run all tests.
   grunt.registerTask('default', ['app', 'test-app']);
   grunt.registerTask('continuous', ['app', 'watch']);
