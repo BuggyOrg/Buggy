@@ -65,7 +65,7 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
     get-srcs = get-sources resolve, ld, d-graph
     name-source = get-srcs "--> atomic", pack-with-name, is-implemented
     node-source = get-srcs "--> node", pack-with-id, null
-    group-source = get-srcs "--> group", pack-with-id, null    
+    group-source = get-srcs "--> group", pack-with-id, null
 
     c-source = d-graph.connections |> map (c) ->
       [c.id, ""]
@@ -87,7 +87,7 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
     # generates source code for the program and resolved objects
     generate-for: (entry, resolve, ld) ->
       dependency-graph = DependencyGraph.generate-for entry, resolve, get-best-match
-      
+
       # TODO: calculate "distance" from entry-point to generate source in the right order (for languages that require that)
       sources = generate-source-map-for dependency-graph, resolve, ld
 
@@ -95,9 +95,8 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
       require-list = ['queue.js','guid.js','mapdatabase.js']
       require-string = require-list |> fold (-> &0 + "\nrequire('#lang-lib-path"+&1+"');"), ""
 
-      source = require-string + "\n" +
-               (gather-sources "implementations", sources) + 
-               (gather-sources "nodes", sources) + 
+      source = (gather-sources "implementations", sources) +
+               (gather-sources "nodes", sources) +
                (gather-sources "groups", sources)
   #    keys sources |> map (id) !->
   #      source += "// begin source for #id \n"
