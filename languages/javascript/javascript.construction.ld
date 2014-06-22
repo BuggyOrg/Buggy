@@ -31,6 +31,43 @@
 				"implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
 			}
 		],
+		"Serialize" : [
+			{
+				"name" : "Serialize",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Data",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "for(var i=0; i<{{input 'Data'}}.length-1; i++){\n  {{output 'Result'}} = {{input 'Data'}}[i];\n do_callback(callback, JSON.parse(JSON.stringify(output)));\n  }\n  {{output 'Result'}} = {{input 'Data'}}[{{input 'Data'}}.length - 1];\n {{set-meta 'Result' 'last' true}};\n do_callback(callback, JSON.parse(JSON.stringify(output)));"
+			}
+		],
+		"Deserialize" : [
+			{
+				"name" : "Deserialize",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Data",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"handle_eos" : true,
+				"implementation" : " if(!('Value' in storage)){storage.Value = []; }\n  storage.Value.push({{input 'Data'}});\n if({{has-meta 'Data' 'last'}} && {{meta-query 'Data' 'last'}} == true){ {{output 'Result'}} = storage.Value; do_callback(callback,output);\n  delete storage.Value;\n return;\n}\n"
+			}
+		],
 		"Constant" : [
 			{
 				"name" : "Constant",
@@ -42,8 +79,9 @@
 						"data-type" : "{{meta-query 'Constant.data-type'}}"
 					}
 				],
+				"input" : true,
 				"description" : "Represents a constant value. Set the value of the constant in the meta information",
-				"implementation" : "{{output 'Value'}} = {{meta-query 'Constant.value'}};"
+				"implementation" : "{{output 'Value'}} = {{node-meta 'Constant.value'}};"
 			}
 		],
 		"Each" : [
@@ -62,7 +100,7 @@
 		  		}
 		  	],
 	  		"explicit-callback" : true,
-	  		"implementation" : "var db = {{input 'Array'}};\n Mapdatabase.queryFuture(db, '', function(item){\n    {{output 'Element'}} = item;\n    callback(output);\n  });"
+	  		"implementation" : "var db = {{input 'Array'}};\n Mapdatabase.queryFuture(db, '', function(item){\n    {{output 'Element'}} = item;\n    do_callback(callback,output);\n  });"
 		  },
 			{
 				"name" : "Each",
@@ -79,7 +117,7 @@
 				],
 				"description" : "Iterates over an array",
 				"explicit-callback" : true,
-				"implementation" : "for (var i = 0; i < {{input 'Array'}}.length; i++) {\n    {{output 'Element'}} = {{input 'Array'}}[i];\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
+				"implementation" : "for (var i = 0; i < {{input 'Array'}}.length; i++) {\n    {{output 'Element'}} = {{input 'Array'}}[i];\n    {{metadata 'id'}} = i;\n    do_callback(callback, output);\n  }"
 			}
 		],
 		"Select" : [
@@ -293,7 +331,7 @@
 				],
 				"explicit-callback" : true,
 				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
-				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}[0];\n    callback(output);\n  }"
+				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}[0];\n    do_callback(callback,output);\n  }"
 			}
 		],
 		"cdr" : [
@@ -313,7 +351,7 @@
 				],
 				"explicit-callback" : true,
 				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
-				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Rest'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
+				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Rest'}} = {{input 'Array'}}.slice(1);\n    do_callback(callback,output);\n  }"
 			}
 		],
 		"Empty" : [
@@ -356,7 +394,7 @@
 					}
 				],
 				"explicit-callback" : true,
-				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n    callback(output);\n  }"
+				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n    do_callback(callback,output);\n  }"
 			}
 		],
 		"Mux" : [
@@ -502,7 +540,7 @@
 				],
 				"description" : "Converts a String into a number",
 				"explicit-callback" : true,
-				"implementation" : "var num = Number({{input 'String'}});\n  if(!isNaN(num)){\n    {{output 'Number'}} = num;\n    callback(output);\n  }"
+				"implementation" : "var num = Number({{input 'String'}});\n  if(!isNaN(num)){\n    {{output 'Number'}} = num;\n    do_callback(callback, output);\n  }"
 			}
 		],
 		"StringToArray" : [
