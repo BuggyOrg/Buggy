@@ -10,13 +10,14 @@ var {{generic.name}} = function(){
     output['{{name}}'] = { meta: {} };
 {{/if_eq}}{{/each}}
     var input = {};
+{{#unless node.explicit-input}}
 {{#each node.connectors}}{{#if_eq connector-type "Input"}}\
     input["{{name}}"] = yield csp.take(InQueues[name + ":{{name}}"]);
 {{#if ../../debug}}\
     console.log("logging after taking {{../../../generic.name}}->{{name}} ");
     console.log(input["{{name}}"]);
 {{/if}}\
-{{/if_eq}}{{/each}}\
+{{/if_eq}}{{/each}}{{/unless}}\
     {{node.implementation}}
 {{#unless node.explicit-callback}}\
     {{#each node.connectors}}{{#if_eq connector-type "Output"}}\
