@@ -42,6 +42,9 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
     Handlebars.registerHelper 'output', (a) ->
       "output[\"#a\"].Value"
 
+    Handlebars.registerHelper 'output-data', (a) ->
+      "yield csp.put(OutQueues[name + \":#a\"], JSON.parse(JSON.stringify(output[\"#a\"])));"
+
     Handlebars.registerHelper 'set-meta', (node, what, val) ->
       "output[\"#node\"].meta."+ what + " = " + val
 
@@ -56,6 +59,9 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
 
     Handlebars.registerHelper 'metadata', (a) ->
       "var meta "
+
+    Handlebars.registerHelper 'merge-meta', (what, input) ->
+      "output['"+what+"'].meta = merge(output['"+what+"'].meta, input['"+input+"'].meta);\n";
 
     Handlebars.registerHelper 'create-database', (db_var) ->
       "databases[#db_var.guid] = Mapdatabase.create(#db_var.guid)"

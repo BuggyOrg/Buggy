@@ -50,8 +50,7 @@ if args.d?
 else
   compose.compose ld, (program) ->
     output = "";
-    output += "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls'));\n var csp = require('js-csp');\nfunction* id(input, out){\n  while(true){yield csp.put(out, yield csp.take(input));}\n}\n"
-    output += "function do_callback(c,o){csp.go(c,[o]);}"
+    output += "var csp = require('js-csp');var merge = require('object-merge')\nfunction* id(input, out){\n  while(true){yield csp.put(out, yield csp.take(input));}\n}\n"
     output += program
-    output += "csp.go(Group_main);\n";
+    output += "Group_main();\n";
     console.log beautify output, indent_size: 2
