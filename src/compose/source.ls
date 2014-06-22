@@ -95,7 +95,7 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
       require-list = ['queue.js','guid.js','mapdatabase.js']
       require-string = require-list |> fold (-> &0 + "\nrequire('#lang-lib-path"+&1+"');"), ""
 
-      source = (gather-sources "implementations", sources) + 
+      source = (gather-sources "implementations", sources) +
                (gather-sources "nodes", sources) +
                (gather-sources "groups", sources)
   #    keys sources |> map (id) !->

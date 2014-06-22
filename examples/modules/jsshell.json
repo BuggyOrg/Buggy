@@ -20,7 +20,7 @@
         "external-dependencies" : "",
         "setup" : "",
         "input" : true,
-        "implementation" : "var sys = require('sys');\n  var stdin = process.openStdin();\n  listener = function(Value) {\n    {{output 'Value'}} = String(Value).slice(0,-1);\n    do_callback(callback, output);\n  };\n  stdin.addListener('data', listener);",
+        "implementation" : "var sys = require('sys');\n  var stdin = process.openStdin();\n  listener = function(Value) {\n    {{output 'Value'}} = String(Value).slice(0,-1);\n    csp.go(function*(){yield csp.put(OutQueues[name + \":Value\"], JSON.parse(JSON.stringify(output[\"Value\"])));});\n  };\n  stdin.addListener('data', listener);",
         "explicit-callback" : true
       }
     ],

@@ -39,8 +39,8 @@
     "jsonlint": "^1.6.0",
     "mocha": "~1.17.1",
     "mocha-unfunk-reporter": "~0.4.0",
+    "object-merge": "^2.5.1",
     "prelude-ls": "~1.0.3",
-    "readline-sync": "^0.2.2",
     "requirejs": "~2.1.10",
     "yargs": "~1.2.1"
   }
