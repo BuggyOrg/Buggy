@@ -118,7 +118,7 @@ following properties:
 | Explicit Callback | explicit-callback     | "true" or "false"             |
 
 The implementations are explained in more detail in section ???. The
-*explicit-callback* property deciedes if
+*explicit-callback* property decides if
  * **explicit-callback = false** Buggy should send the data after the of the
  implementation automatically
  * **explicit-callback = true** Buggy should not send the data after running the
