@@ -127,10 +127,10 @@ module.exports = function(grunt) {
     grunt.task.run("lang");
     grunt.task.run("shell:jsonLintFile:"+file);
 
-    var file_out_path = file.substring(0, file.lastIndexOf("/") + 1);
+    var file_out_path = "build" + file.substring(0, file.lastIndexOf("/") + 1);
     // some ugly regex to replace (hopefully) the ending!
     // taken from http://stackoverflow.com/questions/4250364/how-to-trim-a-file-extension-from-a-string-in-javascript thanks to John Harstock
-    var file_out = file.replace(/\.[^/.]+$/, ".js");;
+    var file_out = "build/" + file.replace(/\.[^/.]+$/, ".js");;
     grunt.config("mkdir.buildFile.options.create", [file_out_path]);
     grunt.task.run("mkdir:buildFile");
     grunt.task.run("shell:compose:"+file+":"+file_out);
