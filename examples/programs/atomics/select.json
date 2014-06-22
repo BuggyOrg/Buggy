@@ -8,35 +8,49 @@
             "name" : "Input"
           },
           {
-            "name" : "StringToArray",
-            "comment" : "StringToArray filters all not convertible input strings by not forwarding them"
+            "name" : "StringToArray"
           },
           {
             "name" : "Output"
           },
           {
             "name" : "Select",
+            "inputs" : { "Stream" : ">Serialize:Result" },
             "meta" : {
-              "query" : { "what" : "value", "compare" : "less", "value" : "10" },
-              "comment" : "this is a kind of dsl that should translate to some buggy graph stuff, currently unused!!"
+              "Select" : {
+                "Selection" : 2
+              }
             }
+          },
+          {
+            "name" : "Serialize",
+            "inputs" : { "Data" : ">StringToArray:Array" }
+          },
+          {
+            "name" : "Deserialize",
+            "inputs" : { "Data" : ">Select:OutStream" }
           }
         ],
         "connections" : [
           {
             "id" : "Input:Value -> StringToArray:String",
             "input" : { "generic" : "StringToArray", "connector" : "String" },
-            "output" : { "generic" : "Input", "connector" : "Value" } 
+            "output" : { "generic" : "Input", "connector" : "Value" }
           },
           {
-            "id" : "StringToArray:Array -> Select:Data",
-            "input" : { "generic" : "Select", "connector" : "Array" },
+            "id" : "StringToArray:Array -> Serialize:Data",
+            "input" : { "generic" : "Serialize", "connector" : "Data" },
             "output" : { "generic" : "StringToArray", "connector" : "Array" }
           },
           {
-            "id" : "Select:Result -> Output:Value",
+            "id" : "Select:Selection -> Output:Value",
             "input" : { "generic" : "Output", "connector" : "Value" },
-            "output" : { "generic" : "Select", "connector" : "Data" }
+            "output" : { "generic" : "Select", "connector" : "Selection" }
+          },
+          {
+            "id" : "Deserialize:Result -> Output:Value",
+            "input" : { "generic" : "Output", "connector" : "Value" },
+            "output" : { "generic" : "Deserialize", "connector" : "Result" }
           }
         ],
         "meta": {

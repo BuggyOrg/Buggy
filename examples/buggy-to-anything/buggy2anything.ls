@@ -24,10 +24,13 @@ yargs = yargs.describe "m", "additional (optional) module that will be loaded in
 yargs = yargs.describe "l", "expects a language definition file containing compilation information"
 yargs = yargs.describe "o", "output file of the executable (which file type it produces depends on the chosen language"
 yargs = yargs.describe "d", "prints the dependcy graph only"
+yargs = yargs.describe "g", "result prints debug information"
 yargs = yargs.demand <[ m l ]>
 args = yargs.argv
 
 ld-file = requirejs "json!" + args.l
+
+debug = args.g?
 
 compose = requirejs "ls!src/compose"
 LD = requirejs "ls!src/language-definition"
@@ -48,7 +51,7 @@ if args.d?
   compose.create-dependency-graph ld, (graph) ->
     console.log JSON.stringify graph
 else
-  compose.compose ld, (program) ->
+  compose.compose ld, debug, (program) ->
     output = "";
     output += "var csp = require('js-csp');var merge = require('object-merge')\nfunction* id(input, out){\n  while(true){yield csp.put(out, yield csp.take(input));}\n}\n"
     output += program

@@ -80,13 +80,14 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
 
 
   {
-    process: (text, generic, node, connections, connectors, inner-nodes) ->
+    process: (text, generic, node, connections, connectors, inner-nodes, debug) ->
       context = {
         generic: generic
         node: node
         connections: connections
         connectors: connectors
         meta: "{}"
+        debug: debug
       }
       if generic.meta?
         context.meta = JSON.stringify generic.meta
