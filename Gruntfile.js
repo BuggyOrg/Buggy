@@ -15,7 +15,6 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-console.log(__dirname);
 
 module.exports = function(grunt) {
   'use strict';
