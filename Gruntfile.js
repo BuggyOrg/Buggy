@@ -115,8 +115,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('lang', ['shell:buildLanguage', 'shell:checkLanguageFile']);
 
+  grunt.registerTask('browser',
+      "translates a buggy program into a html file with javascript",
+      function(spec){
+    grunt.task.run("compose:"+spec);
+    grunt.log.write("browserifying");
+  });
 
-  grunt.registerTask('compose', "translates a buggy program into a executable. The output language defaults to Javascript", function(spec){
+  grunt.registerTask('compose', "translates a buggy program into an executable. The output language defaults to Javascript", function(spec){
     if(!spec){
       grunt.fail.fatal("You have to specify a target file via 'grunt compose:path/to/file'");
     }
@@ -136,6 +142,8 @@ module.exports = function(grunt) {
     grunt.task.run("shell:compose:"+file+":"+file_out);
 
   });
+
+
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['app', 'test-app']);
