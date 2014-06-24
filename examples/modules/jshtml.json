@@ -21,7 +21,7 @@
         "external-dependencies" : "",
         "setup" : "",
         "input" : "true",
-        "implementation" : "var newInput = $('<input>',{type:'text'}); $('body').append(newInput); newInput.keypress(function(e){if(e.which==13){ {{output 'Value'}} = newInput.val(); {{output 'Value'}} } })",
+        "implementation" : "$(function(){var newInput = $('<input type=\"text\">'); $('body').append(newInput); newInput.keypress(function(e){if(e.which==13){ {{output 'Value'}} = newInput.val(); csp.go(function*(){ {{output-data 'Value'}} }); } })});",
         "explicit-callback" : true
       }
     ],
