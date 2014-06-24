@@ -1,0 +1,45 @@
+{
+  "meta" : {
+    "LanguageName" : "JavaScript",
+    "Buggy-Version" : "3.0.0",
+    "Source-Extension" : "js",
+    "Interpreted" : true
+  },
+  "symbols" : {
+    "Input" : [
+      {
+        "module" : true,
+        "implemented" : true,
+        "connectors" : [
+          {
+            "name" : "Value",
+            "connector-type" : "Output",
+            "data-type" : "string"
+          }
+        ],
+        "require" : "jquery",
+        "external-dependencies" : "",
+        "setup" : "",
+        "input" : "true",
+        "implementation" : "var newInput = $('<input>',{type:'text'}); $('body').append(newInput); newInput.keypress(function(e){if(e.which==13){ {{output 'Value'}} = newInput.val(); {{output 'Value'}} } })",
+        "explicit-callback" : true
+      }
+    ],
+    "Output" : [
+      {
+        "module" : true,
+        "implemented" : true,
+        "connectors" : [
+          {
+            "name" : "Value",
+            "connector-type" : "Input",
+            "data-type" : "string"
+          }
+        ],
+        "external-dependencies" : "",
+        "setup" : "",
+        "implementation" : "console.log({{input 'Value'}});"
+      }
+    ]
+  }
+}
