@@ -171,6 +171,208 @@
 				"implementation" : "{{input-data 'Stream'}}; if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Set.Selection'}}){ {{input-data 'Selection'}}; {{output 'OutStream'}} = {{input 'Selection'}}; }\nelse{ {{output 'OutStream'}} = {{input 'Stream'}};}\n {{merge-meta 'OutStream' 'Stream'}};"
 			}
 		],
+		"Sync" : [
+			{
+				"name" : "Sync",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "SyncWith",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "SyncWhat",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Synced",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "{{output 'Synced'}} = {{input 'SyncWhat'}};"
+			}
+		],
+		"Clone" : [
+			{
+				"name" : "Clone",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "What",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Out1",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Out2",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "{{output 'Out1'}} = {{input 'What'}}; {{merge-meta 'Out1' 'What'}}; {{output 'Out2'}} = {{input 'What'}}; {{merge-meta 'Out2' 'What'}};"
+			}
+		],
+		"Last" : [
+			{
+				"name" : "Last",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Stream",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Last",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "if({{has-meta 'Stream' 'last'}} && {{meta-query 'Stream' 'last'}} == true){ {{output 'Last'}} = {{input 'Stream'}}; {{output-data 'Last'}}; }"
+			}
+		],
+		"Scan" : [
+			{
+				"name" : "Scan",
+				"connectors" : [
+					{
+						"name" : "Initial",
+						"connector-type": "Input"
+					},
+					{
+						"name" : "Array",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Value1Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Value2Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "ValueIn",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"generics" : [
+					{
+						"name" : "Serialize",
+						"inputs" : { "Data" : ">Scan:Array" }
+					},
+					{
+						"name" : "Select",
+						"inputs" : { "Stream" : ">Serialize:Result" },
+						"meta" : {
+							"Select" : {
+								"Selection" : 0
+							}
+						}
+					},
+					{
+						"name" : "Sync",
+						"inputs" : { "SyncWith" : ">Select:Selection", "SyncWhat" : ">Scan:Initial" }
+					},
+					{
+						"name" : "Clone",
+						"inputs" : { "What" : ">Scan:ValueIn" }
+					},
+					{
+						"name" : "Deserialize",
+						"inputs" : { "Data" : ">Clone:Out2" }
+					}
+				],
+				"connections" : [
+					{
+						"id" : "Select:OutStream -> Scan:Value1Out",
+						"input" : { "generic" : "Scan", "connector" : "Value1Out" },
+						"output" : { "generic" : "Select", "connector" : "OutStream" }
+					},
+					{
+						"id" : "Sync:Synced -> Scan:Value2Out",
+						"input" : { "generic" : "Scan", "connector" : "Value2Out" },
+						"output" : { "generic" : "Sync", "connector" : "Synced" }
+					},
+					{
+						"id" : "Clone:Out1 -> Scan:Value2Out",
+						"input" : { "generic" : "Scan", "connector" : "Value2Out" },
+						"output" : { "generic" : "Clone", "connector" : "Out1" }
+					},
+					{
+						"id" : "Deserialize:Result -> Scan:Result",
+						"input" : { "generic" : "Scan", "connector" : "Result" },
+						"output" : { "generic" : "Deserialize", "connector" : "Result" }
+					}
+				]
+			}
+		],
+		"Fold" : [
+			{
+				"name" : "Fold",
+				"connectors" : [
+					{
+						"name" : "Initial",
+						"connector-type": "Input"
+					},
+					{
+						"name" : "Array",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Value1Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Value2Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "ValueIn",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"generics" : [
+					{
+						"name" : "Scan",
+						"inputs" : { "Initial" : ">Fold:Initial", "Array" : ">Fold:Array", "ValueIn" : ">Fold:ValueIn" }
+					},
+					{
+						"name" : "Serialize",
+						"inputs" : { "Data" : ">Scan:Result" }
+					},
+					{
+						"name" : "Last",
+						"inputs" : { "Stream" : ">Serialize:Result" }
+					}
+				],
+				"connections" : [
+					{
+						"id" : "Scan:Value1Out -> Fold:Value1Out",
+						"input" : { "generic" : "Fold", "connector" : "Value1Out" },
+						"output" : { "generic" : "Scan", "connector" : "Value1Out" }
+					},
+					{
+						"id" : "Scan:Value2Out -> Fold:Value2Out",
+						"input" : { "generic" : "Fold", "connector" : "Value2Out" },
+						"output" : { "generic" : "Scan", "connector" : "Value2Out" }
+					},
+					{
+						"id" : "Last:Last -> Fold:Result",
+						"input" : { "generic" : "Fold", "connector" : "Result" },
+						"output" : { "generic" : "Last", "connector" : "Last" }
+					}
+				]
+			}
+		],
 		"Take" : [
 			{
 				"name" : "Take",
