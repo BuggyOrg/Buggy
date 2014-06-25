@@ -1,0 +1,16 @@
+{
+  "sources" : [
+    {
+      "name" : "Atomics",
+      "description" : "Collection of Atomics necessary to evaluate all programs",
+      "uri" : "atomics.json",
+      "type" : "load"
+    },
+    {
+      "name" : "Functional",
+      "description" : "Basic functional units like map,fold,scan,reduce",
+      "uri" : "functional.json",
+      "type" : "load"
+    }
+  ]
+}
