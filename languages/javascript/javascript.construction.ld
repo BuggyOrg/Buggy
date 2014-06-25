@@ -213,6 +213,28 @@
 				"implementation" : "{{output 'Out1'}} = {{input 'What'}}; {{merge-meta 'Out1' 'What'}}; {{output 'Out2'}} = {{input 'What'}}; {{merge-meta 'Out2' 'What'}};"
 			}
 		],
+		"CloneAllButLast" : [
+			{
+				"name" : "Clone",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "What",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Stream",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Cloned",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "{{output 'Stream'}} = {{input 'What'}}; {{merge-meta 'Stream' 'What'}}; {{output-data 'Stream'}} if({{has-meta 'What' 'last'}} && {{meta-query 'What' 'last'}} == true){ } else { {{output 'Cloned'}} = {{input 'What'}}; {{merge-meta 'Cloned' 'What'}}; {{output-data 'Cloned'}}; }"
+			}
+		],
 		"Last" : [
 			{
 				"name" : "Last",
@@ -279,12 +301,12 @@
 						"inputs" : { "SyncWith" : ">Select:Selection", "SyncWhat" : ">Scan:Initial" }
 					},
 					{
-						"name" : "Clone",
+						"name" : "CloneAllButLast",
 						"inputs" : { "What" : ">Scan:ValueIn" }
 					},
 					{
 						"name" : "Deserialize",
-						"inputs" : { "Data" : ">Clone:Out2" }
+						"inputs" : { "Data" : ">CloneAllButLast:Stream" }
 					}
 				],
 				"connections" : [
@@ -299,9 +321,9 @@
 						"output" : { "generic" : "Sync", "connector" : "Synced" }
 					},
 					{
-						"id" : "Clone:Out1 -> Scan:Value2Out",
+						"id" : "CloneAllButLast:Cloned -> Scan:Value2Out",
 						"input" : { "generic" : "Scan", "connector" : "Value2Out" },
-						"output" : { "generic" : "Clone", "connector" : "Out1" }
+						"output" : { "generic" : "CloneAllButLast", "connector" : "Cloned" }
 					},
 					{
 						"id" : "Deserialize:Result -> Scan:Result",
