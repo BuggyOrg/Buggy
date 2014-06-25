@@ -42,6 +42,7 @@
     "object-merge": "^2.5.1",
     "prelude-ls": "~1.0.3",
     "requirejs": "~2.1.10",
-    "yargs": "~1.2.1"
+    "yargs": "~1.2.1",
+    "grunt-config-merge": "~1.2.0"
   }
 }

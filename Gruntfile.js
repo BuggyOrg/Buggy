@@ -18,6 +18,8 @@
 module.exports = function(grunt) {
   'use strict';
 
+  require('grunt-config-merge')(grunt);
+
   grunt.initConfig({
      pkg: grunt.file.readJSON('package.json'),
      buildDir: "build/"
