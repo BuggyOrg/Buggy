@@ -23,12 +23,21 @@
             }
           },
           {
+            "name" : "Set",
+            "inputs" : { "Stream" : ">Select:OutStream", "Selection" : ">Select:Selection" },
+            "meta" : {
+              "Set" : {
+                "Selection" : 0
+              }
+            }
+          },
+          {
             "name" : "Serialize",
             "inputs" : { "Data" : ">StringToArray:Array" }
           },
           {
             "name" : "Deserialize",
-            "inputs" : { "Data" : ">Select:OutStream" }
+            "inputs" : { "Data" : ">Set:OutStream" }
           }
         ],
         "connections" : [

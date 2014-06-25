@@ -28,7 +28,7 @@ function getFileName(path, grunt){
 
 module.exports = function(grunt){
   grunt.registerTask('generateHTMLFile', function(file_out_path, file_name){
-    grunt.file.write(file_out_path+file_name + ".html", "<script src='"+file_name+".min.js'></script>");
+    grunt.file.write(file_out_path+file_name + ".html", "<script src='https://code.jquery.com/jquery-2.1.1.min.js'></script><script src='"+file_name+".min.js'></script><body><h1>"+file_name+"</h1></body>");
   });
 
   grunt.registerTask('browser',

@@ -39,14 +39,32 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
     Handlebars.registerHelper 'input', (a) ->
       "input[\"#a\"].Value"
 
-    Handlebars.registerHelper 'output', (a) ->
-      "output[\"#a\"]"
+    Handlebars.registerHelper 'input-data', (a) ->
+      "input[\"#a\"] = yield csp.take(InQueues[name + \":#a\"]);"
 
-    Handlebars.registerHelper 'meta-query', (a) ->
-      "meta."+a
+    Handlebars.registerHelper 'output', (a) ->
+      "output[\"#a\"].Value"
+
+    Handlebars.registerHelper 'output-data', (a) ->
+      "yield csp.put(OutQueues[name + \":#a\"], JSON.parse(JSON.stringify(output[\"#a\"])));"
+
+    Handlebars.registerHelper 'set-meta', (node, what, val) ->
+      "output[\"#node\"].meta."+ what + " = " + val
+
+    Handlebars.registerHelper 'has-meta', (node, what) ->
+      "'" + what + "' in input['" + node + "'].meta"
+
+    Handlebars.registerHelper 'meta-query', (node, what) ->
+      "input['" + node + "'].meta."+what
+
+    Handlebars.registerHelper 'node-meta', (what) ->
+      "meta."+what
 
     Handlebars.registerHelper 'metadata', (a) ->
       "var meta "
+
+    Handlebars.registerHelper 'merge-meta', (what, input) ->
+      "output['"+what+"'].meta = merge(output['"+what+"'].meta, input['"+input+"'].meta);\n";
 
     Handlebars.registerHelper 'create-database', (db_var) ->
       "databases[#db_var.guid] = Mapdatabase.create(#db_var.guid)"
@@ -64,14 +82,15 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
   install-helper!
 
 
-  { 
-    process: (text, generic, node, connections, connectors, inner-nodes) ->
+  {
+    process: (text, generic, node, connections, connectors, inner-nodes, debug) ->
       context = {
         generic: generic
         node: node
         connections: connections
         connectors: connectors
         meta: "{}"
+        debug: debug
       }
       if generic.meta?
         context.meta = JSON.stringify generic.meta

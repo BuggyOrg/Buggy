@@ -28,7 +28,43 @@
 					}
 				],
 				"description" : "Adds two numbers",
-				"implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
+				"implementation" : "{{merge-meta 'Sum' 'Term 1'}};{{merge-meta 'Sum' 'Term 2'}};\n  {{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
+			}
+		],
+		"Serialize" : [
+			{
+				"name" : "Serialize",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Data",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "for(var i=0; i<{{input 'Data'}}.length; i++){\n  {{output 'Result'}} = {{input 'Data'}}[i];\n  if(i == {{input 'Data'}}.length -1){ {{set-meta 'Result' 'last' true}};}  {{set-meta 'Result' 'StreamComponent' 'i'}}; {{output-data 'Result'}};\n  }\n"
+			}
+		],
+		"Deserialize" : [
+			{
+				"name" : "Deserialize",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Data",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Result",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : " if(!('Value' in storage)){storage.Value = []; }\n  storage.Value.push({{input 'Data'}});\n if({{has-meta 'Data' 'last'}} && {{meta-query 'Data' 'last'}} == true){ {{output 'Result'}} = storage.Value; {{output-data 'Result'}};\n  delete storage.Value;\n}\n"
 			}
 		],
 		"Constant" : [
@@ -43,200 +79,320 @@
 					}
 				],
 				"description" : "Represents a constant value. Set the value of the constant in the meta information",
-				"implementation" : "{{output 'Value'}} = {{meta-query 'Constant.value'}};"
+				"implementation" : "{{output 'Value'}} = {{node-meta 'Constant.value'}};"
 			}
 		],
-		"Each" : [
-		  {
-		  	"name" : "Each",
-		  	"atomic" : true,
-		  	"connectors" : [
-		  		{
-		  			"name" : "Array",
-		  			"connector-type" : "Input",
-		  			"data-type" : "database"
-		  		},
-		  		{
-		  			"name" : "Element",
-		  			"connector-type" : "Output"
-		  		}
-		  	],
-	  		"explicit-callback" : true,
-	  		"implementation" : "var db = {{input 'Array'}};\n Mapdatabase.queryFuture(db, '', function(item){\n    {{output 'Element'}} = item;\n    callback(output);\n  });"
-		  },
+		"Map" : [
 			{
-				"name" : "Each",
-				"atomic" : true,
+				"name" : "Map",
 				"connectors" : [
 					{
 						"name" : "Array",
 						"connector-type" : "Input"
 					},
 					{
-						"name" : "Element",
+						"name" : "Result",
 						"connector-type" : "Output"
+					},
+					{
+						"name" : "ValueOut",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "ValueIn",
+						"connector-type" : "Input"
 					}
 				],
-				"description" : "Iterates over an array",
-				"explicit-callback" : true,
-				"implementation" : "for (var i = 0; i < {{input 'Array'}}.length; i++) {\n    {{output 'Element'}} = {{input 'Array'}}[i];\n    {{metadata 'id'}} = i;\n    callback(output);\n  }"
+				"generics" : [
+					{
+						"name" : "Serialize",
+						"inputs" : { "Data" : ">Map:Array" }
+					},
+					{
+						"name" : "Deserialize",
+						"inputs" : { "Data" : ">Map:ValueIn" }
+					}
+				],
+				"connections" : [
+					{
+						"id" : "Serialize:Result -> Map:ValueOut",
+						"input" : { "generic" : "Map", "connector" : "ValueOut" },
+						"output" : { "generic" : "Serialize", "connector" : "Result" }
+					},
+					{
+						"id" : "Deserialize:Result -> Map:Result",
+						"input" : { "generic" : "Map", "connector" : "Result" },
+						"output" : { "generic" : "Deserialize", "connector" : "Result" }
+					}
+				]
 			}
 		],
 		"Select" : [
 			{
 				"name" : "Select",
-				"connectors" : [
-					{
-						"name" : "Array",
-						"connector-type" : "Input",
-						"data-type" : "array"
-					},
-					{
-						"name" : "Data",
-						"connector-type" : "Output",
-						"data-type" : "array"
-					}
-				],
-				"generics" : [
-					{
-						"name" : "Each",
-						"inputs" :  { "Array" : ">Select:Array" }
-					},
-					{
-						"name" : "Switch",
-						"inputs" : { "A" : ">Each:Element", "Switch" : ">Less:Result" }
-					},
-					{
-						"name" : "Constant",
-						"meta" : {
-              "Constant" : {
-                "data-type" : "number",
-                "value" : 10
-              }
-            }
-					},
-					{
-						"name" : "Less",
-						"inputs" : { "what" : ">Each:Element", "lessThan" : ">Constant:Value" }
-					}
-				],
-				"connections" : [
-					{
-						"id": "Switch:Result -> Select:Data",
-			     	"input": { "generic": "Select", "connector": "Data" },
-				    "output": { "generic": "Switch", "connector": "Result" }
-					}
-				]
-			}
-		],
-		"Less" : [
-			{
-				"name" : "Less",
 				"atomic" : true,
 				"connectors" : [
 					{
-						"name" : "what",
-						"connector-type" : "Input",
-						"comment" : "Less could work on other data too, but for some an explicit method is needed..",
-						"data-type" : "number"
+						"name" : "Stream",
+						"connector-type" : "Input"
 					},
 					{
-						"name" : "lessThan",
-						"connector-type" : "Input",
-						"comment" : "Less could work on other data too, but for some an explicit method is needed..",
-						"data-type" : "number"
+						"name" : "OutStream",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Selection",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Select.Selection'}}){ {{output 'Selection'}} = {{input 'Stream'}}; {{output-data 'Selection'}} }\n {{merge-meta 'OutStream' 'Stream'}}; {{output 'OutStream'}} = {{input 'Stream'}}; {{output-data 'OutStream'}};"
+			}
+		],
+		"Set" : [
+			{
+				"name" : "Set",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Stream",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "OutStream",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Selection",
+						"connector-type" : "Input"
+					}
+				],
+				"explicit-input" : true,
+				"implementation" : "{{input-data 'Stream'}}; if({{meta-query 'Stream' 'StreamComponent'}} == {{node-meta 'Set.Selection'}}){ {{input-data 'Selection'}}; {{output 'OutStream'}} = {{input 'Selection'}}; }\nelse{ {{output 'OutStream'}} = {{input 'Stream'}};}\n {{merge-meta 'OutStream' 'Stream'}};"
+			}
+		],
+		"Sync" : [
+			{
+				"name" : "Sync",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "SyncWith",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "SyncWhat",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Synced",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "{{output 'Synced'}} = {{input 'SyncWhat'}};"
+			}
+		],
+		"Clone" : [
+			{
+				"name" : "Clone",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "What",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Out1",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Out2",
+						"connector-type" : "Output"
+					}
+				],
+				"implementation" : "{{output 'Out1'}} = {{input 'What'}}; {{merge-meta 'Out1' 'What'}}; {{output 'Out2'}} = {{input 'What'}}; {{merge-meta 'Out2' 'What'}};"
+			}
+		],
+		"CloneAllButLast" : [
+			{
+				"name" : "Clone",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "What",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Stream",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Cloned",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "{{output 'Stream'}} = {{input 'What'}}; {{merge-meta 'Stream' 'What'}}; {{output-data 'Stream'}} if({{has-meta 'What' 'last'}} && {{meta-query 'What' 'last'}} == true){ } else { {{output 'Cloned'}} = {{input 'What'}}; {{merge-meta 'Cloned' 'What'}}; {{output-data 'Cloned'}}; }"
+			}
+		],
+		"Last" : [
+			{
+				"name" : "Last",
+				"atomic" : true,
+				"connectors" : [
+					{
+						"name" : "Stream",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Last",
+						"connector-type" : "Output"
+					}
+				],
+				"explicit-callback" : true,
+				"implementation" : "if({{has-meta 'Stream' 'last'}} && {{meta-query 'Stream' 'last'}} == true){ {{output 'Last'}} = {{input 'Stream'}}; {{output-data 'Last'}}; }"
+			}
+		],
+		"Scan" : [
+			{
+				"name" : "Scan",
+				"connectors" : [
+					{
+						"name" : "Initial",
+						"connector-type": "Input"
+					},
+					{
+						"name" : "Array",
+						"connector-type" : "Input"
+					},
+					{
+						"name" : "Value1Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "Value2Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "ValueIn",
+						"connector-type" : "Input"
 					},
 					{
 						"name" : "Result",
-						"connector-type" : "Output",
-						"data-type" : "bool"
-					}
-				],
-				"implementation" : "{{output 'Result'}} = {{input 'what'}} < {{input 'lessThan'}};"
-			}
-		],
-		"database" : [
-			{
-				"name" : "database",
-				"connectors" : [
-					{
-						"name" : "Create",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "Add",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "Database",
 						"connector-type" : "Output"
 					}
 				],
 				"generics" : [
 					{
-						"name" : "database_storage",
-						"inputs" : { "new_db" : ">database:Create" }
+						"name" : "Serialize",
+						"inputs" : { "Data" : ">Scan:Array" }
 					},
 					{
-						"name" : "add_to_database",
-						"inputs" : { "what" : ">database:Add" }
+						"name" : "Select",
+						"inputs" : { "Stream" : ">Serialize:Result" },
+						"meta" : {
+							"Select" : {
+								"Selection" : 0
+							}
+						}
+					},
+					{
+						"name" : "Sync",
+						"inputs" : { "SyncWith" : ">Select:Selection", "SyncWhat" : ">Scan:Initial" }
+					},
+					{
+						"name" : "CloneAllButLast",
+						"inputs" : { "What" : ">Scan:ValueIn" }
+					},
+					{
+						"name" : "Deserialize",
+						"inputs" : { "Data" : ">CloneAllButLast:Stream" }
 					}
 				],
 				"connections" : [
 					{
-						"id" : "database_storage:db -> database:Database",
-						"input" : { "generic" : "database", "connector" : "Database" },
-						"output" : { "generic" : "database_storage", "connector" : "db" }
+						"id" : "Select:OutStream -> Scan:Value1Out",
+						"input" : { "generic" : "Scan", "connector" : "Value1Out" },
+						"output" : { "generic" : "Select", "connector" : "OutStream" }
+					},
+					{
+						"id" : "Sync:Synced -> Scan:Value2Out",
+						"input" : { "generic" : "Scan", "connector" : "Value2Out" },
+						"output" : { "generic" : "Sync", "connector" : "Synced" }
+					},
+					{
+						"id" : "CloneAllButLast:Cloned -> Scan:Value2Out",
+						"input" : { "generic" : "Scan", "connector" : "Value2Out" },
+						"output" : { "generic" : "CloneAllButLast", "connector" : "Cloned" }
+					},
+					{
+						"id" : "Deserialize:Result -> Scan:Result",
+						"input" : { "generic" : "Scan", "connector" : "Result" },
+						"output" : { "generic" : "Deserialize", "connector" : "Result" }
 					}
 				]
 			}
 		],
-		"UUID" : [
+		"Fold" : [
 			{
-				"name" : "UUID",
-				"atomic" : true,
+				"name" : "Fold",
 				"connectors" : [
 					{
-						"name" : "Sync",
+						"name" : "Initial",
+						"connector-type": "Input"
+					},
+					{
+						"name" : "Array",
 						"connector-type" : "Input"
 					},
 					{
-						"name" : "ID",
+						"name" : "Value1Out",
 						"connector-type" : "Output"
-					}
-				],
-				"require" : [ "guid.js" ],
-				"implementation" : "{{output 'ID'}} = guid();"
-			}
-		],
-		"database_storage" : [
-			{
-				"name" : "database_storage",
-				"atomic" : true,
-				"connectors" : [
+					},
 					{
-						"name" : "new_db",
+						"name" : "Value2Out",
+						"connector-type" : "Output"
+					},
+					{
+						"name" : "ValueIn",
 						"connector-type" : "Input"
 					},
 					{
-						"name" : "db",
+						"name" : "Result",
 						"connector-type" : "Output"
 					}
 				],
-				"implementation" : "var new_db = {{input 'new_db'}};\n {{create-database 'new_db'}};\n  {{output 'db'}} = {{database-by-guid 'new_db'}};"
-			}
-		],
-		"add_to_database" : [
-			{
-				"name" : "add_to_database",
-				"atomic" : true,
-				"connectors" : [
+				"generics" : [
 					{
-						"name" : "what",
-						"connector-type" : "Input"
+						"name" : "Scan",
+						"inputs" : { "Initial" : ">Fold:Initial", "Array" : ">Fold:Array", "ValueIn" : ">Fold:ValueIn" }
+					},
+					{
+						"name" : "Serialize",
+						"inputs" : { "Data" : ">Scan:Result" }
+					},
+					{
+						"name" : "Last",
+						"inputs" : { "Stream" : ">Serialize:Result" }
 					}
 				],
-				"implementation" : "var what = {{input 'what'}};\n  {{database-add 'what' 'databases'}};"
+				"connections" : [
+					{
+						"id" : "Scan:Value1Out -> Fold:Value1Out",
+						"input" : { "generic" : "Fold", "connector" : "Value1Out" },
+						"output" : { "generic" : "Scan", "connector" : "Value1Out" }
+					},
+					{
+						"id" : "Scan:Value2Out -> Fold:Value2Out",
+						"input" : { "generic" : "Fold", "connector" : "Value2Out" },
+						"output" : { "generic" : "Scan", "connector" : "Value2Out" }
+					},
+					{
+						"id" : "Last:Last -> Fold:Result",
+						"input" : { "generic" : "Fold", "connector" : "Result" },
+						"output" : { "generic" : "Last", "connector" : "Last" }
+					}
+				]
 			}
 		],
 		"Take" : [
@@ -276,214 +432,6 @@
 				"implementation" : "{{output 'Value'}} = { start: 0, next: function(value){ return value + 1; } };"
 			}
 		],
-		"car" : [
-			{
-				"name" : "car",
-				"atomic" : true,
-				"connectors" : [
-					{
-						"name" : "Array",
-						"connector-type" : "Input",
-						"data-type" : "array"
-					},
-					{
-						"name" : "Value",
-						"connector-type" : "Output"
-					}
-				],
-				"explicit-callback" : true,
-				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
-				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Value'}} = {{input 'Array'}}[0];\n    callback(output);\n  }"
-			}
-		],
-		"cdr" : [
-			{
-				"name" : "car",
-				"atomic" : true,
-				"connectors" : [
-					{
-						"name" : "Array",
-						"connector-type" : "Input",
-						"data-type" : "array"
-					},
-					{
-						"name" : "Rest",
-						"connector-type" : "Output"
-					}
-				],
-				"explicit-callback" : true,
-				"description" : "Gives the first element in a list. If the list is empty no callback will be invoked",
-				"implementation" : "if({{input 'Array'}}.length > 0){\n    {{output 'Rest'}} = {{input 'Array'}}.slice(1);\n    callback(output);\n  }"
-			}
-		],
-		"Empty" : [
-			{
-				"comment" : "this node is not in its final stage. The empty function should ask the type with a query if it is empty and not simply implement the functionality.",
-				"name" : "Empty",
-				"atomic" : true,
-				"connectors" : [
-					{
-						"name" : "Array",
-						"connector-type" : "Input",
-						"data-type" : "array"
-					},
-					{
-						"name" : "IsEmpty",
-						"connector-type" : "Output",
-						"data-type" : "bool"
-					}
-				],
-				"implementation" : "{{output 'IsEmpty'}} = ({{input 'Array'}}.length == 0);"
-			}
-		],
-		"Switch" : [
-			{
-				"name" : "Switch",
-				"atomic" : true,
-				"connectors" : [
-					{
-						"name" : "Switch",
-						"connector-type" : "Input",
-						"data-type" : "bool"
-					},
-					{
-						"name" : "A",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "Result",
-						"connector-type" : "Output"
-					}
-				],
-				"explicit-callback" : true,
-				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n    callback(output);\n  }"
-			}
-		],
-		"Mux" : [
-			{
-				"name" : "Mux",
-				"atomic" : true,
-				"connectors" : [
-					{
-						"name" : "Switch",
-						"connector-type" : "Input",
-						"data-type" : "bool"
-					},
-					{
-						"name" : "A",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "B",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "Result",
-						"connector-type" : "Output"
-					}
-				],
-				"implementation" : "if({{input 'Switch'}}){\n   {{output 'Result'}} = {{input 'A'}};\n  } else {\n    {{output 'Result'}} = {{input 'B'}};\n  }"
-			}
-		],
-		"Fold"		: [
-			{
-				"name" : "Fold",
-				"generics" : [
-					{
-						"name" : "Empty",
-						"id" : "EmptyInput",
-						"inputs" : { "Array" : ">Fold:Array" }
-					},
-					{
-						"name" : "car",
-						"inputs" : { "Array" : ">Fold:Array" }
-					},
-					{
-						"name" : "cdr",
-						"inputs" : { "Array" : ">Fold:Array" }
-					},
-					{
-						"name" : "Empty",
-						"id" : "EmptyCurrent",
-						"inputs" : { "Array" : ">cdr:Rest" }
-					},
-					{
-						"name" : "Switch",
-						"id" : "SwitchInput",
-						"inputs" : { "Switch" : ">EmptyInput:IsEmpty", "A" : ">Fold:Initial" }
-					},
-					{
-						"name" : "Switch",
-						"id" : "SwitchCurrent",
-						"inputs" : { "Switch" : ">EmptyCurrent:IsEmpty", "A" : ">Fold:FunctionResult" }
-					}
-				],
-				"connections" : [
-					{
-						"id": "Fold:Initial -> Fold:Value1",
-				     	"input": { "generic": "Fold", "connector": "Value1" },
-					    "output": { "generic": "Fold", "connector": "Initial" }
-					},
-					{
-						"id": "Fold:FunctionResult -> Fold:Value1",
-				     	"input": { "generic": "Fold", "connector": "Value1" },
-					    "output": { "generic": "Fold", "connector": "FunctionResult" }
-					},
-					{
-						"id": "car:Value -> Fold:Value2",
-				     	"input": { "generic": "Fold", "connector": "Value2" },
-					    "output": { "generic": "car", "connector": "Value" }
-					},
-					{
-						"id": "cdr:Rest -> car:Array",
-				     	"input": { "generic": "car", "connector": "Array" },
-					    "output": { "generic": "cdr", "connector": "Rest" }
-					},
-					{
-						"id": "cdr:Rest -> cdr:Array",
-				     	"input": { "generic": "cdr", "connector": "Array" },
-					    "output": { "generic": "cdr", "connector": "Rest" }
-					},
-					{
-						"id": "SwitchInput:Result -> Fold:Result",
-				     	"input": { "generic": "Fold", "connector": "Result" },
-					    "output": { "generic": "SwitchInput", "connector": "Result" }
-					},
-					{
-						"id": "SwitchCurrent:Result -> Fold:Result",
-				     	"input": { "generic": "Fold", "connector": "Result" },
-					    "output": { "generic": "SwitchCurrent", "connector": "Result" }
-					}
-				],
-				"connectors" : [
-					{
-						"name" : "Initial",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "Array",
-						"connector-type" : "Input",
-						"data-type" : "array"
-					},
-					{
-						"name" : "FunctionResult",
-						"connector-type" : "Input"
-					},
-					{
-						"name" : "Value1",
-						"connector-type" : "Output"
-					},
-					{
-						"name" : "Value2",
-						"connector-type" : "Output"
-					},
-					{
-						"name" : "Result",
-						"connector-type" : "Output"
-					}
-				]
-			}
-		],
 		"StringToNumber" : [
 			{
 				"name" : "StringToNumber",
@@ -502,7 +450,7 @@
 				],
 				"description" : "Converts a String into a number",
 				"explicit-callback" : true,
-				"implementation" : "var num = Number({{input 'String'}});\n  if(!isNaN(num)){\n    {{output 'Number'}} = num;\n    callback(output);\n  }"
+				"implementation" : "var num = Number({{input 'String'}});\n  if(!isNaN(num)){\n    {{output 'Number'}} = num;\n    do_callback(callback, output);\n  }"
 			}
 		],
 		"StringToArray" : [

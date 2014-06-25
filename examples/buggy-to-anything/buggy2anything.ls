@@ -1,6 +1,7 @@
 #!/usr/bin/env lsc
 
 require! yargs
+beautify = (require "js-beautify").js_beautify
 global <<< require \prelude-ls
 
 requirejs = require \../../node_modules/requirejs/bin/r.js
@@ -23,13 +24,17 @@ yargs = yargs.describe "m", "additional (optional) module that will be loaded in
 yargs = yargs.describe "l", "expects a language definition file containing compilation information"
 yargs = yargs.describe "o", "output file of the executable (which file type it produces depends on the chosen language"
 yargs = yargs.describe "d", "prints the dependcy graph only"
+yargs = yargs.describe "g", "result prints debug information"
 yargs = yargs.demand <[ m l ]>
 args = yargs.argv
 
 ld-file = requirejs "json!" + args.l
 
+debug = args.g?
+
 compose = requirejs "ls!src/compose"
 LD = requirejs "ls!src/language-definition"
+
 
 ld = LD.load-from-json ld-file
 if args.m?
@@ -46,7 +51,9 @@ if args.d?
   compose.create-dependency-graph ld, (graph) ->
     console.log JSON.stringify graph
 else
-  compose.compose ld, (program) ->
-    console.log "function import$(obj, src){var own = {}.hasOwnProperty;for (var key in src) if (own.call(src, key)) obj[key] = src[key];return obj;}\nimport$(global, require('prelude-ls')); var databases = {};"
-    console.log program
-    console.log "var queues = Group_main({},{});\nNode_Input(queues.input, queues.output);\n";
+  compose.compose ld, debug, (program) ->
+    output = "";
+    output += "var csp = require('js-csp');var merge = require('object-merge')\nfunction* id(input, out){\n  while(true){yield csp.put(out, yield csp.take(input));}\n}\n"
+    output += program
+    output += "Group_main();\n";
+    console.log beautify output, indent_size: 2
