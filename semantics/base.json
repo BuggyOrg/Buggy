@@ -11,6 +11,12 @@
       "description" : "Basic functional units like map,fold,scan,reduce",
       "uri" : "functional.json",
       "type" : "load"
+    },
+    {
+      "name" : "Documentation",
+      "description" : "Documentation of basic semantic features",
+      "uri" : "documentation.json",
+      "type" : "load"
     }
   ]
 }

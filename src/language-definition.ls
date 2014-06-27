@@ -27,13 +27,13 @@ define (...) ->
       query-f = (name, type) ->
         module-q-functions = modules |> map -> it.query
         q-functions = concat [query-function, module-q-functions]
-        
+
         # remove all null values and return first non null value
         if type == "search"
           flatten (filter (-> it?), (q-functions |> map -> it name, type))
         else
           first (filter (-> it?), (q-functions |> map -> it name, type))
-      { 
+      {
         # '## LanguageName' is a special function implemented by every language
         # that simply gives the name of the implemented language
         name: query-function "## LanguageName"
@@ -64,7 +64,7 @@ define (...) ->
             if ((it.toLowerCase!).search capName) != -1
               json.symbols[it]
           filter (-> it?), result
-        else 
+        else
           null
 
     # returns a query function for a json specification
