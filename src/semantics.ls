@@ -15,11 +15,27 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define !->
+define ["ls!src/semantics/sources",
+        "ls!src/semantics/symbols",
+        "ls!src/semantics/loading"] (Sources, Symbols, Loading) ->
 
-  {
-    load-semantics: (semantics) ->
-      s = create-semantics!
-      semantics |> map ->
-        s.add-definition it
+  Semantics = {
+    create-semantics: (...) ->
+      {
+        sources: []
+        symbols: []
+      }
+
+
+    # loads a semantic file and recursively loads all dependencies
+    load-semantic-file: (file, semantics-loaded) ->
+      s = Semantics.create-semantics!
+      load-file = (json) ->
+        Symbols.add-symbols-from-json s, json
+        # this must be the last call (currently) as it returns the
+        # new sources added
+        Sources.add-sources-from-json s, json
+
+      Loading.load-file-recursivly file, s, load-file, semantics-loaded
+
   }

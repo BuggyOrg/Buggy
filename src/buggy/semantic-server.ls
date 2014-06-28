@@ -16,12 +16,30 @@
 */
 
 console.log "starting semantics server"
+url = require "url"
+global <<< require \prelude-ls
+requirejs = require "../require.js"
 
 
-http = require("http");
+Semantics = requirejs "ls!src/semantics"
 
-(http.createServer (request, response) ->
-  console.log "request received "
-  console.log request
-  response.writeHead 200, "Content-Type": "text/plain"
-  response.end "Y").listen 8001
+Semantics.load-semantic-file "base.json", (semantics) ->
+
+  setTimeout (->
+    console.log "Semantics"
+    console.log semantics), 1000
+
+  http = require("http");
+
+  (http.createServer (request, response) ->
+    uri = url.parse(request.url).pathname
+    console.log "uri #uri"
+    if uri == "/sources/"
+      response.writeHead 200, "Content-Type": "text/plain"
+      response.write JSON.stringify semantics.sources
+      response.end!
+    else
+      response.writeHead 200, "Content-Type": "text/plain"
+      response.write "Server is running!"
+      response.end!
+    ).listen 8001
