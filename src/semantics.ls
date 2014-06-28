@@ -36,7 +36,7 @@ define ["ls!src/semantics/sources",
         # new sources added
         Sources.add-sources-from-json s, json
 
-      Loading.load-file-recursivly file, s, load-file, semantics-loaded
+      Loading.load-file-recursively file, s, load-file, semantics-loaded
 
     query: (semantics, what, query-type = "Symbol") ->
       switch query-type

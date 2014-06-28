@@ -37,7 +37,7 @@ define ["ls!src/semantics/sources"], (Sources) ->
       load-json file-paths, pf-callback
 
   {
-    load-file-recursivly: (file, semantics, load-function, callback) ->
+    load-file-recursively: (file, semantics, load-function, callback) ->
       load-json [file-path file], (json) ->
         process-file semantics, load-function, json
         callback semantics
