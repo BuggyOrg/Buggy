@@ -23,7 +23,7 @@ requirejs = require "../require.js"
 
 Semantics = requirejs "ls!src/semantics"
 
-Semantics.load-semantic-file "base.json", (semantics) ->
+Semantics.load-semantic-files ["base.json", "javascript/js.json"], (semantics) ->
   console.log "Semantics"
   console.log semantics
 

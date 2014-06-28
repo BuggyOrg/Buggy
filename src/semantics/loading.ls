@@ -19,8 +19,11 @@ define ["ls!src/semantics/sources"], (Sources) ->
   file-path = (file) ->
     "json!semantics/#file"
 
-  load-json = (files, loaded) ->
+  load-files = (files, loaded) ->
     requirejs files, loaded
+
+  load-json = (files, loaded) ->
+    load-files files, loaded
 
   # filters 'filter-num' many arguments from an argument 'map'
   filter-arguments = (argument-map, filter-num) ->
@@ -42,7 +45,12 @@ define ["ls!src/semantics/sources"], (Sources) ->
       load-json file-paths, pf-callback
 
   {
-    load-file-recursively: (file, semantics, load-function, callback) ->
-      load-json [file-path file], (json) ->
-        process-file semantics, load-function, callback, json
+    load-file-recursively: (files, semantics, load-function, callback) ->
+      file-paths = files |> map file-path
+      loaded = process-file semantics, load-function, callback
+      load-json file-paths, loaded
+
+    load-template-file: (filepath, callback) ->
+      load-files ["text!semantics/#filepath"], callback
+
   }

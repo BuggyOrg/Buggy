@@ -17,26 +17,35 @@
 
 define ["ls!src/semantics/sources",
         "ls!src/semantics/symbols",
-        "ls!src/semantics/loading"] (Sources, Symbols, Loading) ->
+        "ls!src/semantics/implementation",
+        "ls!src/semantics/loading"], (Sources, Symbols, Impl, Loading) ->
 
   Semantics = {
     create-semantics: (...) ->
       {
         sources: []
         symbols: []
+        implementations: []
       }
 
 
     # loads a semantic file and recursively loads all dependencies
     load-semantic-file: (file, semantics-loaded) ->
+      Semantics.load-semantic-files([file], semantics-loaded)
+
+    load-semantic-files: (files, semantics-loaded) ->
+      if typeof! files != "Array"
+        throw "Files Array has wrong format"
       s = Semantics.create-semantics!
       load-file = (json) ->
         Symbols.add-symbols-from-json s, json
+        Impl.add-implementations-from-json s, json
         # this must be the last call (currently) as it returns the
         # new sources added
         Sources.add-sources-from-json s, json
 
-      Loading.load-file-recursively file, s, load-file, semantics-loaded
+      console.log Loading
+      Loading.load-file-recursively files, s, load-file, semantics-loaded
 
     query: (semantics, what, query-type = "Symbol") ->
       switch query-type

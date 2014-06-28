@@ -1,0 +1,20 @@
+{
+  "implementations" : [
+    {
+      "name" : "Add",
+      "implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
+    },
+    {
+      "name" : "Constant",
+      "implementation-file" : "javascript/implementation/atomics/constant.js"
+    },
+    {
+      "name" : "Select",
+      "implementation-file" : "javascript/implementation/atomics/select.js"
+    },
+    {
+      "name" : "Set",
+      "implementation-file" : "javascript/implementation/atomics/set.js"
+    }
+  ]
+}
