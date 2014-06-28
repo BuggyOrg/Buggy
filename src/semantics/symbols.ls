@@ -33,5 +33,5 @@ define ->
         []
 
     query: (semantics, what) ->
-      semantics.symbols |> find -> it.name == what
+      semantics.symbols |> filter -> it.name == what
   }

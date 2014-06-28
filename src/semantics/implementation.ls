@@ -38,4 +38,7 @@ define ["ls!src/semantics/loading"], (Loading) ->
         json.implementations |> map Implementation.add-implementation semantics
       else
         []
+
+    query: (semantics, what) ->
+      semantics.implementations |> filter -> it.name == what
   }

@@ -35,10 +35,10 @@ Semantics.load-semantic-files ["base.json", "javascript/js.json"], (semantics) -
       response.writeHead 200, "Content-Type": "text/plain"
       response.write JSON.stringify semantics.sources
       response.end!
-    else if uri.query.query == "symbols"
+    else if uri.query.query?
       if uri.query.what?
         response.writeHead 200, "Content-Type": "text/plain"
-        response.write JSON.stringify Semantics.query semantics, uri.query.what
+        response.write JSON.stringify Semantics.query semantics, uri.query.what, uri.query.query
         response.end!
       else
         response.writeHead 200, "Content-Type": "text/plain"
