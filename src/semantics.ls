@@ -38,4 +38,8 @@ define ["ls!src/semantics/sources",
 
       Loading.load-file-recursivly file, s, load-file, semantics-loaded
 
+    query: (semantics, what, query-type = "Symbol") ->
+      switch query-type
+      | "Symbol"     => Symbols.query semantics, what
+      | otherwise    => ...
   }

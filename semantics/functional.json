@@ -1,1 +1,13 @@
-{}
+{
+  "symbols" : [
+    {
+      "name" : "Map",
+      "connectors" : [
+        { "name" : "Array", "type" : "Input" },
+        { "name" : "Result", "type" : "Output" },
+        { "name" : "ArrayStreamOut", "type" : "Output" },
+        { "name" : "ResultStreamIn", "type" : "Input" }
+      ]
+    }
+  ]
+}

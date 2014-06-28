@@ -29,7 +29,7 @@ define ["ls!src/semantics/sources"], (Sources) ->
     |> map -> it.1
 
   process-file = (semantics, load-function, json) -->
-    (filter-arguments arguments, 2) |> map !->
+    (filter-arguments arguments, 2) |> map ->
       new-sources = load-function it
       file-sources = new-sources |> filter Sources.loadable
       pf-callback = process-file semantics, load-function

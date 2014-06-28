@@ -32,12 +32,20 @@ Semantics.load-semantic-file "base.json", (semantics) ->
   http = require("http");
 
   (http.createServer (request, response) ->
-    uri = url.parse(request.url).pathname
-    console.log "uri #uri"
-    if uri == "/sources/"
+    uri = url.parse(request.url, true)
+    if uri.query.query == "sources"
       response.writeHead 200, "Content-Type": "text/plain"
       response.write JSON.stringify semantics.sources
       response.end!
+    else if uri.query.query == "symbols"
+      if uri.query.what?
+        response.writeHead 200, "Content-Type": "text/plain"
+        response.write JSON.stringify Semantics.query semantics, uri.query.what
+        response.end!
+      else
+        response.writeHead 200, "Content-Type": "text/plain"
+        response.write JSON.stringify semantics.symbols
+        response.end!
     else
       response.writeHead 200, "Content-Type": "text/plain"
       response.write "Server is running!"

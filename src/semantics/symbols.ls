@@ -17,6 +17,8 @@
 define ->
 
   Symbols = {
+    # todo: there should be a faster method of accessing symbols than
+    # linear search
     add-symbol: (semantics, symbol) -->
       if !(semantics.symbols?)
         semantics.symbols = [symbol]
@@ -29,4 +31,7 @@ define ->
         json.symbols |> map Symbols.add-symbol semantics
       else
         []
+
+    query: (semantics, what) ->
+      semantics.symbols |> find -> it.name == what
   }
