@@ -24,10 +24,8 @@ requirejs = require "../require.js"
 Semantics = requirejs "ls!src/semantics"
 
 Semantics.load-semantic-file "base.json", (semantics) ->
-
-  setTimeout (->
-    console.log "Semantics"
-    console.log semantics), 1000
+  console.log "Semantics"
+  console.log semantics
 
   http = require("http");
 

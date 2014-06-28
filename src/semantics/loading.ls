@@ -28,17 +28,21 @@ define ["ls!src/semantics/sources"], (Sources) ->
     |> filter -> it.0 >= filter-num
     |> map -> it.1
 
-  process-file = (semantics, load-function, json) -->
-    (filter-arguments arguments, 2) |> map ->
+  process-file = (semantics, load-function, callback, json) -->
+    pf-callback = process-file semantics, load-function, callback
+    #perform a bfs to know when the async loading process is finished
+    file-paths = (filter-arguments arguments, 2) |> map ->
       new-sources = load-function it
       file-sources = new-sources |> filter Sources.loadable
-      pf-callback = process-file semantics, load-function
-      file-paths = file-sources |> map -> file-path Sources.file-uri it
+      file-sources |> map -> file-path Sources.file-uri it
+    file-paths = flatten file-paths
+    if empty file-paths
+      callback semantics
+    else
       load-json file-paths, pf-callback
 
   {
     load-file-recursively: (file, semantics, load-function, callback) ->
       load-json [file-path file], (json) ->
-        process-file semantics, load-function, json
-        callback semantics
+        process-file semantics, load-function, callback, json
   }
