@@ -38,16 +38,15 @@ define ["ls!src/semantics/sources",
         throw "Files Array has wrong format"
       s = Semantics.create-semantics!
       load-file = (json) ->
-        Symbols.add-symbols-from-json s, json
-        Impl.add-implementations-from-json s, json
+        Symbols.add-from-json s, json
+        Impl.add-from-json s, json
         # this must be the last call (currently) as it returns the
         # new sources added
-        Sources.add-sources-from-json s, json
+        Sources.add-from-json s, json
 
-      console.log Loading
       Loading.load-file-recursively files, s, load-file, semantics-loaded
 
-    query: (semantics, what, query-type = "Symbol") ->
+    query: (semantics, what, options, query-type = "Symbol") ->
       switch query-type
       | "symbols"         => Symbols.query semantics, what
       | "implementations" => Impl.query semantics, what

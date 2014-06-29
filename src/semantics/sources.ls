@@ -14,24 +14,13 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ->
-  Sources = {
-    add-source: (semantics, source) -->
-      if !(semantics.sources?)
-        semantics.sources = [source]
-      else
-        semantics.sources.push source
-      source
+define ["ls!src/semantics/semantic-field"], (Field) ->
+  Sources = Field "sources"
 
-    add-sources-from-json: (semantics, json) ->
-      if json.sources?
-        json.sources |> map Sources.add-source semantics
-      else
-        []
-
-    loadable: (source) ->
+  Sources.loadable = (source) ->
       source.type == "load"
 
-    file-uri: (source) ->
+  Sources.file-uri = (source) ->
       source.uri
-  }
+
+  return Sources

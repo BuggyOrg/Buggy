@@ -27,6 +27,8 @@ Semantics.load-semantic-files ["semantics/base.json", "semantics/javascript/js.j
   console.log "Semantics"
   console.log semantics
 
+  options = language: "javascript"
+
   http = require("http");
 
   (http.createServer (request, response) ->
@@ -37,8 +39,9 @@ Semantics.load-semantic-files ["semantics/base.json", "semantics/javascript/js.j
       response.end!
     else if uri.query.query?
       if uri.query.what?
+        console.log "querying for " + uri.query.what + " in : " + uri.query.query
         response.writeHead 200, "Content-Type": "text/plain"
-        response.write JSON.stringify Semantics.query semantics, uri.query.what, uri.query.query
+        response.write JSON.stringify Semantics.query semantics, uri.query.what, options, uri.query.query
         response.end!
       else
         response.writeHead 200, "Content-Type": "text/plain"

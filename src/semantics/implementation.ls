@@ -15,32 +15,9 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define ["ls!src/semantics/loading"], (Loading) ->
+define ["ls!src/semantics/hooks/implementation",
+        "ls!src/semantics/predicates/implementation",
+        "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field, Loading) ->
 
-  Implementation = {
-    add-implementation: (semantics, implementation) -->
-      if implementation["implementation-file"]?
-        if implementation.implementation?
-          throw "Conflicting 'implemenation' and 'implemenation-file' definition for :\n" +
-              JSON.stringify implementation
-
-        Loading.load-template-file implementation["implementation-file"], ->
-          implementation.implementation = it
-      if !implementation.atomic?
-        implementation.atomic = false
-
-      if !(semantics.implementations?)
-        semantics.implementations = [implementation]
-      else
-        semantics.implementations.push implementation
-      implementation
-
-    add-implementations-from-json: (semantics, json) ->
-      if json.implementations?
-        json.implementations |> map Implementation.add-implementation semantics
-      else
-        []
-
-    query: (semantics, what, language="javascript") ->
-      semantics.implementations |> filter -> it.name == what && (!it.atomic || it.language == language)
-  }
+  # create a semantic field with the necessary hooks and predicates
+  Field "implementations", Hooks, Predicates

@@ -14,7 +14,14 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define ["ls!src/semantics/predicates/symbols",
-        "ls!src/semantics/semantic-field"], (Predicates, Field) ->
+define ->
 
-  Symbols = Field "symbols", [], Predicates
+  predicates =
+    * name: "name filter",
+      description: "filters all elements that don't match the given name",
+      process: (value, query, options)->
+        value.name == query
+    * name: "atomic implementation",
+      description: "filters all elements that have no implementation although they need one",
+      process: (value, query, options) ->
+        !value.atomic || value.language == options.language
