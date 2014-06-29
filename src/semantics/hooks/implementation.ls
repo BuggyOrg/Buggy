@@ -14,7 +14,8 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define ["ls!src/semantics/loading"], (Loading) ->
+define ["ls!src/semantics/hooks/implementation-connections"
+        "ls!src/semantics/loading"], (Conn, Loading) ->
 
   # array of hooks
   hooks =
@@ -29,10 +30,11 @@ define ["ls!src/semantics/loading"], (Loading) ->
           Loading.load-template-file impl["implementation-file"], ->
             impl.implementation = it
         return impl
-        
+
     * name: "processing atomics",
       description: "adds the field 'atomic' if it isn't present and defaults it to false",
       process: ->
         if !it.atomic?
           it.atomic = false
         return it
+    * Conn

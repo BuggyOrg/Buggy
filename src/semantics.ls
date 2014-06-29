@@ -35,7 +35,7 @@ define ["ls!src/semantics/sources",
 
     load-semantic-files: (files, semantics-loaded) ->
       if typeof! files != "Array"
-        throw "Files Array has wrong format"
+        throw "[Semantics] Files Array has wrong format"
       s = Semantics.create-semantics!
       load-file = (json) ->
         Symbols.add-from-json s, json
