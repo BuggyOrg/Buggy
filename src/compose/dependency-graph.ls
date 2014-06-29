@@ -17,7 +17,7 @@
 
 define ["ls!src/graph"] (Graph) ->
 
-  generate-dependency-graph = (generic-name, resolve, match-function) ->
+  /*generate-dependency-graph-old = (generic-name, resolve, match-function) ->
     # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
       # this case should be dealt with somewhere .. probably here
 
@@ -26,12 +26,36 @@ define ["ls!src/graph"] (Graph) ->
       sub-graphs = grp-graph.nodes |> map (n) ->
         generate-dependency-graph n.name, resolve, match-function
 
+      fold Graph.union, grp-graph, sub-graphs*/
+
+  generate-dependency-graph = (generic-name, semantics, options) ->
+    # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
+      # this case should be dealt with somewhere .. probably here
+
+      match-function = options.best-match
+      grp = match-function generic-name, semantics, "implementations"
+      if !grp?
+        throw new Error "[Dependency Graph] Couldn't resolve the group '#generic-name'"
+      grp-graph = Graph.from-group grp
+      sub-graphs = grp-graph.nodes |> map (n) ->
+        generate-dependency-graph n.name, semantics, options
+
       fold Graph.union, grp-graph, sub-graphs
 
   {
-    generate-for: (entry, resolve, match-function) ->
+    /*generate-for: (entry, resolve, match-function) ->
       # create the graph starting with the entry
-      dependency-graph = generate-dependency-graph entry, resolve, match-function
+      dependency-graph = generate-dependency-graph-old entry, resolve, match-function
       # add the entry group to the graph
-      Graph.add-node dependency-graph, entry
+      Graph.add-node dependency-graph, entry*/
+
+    generate: (semantics, options) ->
+      # create the graph for the group described in output.parent
+      # todo: use the real output node not the group containing the node
+      dep-graph = generate-dependency-graph options.output.parent, semantics, options
+
+      Graph.add-node dependency-graph, options.output.parent
+
+    optimize: (graph) ->
+      graph
   }

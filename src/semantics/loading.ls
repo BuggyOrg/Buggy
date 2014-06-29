@@ -17,7 +17,10 @@
 define ["ls!src/semantics/sources"], (Sources) ->
 
   file-path = (file) ->
-    "json!semantics/#file"
+    if (file.substring 0, "semantics".length) == "semantics"
+      "json!#file"
+    else
+      "json!semantics/#file"
 
   load-files = (files, loaded) ->
     requirejs files, loaded

@@ -15,10 +15,10 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-# resolve tries to create an datastructure that contains all groups 
+# resolve tries to create an datastructure that contains all groups
 # resolved (contain all necessary information to compile)
 # meaning that it resolves every group up to its atomics and creates necessary
-# type-transformations. 
+# type-transformations.
 # This process requires a language definition (ld) that provides language specific stuff.
 #
 # Additionally it should be possible to choose between different implementation types for
@@ -26,7 +26,7 @@
 # exact implementation). One should be able to provide those information beforehand or
 # the resolve-process be able to request a choice for every such situation (which is most certainly
 # necessary due to changes done by others to the implementation of such semantic groups)
-define ["ls!src/language-definition", 
+define ["ls!src/language-definition",
         "ls!src/group",
         "ls!src/generic"], (Ld, Group, Generic) ->
 
@@ -77,7 +77,7 @@ define ["ls!src/language-definition",
       res ["main", {}]
 
       done? resolved
-      
+
 
     # resolves everything necessary for a given output.. creates a dependency tree
     # and only resolves necessary elements with optional lazy "resolvation"
@@ -85,4 +85,3 @@ define ["ls!src/language-definition",
     resolve-output: (output, program, ld, done, lazy = false) ->
       # TODO: resolve everything necessary for output!?
   }
-  

@@ -25,8 +25,10 @@ define ["ls!src/semantics/loading"], (Loading) ->
               JSON.stringify implementation
 
         Loading.load-template-file implementation["implementation-file"], ->
-          console.log "Implemetation: \n" + it
           implementation.implementation = it
+      if !implementation.atomic?
+        implementation.atomic = false
+
       if !(semantics.implementations?)
         semantics.implementations = [implementation]
       else
@@ -40,5 +42,5 @@ define ["ls!src/semantics/loading"], (Loading) ->
         []
 
     query: (semantics, what, language="javascript") ->
-      semantics.implementations |> filter -> it.name == what && it.language == language
+      semantics.implementations |> filter -> it.name == what && (!it.atomic || it.language == language)
   }

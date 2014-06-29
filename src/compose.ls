@@ -15,21 +15,41 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/compose/dependency-graph", "ls!src/resolve", "ls!src/compose/source"], (DependencyGraph, Resolve, Source) ->
+define ["ls!src/compose/dependency-graph",
+        "ls!src/resolve",
+        "ls!src/compose/source",
+        "ls!src/semantics"
+        "ls!src/util/clone"], (DependencyGraph, Resolve, Source, Semantics, Clone) ->
 
-  get-best-match = (id, resolve) ->
-    r = resolve[id]
+  get-best-match = (id, semantics, type) ->
+    res = Semantics.query semantics, id, type
     # TODO: currently the best match is the first match ;)
-    if typeof! r == "Array"
-      r.0
-    else
-      r
+    res.0
+
+  default-options = {
+    output: {parent: "main", what: "Output"},
+  }
 
   {
-    compose: (ld, debug, done) ->
+    /*compose: (ld, debug, done) ->
       Resolve.resolve ld, (resolve) ->
         source = Source.generate-for "main", resolve, ld, debug
-        done? source
+        done? source*/
+
+    compose: (semantics, options) ->
+      # use default options where no options are set
+      compose-options = Clone default-options
+      compose-options <<< options
+
+      if !compose-options.best-match?
+        compose-options.best-match = get-best-match
+
+      d-graph = DependencyGraph.generate semantics, compose-options
+      console.log d-graph
+      SanityCheck semantics, d-graph
+      o-graph = DependencyGraph.optimize d-graph
+      source = Source.generate-source semantics, o-graph, compose-options
+
 
 
     create-dependency-graph: (ld, done) ->
