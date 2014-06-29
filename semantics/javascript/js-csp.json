@@ -1,28 +1,35 @@
 {
   "construction" : [
     {
-      "template" : "atomics",
-      "file" : "javascript/templates/csp/atomics.js"
-    },
-    {
-      "template" : "groups",
-      "file" : "javascript/templates/csp/groups.js"
-    },
-    {
-      "template" : "nodes",
-      "file" : "javascript/templates/csp/nodes.js"
-    },
-    {
-      "template" : "header",
-      "file" : "javascript/templates/csp/header.js"
-    },
-    {
-      "template" : "header",
-      "file" : "javascript/templates/csp/footer.js"
-    },
-    {
-      "template" : "requires",
-      "file" : "javascript/templates/csp/requires.js"
+      "template-set" : "js-csp",
+      "language" : "javascript",
+      "description" : "uses CSP to build construct a javascript program with channel communication between groups",
+      "templates" : [
+        {
+          "template" : "atomics",
+          "file" : "javascript/templates/csp/atomics.js"
+        },
+        {
+          "template" : "groups",
+          "file" : "javascript/templates/csp/groups.js"
+        },
+        {
+          "template" : "nodes",
+          "file" : "javascript/templates/csp/nodes.js"
+        },
+        {
+          "template" : "header",
+          "file" : "javascript/templates/csp/header.js"
+        },
+        {
+          "template" : "header",
+          "file" : "javascript/templates/csp/footer.js"
+        },
+        {
+          "template" : "requires",
+          "file" : "javascript/templates/csp/requires.js"
+        }
+      ]
     }
   ]
 }

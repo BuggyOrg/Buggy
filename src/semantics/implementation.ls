@@ -39,6 +39,6 @@ define ["ls!src/semantics/loading"], (Loading) ->
       else
         []
 
-    query: (semantics, what) ->
-      semantics.implementations |> filter -> it.name == what
+    query: (semantics, what, language="javascript") ->
+      semantics.implementations |> filter -> it.name == what && it.language == language
   }
