@@ -7,27 +7,27 @@
       "templates" : [
         {
           "template" : "atomics",
-          "file" : "javascript/templates/csp/atomics.js"
+          "file" : "semantics/javascript/templates/csp/atomics.js"
         },
         {
           "template" : "groups",
-          "file" : "javascript/templates/csp/groups.js"
+          "file" : "semantics/javascript/templates/csp/groups.js"
         },
         {
           "template" : "nodes",
-          "file" : "javascript/templates/csp/nodes.js"
+          "file" : "semantics/javascript/templates/csp/nodes.js"
         },
         {
           "template" : "header",
-          "file" : "javascript/templates/csp/header.js"
+          "file" : "semantics/javascript/templates/csp/header.js"
         },
         {
           "template" : "header",
-          "file" : "javascript/templates/csp/footer.js"
+          "file" : "semantics/javascript/templates/csp/footer.js"
         },
         {
           "template" : "requires",
-          "file" : "javascript/templates/csp/requires.js"
+          "file" : "semantics/javascript/templates/csp/requires.js"
         }
       ]
     }

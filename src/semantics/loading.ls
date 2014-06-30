@@ -17,7 +17,9 @@
 define ["ls!src/semantics/sources"], (Sources) ->
 
   file-path = (file) ->
-    if (file.substring 0, "semantics".length) == "semantics"
+    if (file.indexOf "!") != -1 
+      file
+    else if (file.indexOf "/") != -1
       "json!#file"
     else
       "json!semantics/#file"
@@ -54,6 +56,6 @@ define ["ls!src/semantics/sources"], (Sources) ->
       load-json file-paths, loaded
 
     load-template-file: (filepath, callback) ->
-      load-files ["text!semantics/#filepath"], callback
+      load-files ["text!#filepath"], callback
 
   }

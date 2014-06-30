@@ -8,17 +8,17 @@
     {
       "name" : "Constant",
       "language" : "javascript",
-      "implementation-file" : "javascript/implementation/atomics/constant.js"
+      "implementation-file" : "semantics/javascript/implementation/atomics/constant.js"
     },
     {
       "name" : "Select",
       "language" : "javascript",
-      "implementation-file" : "javascript/implementation/atomics/select.js"
+      "implementation-file" : "semantics/javascript/implementation/atomics/select.js"
     },
     {
       "name" : "Set",
       "language" : "javascript",
-      "implementation-file" : "javascript/implementation/atomics/set.js",
+      "implementation-file" : "semantics/javascript/implementation/atomics/set.js"
     }
   ]
 }

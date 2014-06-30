@@ -48,7 +48,7 @@ define ["ls!src/semantics/sources",
 
     query: (semantics, what, options, query-type = "Symbol") ->
       switch query-type
-      | "symbols"         => Symbols.query semantics, what
-      | "implementations" => Impl.query semantics, what
+      | "symbols"         => Symbols.query semantics, what, options
+      | "implementations" => Impl.query semantics, what, options
       | otherwise         => ...
   }

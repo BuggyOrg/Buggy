@@ -3,7 +3,7 @@
     {
       "name" : "Atomic Documentation",
       "description" : "Documentation of atomics",
-      "uri" : "documentation/atomics.json",
+      "uri" : "semantics/documentation/atomics.json",
       "type" : "load"
     }
   ]

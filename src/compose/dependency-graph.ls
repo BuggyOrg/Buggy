@@ -33,7 +33,7 @@ define ["ls!src/graph"] (Graph) ->
       # this case should be dealt with somewhere .. probably here
 
       match-function = options.best-match
-      grp = match-function generic-name, semantics, "implementations"
+      grp = match-function generic-name, semantics, options, "implementations"
       if !grp?
         throw new Error "[Dependency Graph] Couldn't resolve the group '#generic-name'"
       grp-graph = Graph.from-group grp

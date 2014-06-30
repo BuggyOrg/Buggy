@@ -21,8 +21,8 @@ define ["ls!src/compose/dependency-graph",
         "ls!src/semantics"
         "ls!src/util/clone"], (DependencyGraph, Resolve, Source, Semantics, Clone) ->
 
-  get-best-match = (id, semantics, type) ->
-    res = Semantics.query semantics, id, type
+  get-best-match = (id, semantics, options, type) -->
+    res = Semantics.query semantics, id, options, type
     # TODO: currently the best match is the first match ;)
     res.0
 
