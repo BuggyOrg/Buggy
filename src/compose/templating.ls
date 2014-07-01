@@ -83,7 +83,17 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
 
 
   {
-    process: (text, generic, node, connections, connectors, inner-nodes, debug) ->
+    process: (text, impl, options) ->
+      context = impl
+
+      if context.implementation?
+        implTempl = Handlebars.compile context.implementation, noEscape: true
+        context.implementation = implTempl context
+
+      template = Handlebars.compile text, noEscape: true
+      template context
+
+    process-a: (text, generic, node, connections, connectors, inner-nodes, debug) ->
       context = {
         generic: generic
         node: node

@@ -15,7 +15,11 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/graph", "ls!src/util/clone"] (DependencyGraph, Templating, Graph, Clone) ->
+define ["ls!src/compose/dependency-graph",
+        "ls!src/compose/templating",
+        "ls!src/graph",
+        "ls!src/semantics",
+        "ls!src/util/clone"] (DependencyGraph, Templating, Graph, Semantics, Clone) ->
 
   get-best-match = (id, resolve) ->
     r = resolve[id]
@@ -83,6 +87,20 @@ define ["ls!src/compose/dependency-graph", "ls!src/compose/templating", "ls!src/
     fold (+), "", srcs
 
   {
+
+    generate-source: (semantics, graph, options) ->
+      implementations = graph.nodes |> map (n) ->
+        options.best-match n.name, semantics, options, "implementations"
+
+      constr = (Semantics.query semantics, "js-csp", options, "construction").0
+      sources = constr.templates |> map (t) ->
+        if t.process == "once"
+          t["template-file"]
+        else if t.process == "implementations" or t.process == "nodes"
+          implementations |> map (impl) ->
+            Templating.process t["template-file"], impl, options
+
+      console.log fold1 (+), sources
 
     # generates source code for the program and resolved objects
     generate-for: (entry, resolve, ld, debug) ->

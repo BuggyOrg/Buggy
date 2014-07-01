@@ -3,21 +3,25 @@
     {
       "name" : "Add",
       "language" : "javascript",
+      "atomic" : true,
       "implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
     },
     {
       "name" : "Constant",
       "language" : "javascript",
+      "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/constant.js"
     },
     {
       "name" : "Select",
       "language" : "javascript",
+      "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/select.js"
     },
     {
       "name" : "Set",
       "language" : "javascript",
+      "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/set.js"
     }
   ]

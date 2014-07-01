@@ -19,7 +19,8 @@ define ["ls!src/compose/dependency-graph",
         "ls!src/resolve",
         "ls!src/compose/source",
         "ls!src/semantics"
-        "ls!src/util/clone"], (DependencyGraph, Resolve, Source, Semantics, Clone) ->
+        "ls!src/compose/sanity-check"
+        "ls!src/util/clone"], (DependencyGraph, Resolve, Source, Semantics, SanityCheck, Clone) ->
 
   get-best-match = (id, semantics, options, type) -->
     res = Semantics.query semantics, id, options, type

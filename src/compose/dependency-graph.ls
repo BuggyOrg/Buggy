@@ -54,7 +54,7 @@ define ["ls!src/graph"] (Graph) ->
       # todo: use the real output node not the group containing the node
       dep-graph = generate-dependency-graph options.output.parent, semantics, options
 
-      Graph.add-node dependency-graph, options.output.parent
+      Graph.add-node dep-graph, options.output.parent
 
     optimize: (graph) ->
       graph

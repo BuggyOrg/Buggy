@@ -18,7 +18,8 @@
 define ["ls!src/semantics/sources",
         "ls!src/semantics/symbols",
         "ls!src/semantics/implementation",
-        "ls!src/semantics/loading"], (Sources, Symbols, Impl, Loading) ->
+        "ls!src/semantics/construction",
+        "ls!src/semantics/loading"], (Sources, Symbols, Impl, Construction, Loading) ->
 
   Semantics = {
     create-semantics: (...) ->
@@ -26,6 +27,7 @@ define ["ls!src/semantics/sources",
         sources: []
         symbols: []
         implementations: []
+        construcition: []
       }
 
 
@@ -40,6 +42,7 @@ define ["ls!src/semantics/sources",
       load-file = (json) ->
         Symbols.add-from-json s, json
         Impl.add-from-json s, json
+        Construction.add-from-json s, json
         # this must be the last call (currently) as it returns the
         # new sources added
         Sources.add-from-json s, json
@@ -50,5 +53,6 @@ define ["ls!src/semantics/sources",
       switch query-type
       | "symbols"         => Symbols.query semantics, what, options
       | "implementations" => Impl.query semantics, what, options
+      | "construction"    => Construction.query semantics, what, options
       | otherwise         => ...
   }

@@ -1,6 +1,6 @@
-function {{generic.name}} (input, meta, callback){
+function {{name}} (input, meta, callback){
   var output = {};
-  {{node.implementation}}
-{{#unless node.explicit-callback}}  callback(output);
+  {{implementation}}
+{{#unless explicit-callback}}  callback(output);
 {{/unless}}
 }

@@ -1,4 +1,4 @@
-{{requires}}
+var csp = require("js-csp");
 
 function* id(input, out){
   while(true)

@@ -1,33 +1,39 @@
 {
   "construction" : [
     {
-      "template-set" : "js-csp",
+      "name" : "js-csp",
       "language" : "javascript",
       "description" : "uses CSP to build construct a javascript program with channel communication between groups",
       "templates" : [
         {
+          "template" : "requires",
+          "file" : "semantics/javascript/templates/csp/requires.js",
+          "process" : "implementations"
+        },
+        {
+          "template" : "header",
+          "file" : "semantics/javascript/templates/csp/header.js",
+          "process" : "once"
+        },
+        {
           "template" : "atomics",
-          "file" : "semantics/javascript/templates/csp/atomics.js"
+          "file" : "semantics/javascript/templates/csp/atomics.js",
+          "process" : "implementations"
         },
         {
           "template" : "groups",
-          "file" : "semantics/javascript/templates/csp/groups.js"
+          "file" : "semantics/javascript/templates/csp/groups.js",
+          "process" : "nodes"
         },
         {
           "template" : "nodes",
-          "file" : "semantics/javascript/templates/csp/nodes.js"
+          "file" : "semantics/javascript/templates/csp/nodes.js",
+          "process" : "nodes"
         },
         {
-          "template" : "header",
-          "file" : "semantics/javascript/templates/csp/header.js"
-        },
-        {
-          "template" : "header",
-          "file" : "semantics/javascript/templates/csp/footer.js"
-        },
-        {
-          "template" : "requires",
-          "file" : "semantics/javascript/templates/csp/requires.js"
+          "template" : "footer",
+          "file" : "semantics/javascript/templates/csp/footer.js",
+          "process" : "once"
         }
       ]
     }
