@@ -25,4 +25,4 @@ Compose = requirejs "ls!src/compose"
 Semantics = requirejs "ls!src/semantics"
 
 Semantics.load-semantic-files args.s, (semantics) ->
-  Compose.compose semantics, options
+  console.log (Compose.compose semantics, options)

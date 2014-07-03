@@ -1,6 +1,8 @@
-function {{name}} (input, meta, callback){
+{{#if implementation.implementation}}
+function {{implementation.name}} (input, meta, callback){
   var output = {};
-  {{implementation}}
-{{#unless explicit-callback}}  callback(output);
+  {{implementation.implementation}}
+{{#unless implementation.explicit-callback}}  callback(output);
 {{/unless}}
 }
+{{/if}}

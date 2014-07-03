@@ -1,8 +1,8 @@
 {{#ifCond node.atomic node.implemented}}
 {{else}}
-function Group_{{generic.id}} (InQueues, OutQueues){
+function Group_{{node.id}} (InQueues, OutQueues){
   var qInput = {
-{{#each connectors}}{{#if_eq connector-type "Input"}}
+{{#each symbol.connectors}}{{#if_eq connector-type "Input"}}
 {{#if_neq ../../generic.id generic}}
     "{{generic}}:{{name}}" : csp.chan(),
 {{/if_neq}}\

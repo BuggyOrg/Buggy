@@ -56,6 +56,12 @@ define ["ls!src/graph"] (Graph) ->
 
       Graph.add-node dep-graph, options.output.parent
 
+      dep-graph.nodes |> fold ((id,n) ->
+        n.mangle = id
+        id + 1), 0
+
+      return dep-graph
+
     optimize: (graph) ->
       graph
   }

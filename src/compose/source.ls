@@ -89,18 +89,24 @@ define ["ls!src/compose/dependency-graph",
   {
 
     generate-source: (semantics, graph, options) ->
-      implementations = graph.nodes |> map (n) ->
-        options.best-match n.name, semantics, options, "implementations"
+      res = graph.nodes |> map (n) ->
+        {
+          node: n
+          implementation: options.best-match n.name, semantics, options, "implementations"
+          symbol: options.best-match n.name, semantics, options, "symbols"
+        }
 
       constr = (Semantics.query semantics, "js-csp", options, "construction").0
       sources = constr.templates |> map (t) ->
         if t.process == "once"
           t["template-file"]
         else if t.process == "implementations" or t.process == "nodes"
-          implementations |> map (impl) ->
-            Templating.process t["template-file"], impl, options
+          res |> map (r) ->
+            console.log r.node.name
+            console.log r.symbol
+            Templating.process t["template-file"], r, options
 
-      console.log fold1 (+), sources
+      fold1 (+), (flatten sources)
 
     # generates source code for the program and resolved objects
     generate-for: (entry, resolve, ld, debug) ->

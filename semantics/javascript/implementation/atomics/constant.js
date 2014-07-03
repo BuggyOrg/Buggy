@@ -1,1 +1,1 @@
-{{output 'Value'}} = {{meta-query 'Constant.value'}};
+{{output 'Value'}} = {{node-meta 'Constant.value'}};
