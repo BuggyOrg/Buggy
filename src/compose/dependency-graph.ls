@@ -43,11 +43,6 @@ define ["ls!src/graph"] (Graph) ->
       fold Graph.union, grp-graph, sub-graphs
 
   {
-    /*generate-for: (entry, resolve, match-function) ->
-      # create the graph starting with the entry
-      dependency-graph = generate-dependency-graph-old entry, resolve, match-function
-      # add the entry group to the graph
-      Graph.add-node dependency-graph, entry*/
 
     generate: (semantics, options) ->
       # create the graph for the group described in output.parent
@@ -60,6 +55,7 @@ define ["ls!src/graph"] (Graph) ->
         n.mangle = id
         id + 1), 0
 
+      #name mangling for global connection graph
       dep-graph.connections |> map (c) ->
         node-from = first (dep-graph.nodes |> filter (n) -> n.name == c.from.generic)
         node-to = first (dep-graph.nodes |> filter (n) -> n.name == c.to.generic)

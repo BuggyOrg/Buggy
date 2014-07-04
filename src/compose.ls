@@ -16,11 +16,10 @@
 */
 
 define ["ls!src/compose/dependency-graph",
-        "ls!src/resolve",
         "ls!src/compose/source",
         "ls!src/semantics"
         "ls!src/compose/sanity-check"
-        "ls!src/util/clone"], (DependencyGraph, Resolve, Source, Semantics, SanityCheck, Clone) ->
+        "ls!src/util/clone"], (DependencyGraph, Source, Semantics, SanityCheck, Clone) ->
 
   get-best-match = (id, semantics, options, type) -->
     res = Semantics.query semantics, id, options, type
@@ -32,11 +31,6 @@ define ["ls!src/compose/dependency-graph",
   }
 
   {
-    /*compose: (ld, debug, done) ->
-      Resolve.resolve ld, (resolve) ->
-        source = Source.generate-for "main", resolve, ld, debug
-        done? source*/
-
     compose: (semantics, options) ->
       # use default options where no options are set
       compose-options = Clone default-options

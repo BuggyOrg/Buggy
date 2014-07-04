@@ -3,7 +3,7 @@ global <<< require \prelude-ls
 require! chai
 chai.should!
 
-Resolve = requirejs \ls!src/resolve
+#Resolve = requirejs \ls!src/resolve
 Group = requirejs \ls!src/group
 Generic = requirejs \ls!src/generic
 Ld = requirejs \ls!src/language-definition
