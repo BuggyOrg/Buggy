@@ -24,8 +24,8 @@ default-config = {
   }
 }
 
-define ["ls!src/language-definition", "ls!src/group", "ls!src/util/clone"], (Ld, Group, Clone) ->
-  
+define [ "ls!src/group", "ls!src/util/clone"], (Group, Clone) ->
+
   {
     create: (config) ->
       new-buggy = Clone default-config
@@ -37,9 +37,5 @@ define ["ls!src/language-definition", "ls!src/group", "ls!src/util/clone"], (Ld,
         buggy.symbols[id].push Clone group
       else
         buggy.symbols[id] = [ Clone group ]
-
-    search: (ld, name, callback) ->
-      res = ld.search name
-      callback res
 
   }
