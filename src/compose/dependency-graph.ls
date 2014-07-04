@@ -60,6 +60,12 @@ define ["ls!src/graph"] (Graph) ->
         n.mangle = id
         id + 1), 0
 
+      dep-graph.connections |> map (c) ->
+        node-from = first (dep-graph.nodes |> filter (n) -> n.name == c.from.generic)
+        node-to = first (dep-graph.nodes |> filter (n) -> n.name == c.to.generic)
+        c.from.mangle = node-from.mangle
+        c.to.mangle = node-to.mangle
+
       return dep-graph
 
     optimize: (graph) ->

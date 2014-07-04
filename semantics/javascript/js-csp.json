@@ -21,9 +21,9 @@
           "process" : "implementations"
         },
         {
-          "template" : "groups",
-          "file" : "semantics/javascript/templates/csp/groups.js",
-          "process" : "nodes"
+          "template" : "graph",
+          "file" : "semantics/javascript/templates/csp/graph.js",
+          "process" : "graph"
         },
         {
           "template" : "nodes",

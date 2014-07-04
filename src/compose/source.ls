@@ -97,13 +97,14 @@ define ["ls!src/compose/dependency-graph",
         }
 
       constr = (Semantics.query semantics, "js-csp", options, "construction").0
+
       sources = constr.templates |> map (t) ->
         if t.process == "once"
           t["template-file"]
+        else if t.process == "graph"
+          Templating.process t["template-file"], graph, options
         else if t.process == "implementations" or t.process == "nodes"
           res |> map (r) ->
-            console.log r.node.name
-            console.log r.symbol
             Templating.process t["template-file"], r, options
 
       fold1 (+), (flatten sources)

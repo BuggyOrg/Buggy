@@ -17,6 +17,12 @@
       "description" : "Documentation of basic semantic features",
       "uri" : "semantics/documentation.json",
       "type" : "load"
+    },
+    {
+      "name" : "Shells",
+      "description" : "Definitions for specific shells",
+      "uri" : "semantics/shells.json",
+      "type" : "load"
     }
   ]
 }

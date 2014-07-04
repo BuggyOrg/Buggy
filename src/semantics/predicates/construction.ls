@@ -20,7 +20,6 @@ define ->
     * name: "name filter",
       description: "filters all elements that don't match the given name",
       process: (value, query, options)->
-        console.log "querying construction name #query " + value.name
         value.name == query
     * name: "language implementation",
       description: "filters all elements that aren't in the right language",

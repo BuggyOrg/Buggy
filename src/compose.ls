@@ -46,7 +46,6 @@ define ["ls!src/compose/dependency-graph",
         compose-options.best-match = get-best-match
 
       d-graph = DependencyGraph.generate semantics, compose-options
-      console.log d-graph
       SanityCheck semantics, d-graph
       o-graph = DependencyGraph.optimize d-graph
       source = Source.generate-source semantics, o-graph, compose-options
