@@ -8,6 +8,7 @@ requirejs.config({
   	'json': "../../lib/json",
     'src': "../../src",
     'semantics': "../../semantics",
+    'examples': "../../examples",
     'livescript': "../../lib/livescript",
     'ls': "../../lib/ls",
     'prelude': "../../lib/prelude-browser",
