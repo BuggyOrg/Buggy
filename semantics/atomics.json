@@ -1,0 +1,33 @@
+{
+  "symbols" : [
+    {
+      "name" : "Add",
+      "connectors" : [
+        { "name" : "Term 1", "type" : "Input" },
+        { "name" : "Term 2", "type" : "Input" },
+        { "name" : "Sum", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "Constant",
+      "connectors" : [
+        { "name" : "Value", "type" : "Generator" }
+      ]
+    },
+    {
+      "name" : "Select",
+      "connectors" : [
+        { "name" : "StreamIn", "type" : "Input" },
+        { "name" : "Selection", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "Set",
+      "connectors" : [
+        { "name" : "StreamIn", "type" : "Input" },
+        { "name" : "Value", "type" : "Input" },
+        { "name" : "StreamOut", "type" : "Output" }
+      ]
+    }
+  ]
+}

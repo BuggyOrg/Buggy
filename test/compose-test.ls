@@ -6,9 +6,8 @@ chai.should!
 Compose = requirejs "ls!src/compose"
 Group = requirejs \ls!src/group
 Generic = requirejs \ls!src/generic
-Ld = requirejs \ls!src/language-definition
 
-describe "Compose", !->
+/*describe "Compose", !->
   empty-ld = query: (q) -> {}
 
   min-ld = Ld.create (query) ->
@@ -18,7 +17,7 @@ describe "Compose", !->
     | "--> node" => ""
     | "--> group" => ""
     | "min-gen" => [{ "atomic" : true, "implementation" : "min-impl" }]
-    | otherwise => null 
+    | otherwise => null
 
   describe "Composing a Scene", (...) !->
     it "should fail if the program contains no 'main' Method", !->
@@ -32,4 +31,4 @@ describe "Compose", !->
       min-ld.add-module module
 
       Compose.compose min-ld, (source) ->
-        source.should.include "min-impl"
+        source.should.include "min-impl"*/

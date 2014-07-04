@@ -36,12 +36,10 @@ module.exports = function(grunt){
     {
       inout_module = "jsshell.json";
     }
+    inout_module = "examples/modules/" + inout_module;
     var file = spec;
     grunt.log.write("Building File " + file + " for target language 'Javascript'");
 
-    // at first update and check the language / program files
-    grunt.task.run("lang");
-    grunt.task.run("shell:jsonLintFile:"+file);
 
     var file_out_path = generateBuildPath(file, grunt);
     // some ugly regex to replace (hopefully) the ending!
@@ -52,33 +50,19 @@ module.exports = function(grunt){
     grunt.task.run("shell:compose:"+file+":"+file_out+":"+inout_module);
   });
 
-  grunt.registerTask('lang', ['shell:buildLanguage', 'shell:checkLanguageFile']);
-
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-mkdir');
 
   grunt.config.merge({
     shell: {
-      buildLanguage: {
-        command: "node tools/build_language_file.js languages/javascript/javascript.construction.ld > languages/javascript/javascript.ld"
-      },
-      jsonLintFile: {
-        command: function(file){
-          return "jsonlint " + file;
-        },
-        options : {
-          stdout: false
-        }
-      },
-      checkLanguageFile: {
-        command: "jsonlint languages/javascript/javascript.ld",
-        options: {
-          stdout: false
-        }
-      },
       compose: {
         command: function(file, file_output, inout_module){
-          return "examples/buggy-to-anything/buggy2anything.ls -l ../../languages/javascript/javascript.ld -m ../modules/"+inout_module+" -m ../../" + file + " > " + file_output;
+          var sources = ["semantics/base.json",
+                         "semantics/javascript/js.json",
+                         file, inout_module];
+          var src = "-s " + sources.join(" -s ");
+          console.log(src);
+          return "src/buggy/buggy2anything.ls -l javascript -s semantics/base.json " + src + " > " + file_output;
         }
       }
     },

@@ -1,0 +1,10 @@
+{
+  "sources" : [
+    {
+      "name" : "Atomic Documentation",
+      "description" : "Documentation of atomics",
+      "uri" : "semantics/documentation/atomics.json",
+      "type" : "load"
+    }
+  ]
+}

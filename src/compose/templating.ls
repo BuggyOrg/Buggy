@@ -60,45 +60,30 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
     Handlebars.registerHelper 'node-meta', (what) ->
       "meta."+what
 
+    Handlebars.registerHelper 'node-meta-to-string', (meta) ->
+      if meta?
+        JSON.stringify meta
+      else
+        "{}"
+
     Handlebars.registerHelper 'metadata', (a) ->
       "var meta "
 
     Handlebars.registerHelper 'merge-meta', (what, input) ->
       "output['"+what+"'].meta = merge(output['"+what+"'].meta, input['"+input+"'].meta);\n";
 
-    Handlebars.registerHelper 'create-database', (db_var) ->
-      "databases[#db_var.guid] = Mapdatabase.create(#db_var.guid)"
-
-    Handlebars.registerHelper 'database-add', (what, dbs) ->
-      "var uuid = input['#what'].meta.database.uuid;\n  var where = '0';\n  if('path' in input['#what'].meta){ where = input['#what'].meta.path; }\n  Mapdatabase.add(#dbs[uuid], where, #what)"
-
-    Handlebars.registerHelper 'database-query', (what, db) ->
-      "MapUtil.find(#db, #what)"
-
-    Handlebars.registerHelper 'database-by-guid', (db_var) ->
-      "databases[#db_var.guid]"
-
 
   install-helper!
 
 
   {
-    process: (text, generic, node, connections, connectors, inner-nodes, debug) ->
-      context = {
-        generic: generic
-        node: node
-        connections: connections
-        connectors: connectors
-        meta: "{}"
-        debug: debug
-      }
-      if generic.meta?
-        context.meta = JSON.stringify generic.meta
+    process: (text, impl, options) ->
+      context = impl
 
-      # apply implementation templates
-      if context.node.implementation?
-        implTempl = Handlebars.compile context.node.implementation, noEscape: true
-        context.node.implementation = implTempl context
+      if context.implementation? and context.implementation.implementation?
+        implTempl = Handlebars.compile context.implementation.implementation, noEscape: true
+        context.implementation.implementation = implTempl context
+
       template = Handlebars.compile text, noEscape: true
       template context
   }
