@@ -61,7 +61,7 @@ module.exports = function(grunt){
                          "semantics/javascript/js.json",
                          file, inout_module];
           var src = "-s " + sources.join(" -s ");
-          console.log(src);
+          console.log("src/buggy/buggy2anything.ls -l javascript -s semantics/base.json " + src + " > " + file_output);
           return "src/buggy/buggy2anything.ls -l javascript -s semantics/base.json " + src + " > " + file_output;
         }
       }

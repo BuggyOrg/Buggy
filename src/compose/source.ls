@@ -34,6 +34,7 @@ define ["ls!src/compose/templating",
         if t.process == "once"
           t["template-file"]
         else if t.process == "graph"
+          console.log graph.connections
           Templating.process t["template-file"], graph, options
         else if t.process == "implementations" or t.process == "nodes"
           res |> map (r) ->

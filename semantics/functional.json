@@ -9,5 +9,32 @@
         { "name" : "ResultStreamIn", "type" : "Input" }
       ]
     }
+  ],
+  "implementations" : [
+    {
+      "name" : "Map",
+      "generics" : [
+        {
+          "name" : "Serialize",
+          "inputs" : { "Array" : ">Map:Array" }
+        },
+        {
+          "name" : "Deserialize",
+          "inputs" : { "Stream" : ">Map:ResultStreamIn" }
+        }
+      ],
+      "connections" : [
+					{
+						"id" : "Serialize:Stream -> Map:ArrayStreamOut",
+						"input" : { "generic" : "Map", "connector" : "ArrayStreamOut" },
+						"output" : { "generic" : "Serialize", "connector" : "Stream" }
+					},
+					{
+						"id" : "Deserialize:Array -> Map:Result",
+						"input" : { "generic" : "Map", "connector" : "Result" },
+						"output" : { "generic" : "Deserialize", "connector" : "Array" }
+					}
+      ]
+    }
   ]
 }

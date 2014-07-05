@@ -1,38 +1,32 @@
 {
-  "symbols": {
-    "main" : [
-      {
-        "module" : true,
-        "generics": [
-          {
-            "name" : "Input"
-          },
-          {
-            "name" : "StringToArray",
-            "comment" : "StringToArray filters all not convertible input strings by not forwarding them",
-            "inputs" : { "String" : ">Input:Value" }
-          },
-          {
-            "name" : "Serialize",
-            "inputs" : { "Data" : ">StringToArray:Array" }
-          },
-          {
-            "name" : "Deserialize",
-            "inputs" : { "Data" : ">Serialize:Result" }
-          },
-          {
-            "name" : "Output",
-            "inputs" : { "Value" : ">Deserialize:Result" }
-          }
-        ],
-        "connections" : [
-        ],
-        "meta": {
-          "type": "group"
+  "implementations": [
+    {
+      "name" : "main",
+      "module" : true,
+      "generics": [
+        {
+          "name" : "Input"
+        },
+        {
+          "name" : "StringToArray",
+          "comment" : "StringToArray filters all not convertible input strings by not forwarding them",
+          "inputs" : { "String" : ">Input:Value" }
+        },
+        {
+          "name" : "Serialize",
+          "inputs" : { "Array" : ">StringToArray:Array" }
+        },
+        {
+          "name" : "Deserialize",
+          "inputs" : { "Stream" : ">Serialize:Stream" }
+        },
+        {
+          "name" : "Output",
+          "inputs" : { "Value" : ">Deserialize:Array" }
         }
-      }
-    ]
-  },
+      ]
+    }
+  ],
   "dependencies": [],
   "meta": {
     "description": "Buggy Environment Description",

@@ -39,6 +39,12 @@ define ["ls!src/graph"] (Graph) ->
       grp-graph = Graph.from-group grp
       sub-graphs = grp-graph.nodes |> map (n) ->
         generate-dependency-graph n.name, semantics, options
+      console.log generic-name
+      console.log "Sub Graphs"
+      console.log sub-graphs
+      console.log "grpgraph"
+      console.log grp-graph
+      console.log grp-graph.connections
 
       fold Graph.union, grp-graph, sub-graphs
 

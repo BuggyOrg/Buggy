@@ -1,54 +1,40 @@
 {
-  "symbols": {
-    "main" : [
-      {
-        "module" : true,
-        "generics": [
-          {
-            "name" : "Input"
-          },
-          {
-            "name" : "StringToArray"
-          },
-          {
-            "name" : "Map",
-            "inputs" : { "Array" : ">StringToArray:Array", "ValueIn" : ">Add:Sum" }
-          },
-          {
-            "name" : "Constant",
-            "meta" : {
-              "Constant" : {
-                "data-type" : "Number",
-                "value" : 4
-              }
+  "implementations": [
+    {
+      "name" : "main",
+      "module" : true,
+      "generics": [
+        {
+          "name" : "Input"
+        },
+        {
+          "name" : "StringToArray",
+          "inputs" : { "String" : ">Input:Value" }
+        },
+        {
+          "name" : "Map",
+          "inputs" : { "Array" : ">StringToArray:Array", "ResultStreamIn" : ">Add:Sum" }
+        },
+        {
+          "name" : "Constant",
+          "meta" : {
+            "Constant" : {
+              "data-type" : "Number",
+              "value" : 4
             }
-          },
-          {
-            "name" : "Add",
-            "inputs" : { "Term 1" : ">Map:ValueOut", "Term 2" : ">Constant:Value" }
-          },
-          {
-            "name" : "Output"
           }
-        ],
-        "connections" : [
-          {
-            "id" : "Input:Value -> StringToArray:String",
-            "input" : { "generic" : "StringToArray", "connector" : "String" },
-            "output" : { "generic" : "Input", "connector" : "Value" }
-          },
-          {
-            "id" : "Map:Result -> Output:Value",
-            "input" : { "generic" : "Output", "connector" : "Value" },
-            "output" : { "generic" : "Map", "connector" : "Result" }
-          }
-        ],
-        "meta": {
-          "type": "group"
+        },
+        {
+          "name" : "Add",
+          "inputs" : { "Term 1" : ">Map:ArrayStreamOut", "Term 2" : ">Constant:Value" }
+        },
+        {
+          "name" : "Output",
+          "inputs" : { "Value" : ">Map:Result" }
         }
-      }
-    ]
-  },
+      ]
+    }
+  ],
   "dependencies": [],
   "meta": {
     "description": "Buggy Environment Description",

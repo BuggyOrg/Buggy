@@ -1,64 +1,32 @@
 {
-  "symbols": {
-    "main" : [
-      {
-        "module" : true,
-        "generics": [
-          {
-            "name" : "Input"
-          },
-          {
-            "name" : "StringToArray"
-          },
-          {
-            "name" : "Output"
-          },
-          {
-            "name" : "Select",
-            "inputs" : { "Stream" : ">Serialize:Result" },
-            "meta" : {
-              "Select" : {
-                "Selection" : 2
-              }
+  "implementations": [
+    {
+      "name" : "main",
+      "module" : true,
+      "generics": [
+        {
+          "name" : "Input"
+        },
+        {
+          "name" : "StringToArray",
+          "inputs" : { "String" : ">Input:Value" }
+        },
+        {
+          "name" : "Output",
+          "inputs" : { "Value" : ">Select:Selection" }
+        },
+        {
+          "name" : "Select",
+          "inputs" : { "Array" : ">StringToArray:Array" },
+          "meta" : {
+            "Select" : {
+              "Selection" : 2
             }
-          },
-          {
-            "name" : "Serialize",
-            "inputs" : { "Data" : ">StringToArray:Array" }
-          },
-          {
-            "name" : "Deserialize",
-            "inputs" : { "Data" : ">Select:OutStream" }
           }
-        ],
-        "connections" : [
-          {
-            "id" : "Input:Value -> StringToArray:String",
-            "input" : { "generic" : "StringToArray", "connector" : "String" },
-            "output" : { "generic" : "Input", "connector" : "Value" }
-          },
-          {
-            "id" : "StringToArray:Array -> Serialize:Data",
-            "input" : { "generic" : "Serialize", "connector" : "Data" },
-            "output" : { "generic" : "StringToArray", "connector" : "Array" }
-          },
-          {
-            "id" : "Select:Selection -> Output:Value",
-            "input" : { "generic" : "Output", "connector" : "Value" },
-            "output" : { "generic" : "Select", "connector" : "Selection" }
-          },
-          {
-            "id" : "Deserialize:Result -> Output:Value",
-            "input" : { "generic" : "Output", "connector" : "Value" },
-            "output" : { "generic" : "Deserialize", "connector" : "Result" }
-          }
-        ],
-        "meta": {
-          "type": "group"
         }
-      }
-    ]
-  },
+      ]
+    }
+  ],
   "dependencies": [],
   "meta": {
     "description": "Buggy Environment Description",

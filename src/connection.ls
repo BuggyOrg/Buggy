@@ -17,11 +17,11 @@
 
 define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
 
-  connections = { 
+  connections = {
     create: (in-generic, in-connector, out) ->
       if out.0 == ">"
         # TODO: the string version  ">NODE:CONNECTOR" should be translated to { "Node" : NODE, "Connector" : CONNECTOR }
-        # and the logic for doing that should be here!
+        # and the logic for doing that should be here!??
         out-string = (out[1 til].join "")
         [out-generic, out-connector] = out-string.split ":"
         connections.create(in-generic, in-connector, { generic: out-generic, connector: out-connector })
@@ -43,14 +43,8 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
     gather: (group) ->
       Connection = this
       connections = []
-      if group.generics?
-        connections = flatten (group.generics |> map (generic) ->
-          obj-to-pairs generic.inputs |> map (inputPair) ->
-            inputID = inputPair.0
-            inputGeneric = inputPair.1
-            Connection.create (Generic.identifier generic), inputID, inputGeneric)
       if group.connections?
-        connections = union connections, Clone group.connections
+        connections = Clone group.connections
       return connections
 
   }

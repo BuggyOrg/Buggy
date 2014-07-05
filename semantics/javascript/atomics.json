@@ -23,6 +23,32 @@
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/set.js"
+    },
+    {
+      "name" : "StringToArray",
+      "language" : "javascript",
+      "atomic" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/string-to-array.js"
+    },
+    {
+      "name" : "Clone",
+      "language" : "javascript",
+      "atomic" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/clone.js"
+    },
+    {
+      "name" : "Serialize",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/serialize.js"
+    },
+    {
+      "name" : "Deserialize",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/deserialize.js"
     }
   ]
 }
