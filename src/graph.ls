@@ -17,22 +17,23 @@
 
 define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generic, Group) ->
 
-  Graph = { 
-    from-group: (grp) ->
-      {
-        nodes: if !grp.generics? then [] else
-            grp.generics |> map (g) ->
-              { 
+  Graph = {
+    from-group: (grp-sym, grp-impl) ->
+      graph = {
+        nodes: if !grp-impl.generics? then [] else
+            grp-impl.generics |> map (g) ->
+              {
                 name: Generic.name g
                 id: Generic.identifier g
-                parent-group: Group.identifier grp
+                parent-group: Group.identifier grp-impl
                 meta: g.meta
               }
-        connections: (Connection.gather grp) |> map (c) ->
+        connections: (Connection.gather grp-sym, grp-impl) |> map (c) ->
           {
             from: c.output
             to: c.input
-            parent-group: Group.identifier grp
+            type: c.type
+            parent-group: Group.identifier grp-impl
           }
       }
 

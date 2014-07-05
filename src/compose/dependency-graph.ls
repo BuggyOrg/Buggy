@@ -33,10 +33,11 @@ define ["ls!src/graph"] (Graph) ->
       # this case should be dealt with somewhere .. probably here
 
       match-function = options.best-match
-      grp = match-function generic-name, semantics, options, "implementations"
-      if !grp?
+      grp-impl = match-function generic-name, semantics, options, "implementations"
+      grp-sym = match-function generic-name, semantics, options, "symbols"
+      if !grp-impl?
         throw new Error "[Dependency Graph] Couldn't resolve the group '#generic-name'"
-      grp-graph = Graph.from-group grp
+      grp-graph = Graph.from-group grp-sym, grp-impl
       sub-graphs = grp-graph.nodes |> map (n) ->
         generate-dependency-graph n.name, semantics, options
 
@@ -62,6 +63,7 @@ define ["ls!src/graph"] (Graph) ->
         c.from.mangle = node-from.mangle
         c.to.mangle = node-to.mangle
 
+      console.warn JSON.stringify dep-graph, null, 2
       return dep-graph
 
     optimize: (graph) ->

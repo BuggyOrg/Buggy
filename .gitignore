@@ -4,4 +4,4 @@ test/*.js
 languages/javascript/javascript.ld
 *.DS_Store
 build/*
-
+*.nfs*

@@ -4,7 +4,7 @@
       "name" : "Add",
       "language" : "javascript",
       "atomic" : true,
-      "implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
+      "implementation-file" : "semantics/javascript/implementation/atomics/add.js"
     },
     {
       "name" : "Constant",
