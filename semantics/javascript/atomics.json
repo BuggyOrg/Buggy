@@ -49,6 +49,20 @@
       "atomic" : true,
       "explicit-callback" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/deserialize.js"
+    },
+    {
+      "name" : "SyncFirst",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/sync-first.js"
+    },
+    {
+      "name" : "NoLast",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/no-last.js"
     }
   ]
 }

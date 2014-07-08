@@ -57,6 +57,21 @@
         { "name" : "Stream", "type" : "Input" },
         { "name" : "Array", "type" : "Output" }
       ]
+    },
+    {
+      "name" : "SyncFirst",
+      "connectors" : [
+        { "name" : "SyncValue", "type" : "Input" },
+        { "name" : "SyncStream", "type" : "Input" },
+        { "name" : "Sync", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "NoLast",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "OutStream", "type" : "Output" }
+      ]
     }
   ]
 }

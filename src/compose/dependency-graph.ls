@@ -58,12 +58,15 @@ define ["ls!src/graph"] (Graph) ->
 
       #name mangling for global connection graph
       dep-graph.connections |> map (c) ->
-        node-from = first (dep-graph.nodes |> filter (n) -> n.name == c.from.generic)
-        node-to = first (dep-graph.nodes |> filter (n) -> n.name == c.to.generic)
+        node-from = first (dep-graph.nodes |> filter (n) -> n.id == c.from.generic)
+        node-to = first (dep-graph.nodes |> filter (n) -> n.id == c.to.generic)
+        if !node-from?
+          throw new Error "Connection start unkown : (" + c.from.generic + ":" + c.from.connector + " -> " + c.to.generic + ":" + c.to.connector + ")"
+        if !node-to?
+          throw new Error "Connection end unkown : (" + c.from.generic + ":" + c.from.connector + " -> " + c.to.generic + ":" + c.to.connector + ")"
         c.from.mangle = node-from.mangle
         c.to.mangle = node-to.mangle
 
-      console.warn JSON.stringify dep-graph, null, 2
       return dep-graph
 
     optimize: (graph) ->

@@ -16,6 +16,6 @@ function Connection_Graph(){
   csp.go(id, [qOutput["{{from.generic}}__{{from.mangle}}:{{from.connector}}"], qInput["{{to.generic}}__{{to.mangle}}:{{to.connector}}"] ]);
 {{~/if_eq}}{{~/each}}
 {{#each nodes}}
-  Node_{{name}}(qInput, qOutput, {{node-meta-to-string meta}});
+  Node_{{id}}(qInput, qOutput, {{node-meta-to-string meta}});
 {{~/each}}
 }

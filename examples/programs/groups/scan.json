@@ -8,7 +8,8 @@
           "name" : "Input"
         },
         {
-          "name" : "StringToArray"
+          "name" : "StringToArray",
+          "inputs" : { "String" : ">Input:Value" }
         },
         {
           "name" : "Constant",
@@ -28,19 +29,8 @@
           "inputs" : { "Term 1" : ">Scan:Value1Out", "Term 2" : ">Scan:Value2Out" }
         },
         {
-          "name" : "Output"
-        }
-      ],
-      "connections" : [
-        {
-          "id" : "Input:Value -> StringToArray:String",
-          "input" : { "generic" : "StringToArray", "connector" : "String" },
-          "output" : { "generic" : "Input", "connector" : "Value" }
-        },
-        {
-          "id" : "Scan:Result -> Output:Value",
-          "input" : { "generic" : "Output", "connector" : "Value" },
-          "output" : { "generic" : "Scan", "connector" : "Result" }
+          "name" : "Output",
+          "inputs" : { "Value" : ">Scan:Result" }
         }
       ],
       "meta": {
