@@ -1,54 +1,53 @@
 {
-  "symbols": {
-    "main" : [
-      {
-        "module" : true,
-        "generics": [
-          {
-            "name" : "Input"
-          },
-          {
-            "name" : "StringToArray"
-          },
-          {
-            "name" : "Constant",
-            "meta" : {
-              "Constant" : {
-                "data-type" : "Number",
-                "value" : 0
-              }
+  "implementations":[
+    {
+      "name" : "main",
+      "module" : true,
+      "generics": [
+        {
+          "name" : "Input"
+        },
+        {
+          "name" : "StringToArray"
+        },
+        {
+          "name" : "Constant",
+          "meta" : {
+            "Constant" : {
+              "data-type" : "Number",
+              "value" : 0
             }
-          },
-          {
-            "name" : "Scan",
-            "inputs" : { "Array" : ">StringToArray:Array", "ValueIn" : ">Add:Sum", "Initial" : ">Constant:Value" }
-          },
-          {
-            "name" : "Add",
-            "inputs" : { "Term 1" : ">Scan:Value1Out", "Term 2" : ">Scan:Value2Out" }
-          },
-          {
-            "name" : "Output"
           }
-        ],
-        "connections" : [
-          {
-            "id" : "Input:Value -> StringToArray:String",
-            "input" : { "generic" : "StringToArray", "connector" : "String" },
-            "output" : { "generic" : "Input", "connector" : "Value" }
-          },
-          {
-            "id" : "Scan:Result -> Output:Value",
-            "input" : { "generic" : "Output", "connector" : "Value" },
-            "output" : { "generic" : "Scan", "connector" : "Result" }
-          }
-        ],
-        "meta": {
-          "type": "group"
+        },
+        {
+          "name" : "Scan",
+          "inputs" : { "Array" : ">StringToArray:Array", "ValueIn" : ">Add:Sum", "Initial" : ">Constant:Value" }
+        },
+        {
+          "name" : "Add",
+          "inputs" : { "Term 1" : ">Scan:Value1Out", "Term 2" : ">Scan:Value2Out" }
+        },
+        {
+          "name" : "Output"
         }
+      ],
+      "connections" : [
+        {
+          "id" : "Input:Value -> StringToArray:String",
+          "input" : { "generic" : "StringToArray", "connector" : "String" },
+          "output" : { "generic" : "Input", "connector" : "Value" }
+        },
+        {
+          "id" : "Scan:Result -> Output:Value",
+          "input" : { "generic" : "Output", "connector" : "Value" },
+          "output" : { "generic" : "Scan", "connector" : "Result" }
+        }
+      ],
+      "meta": {
+        "type": "group"
       }
-    ]
-  },
+    }
+  ],
   "dependencies": [],
   "meta": {
     "description": "Buggy Environment Description",

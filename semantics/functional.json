@@ -8,6 +8,16 @@
         { "name" : "ArrayStreamOut", "type" : "Output" },
         { "name" : "ResultStreamIn", "type" : "Input" }
       ]
+    },
+    {
+      "name" : "Scan",
+      "connectors" : [
+        { "name" : "Initial", "type" : "Input" },
+        { "name" : "Array", "type" : "Input" },
+        { "name" : "Result", "type" : "Output" },
+        { "name" : "ArrayStreamOut", "type" : "Output" },
+        { "name" : "ResultStreamIn", "type" : "Input" }
+      ]
     }
   ],
   "implementations" : [
@@ -34,6 +44,46 @@
 						"input" : { "generic" : "Map", "connector" : "Result" },
 						"output" : { "generic" : "Deserialize", "connector" : "Array" }
 					}
+      ]
+    },
+    {
+      "name" : "Scan",
+      "generics" : [
+        {
+          "name" : "SyncFirst",
+          "inputs" : { "What" : ">Scan:Initial",
+                       "SyncStream" : ">Serialize:Stream" }
+        },
+        {
+          "name" : "Clone",
+          "inputs" : { "Input" : ">Scan:ResultStreamIn" }
+        },
+        {
+          "name" : "Serialize",
+          "inputs" : { "Array" : ">Map:Array" }
+        },
+        {
+          "name" : "Deserialize",
+          "inputs" : { "Stream" : ">Clone:Stream" }
+        }
+      ],
+      "connections" : [
+          {
+            "id" : "Serialize:Stream -> Map:ArrayStreamOut",
+            "input" : { "generic" : "Map", "connector" : "ArrayStreamOut" },
+            "output" : { "generic" : "Serialize", "connector" : "Stream" }
+          },
+          {
+            "id" : "Clone:ClonedStream -> Map:ArrayStreamOut",
+            "input" : { "generic" : "Map", "connector" : "ArrayStreamOut" },
+            "output" : { "generic" : "Clone", "connector" : "ClonedStream" },
+            "type" : "Loop"
+          },
+          {
+            "id" : "Deserialize:Array -> Map:Result",
+            "input" : { "generic" : "Map", "connector" : "Result" },
+            "output" : { "generic" : "Deserialize", "connector" : "Array" }
+          }
       ]
     }
   ]
