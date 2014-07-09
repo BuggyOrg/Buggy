@@ -22,7 +22,7 @@
         },
         {
           "name" : "Scan",
-          "inputs" : { "Array" : ">StringToArray:Array", "ValueIn" : ">Add:Sum", "Initial" : ">Constant:Value" }
+          "inputs" : { "Array" : ">StringToArray:Array", "ResultStreamIn" : ">Add:Sum", "Initial" : ">Constant:Value" }
         },
         {
           "name" : "Add",

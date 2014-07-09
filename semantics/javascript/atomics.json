@@ -63,6 +63,13 @@
       "atomic" : true,
       "explicit-callback" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/no-last.js"
+    },
+    {
+      "name" : "NoLast",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/last.js"
     }
   ]
 }
