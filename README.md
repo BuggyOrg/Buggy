@@ -40,13 +40,13 @@ via
 grunt compose:<file-path>
 ```
 
-you will find the resulting file in the build directory (build/<file_path>). To run simply start it with node. You can also build a webpage via
+you will find the resulting file in the build directory (build/&lt;file_path&gt;). To run simply start it with node. You can also build a webpage via
 
 ```
 grunt browser:<file-path>
 ```
 
-This will generate a html file in at build/<file-path>. You need Harmony support in your browser. You can enable it in newer Chrome versions under chrome://flags.
+This will generate a html file in at build/&lt;file-path&gt;. You need Harmony support in your browser. You can enable it in newer Chrome versions under chrome://flags.
 
 Version
 =======
