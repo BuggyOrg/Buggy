@@ -1,0 +1,34 @@
+html,body {
+	width:100%;
+	height:100%;
+	background-color: #555;
+	margin:0;
+	padding:0;
+	color:white;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.logo{
+	position:relative;
+	width:100%; height:100%;
+	font-size:12vw;
+	color:#ccc;
+	opacity:1;
+}
+table{
+	position:absolute;
+	margin:auto;
+	left:0; top:0; bottom: 0; right: 0;
+	width:45%;
+}
+.detail {
+	font-size:25%;
+	line-height: 8px;
+}
+
+.visible{
+	transition: opacity 10s ease-in-out;
+	-moz-transition: opacity 10s ease-in-out;
+	-webkit-transition: opacity 10s ease-in-out;
+	opacity: 1;
+}
