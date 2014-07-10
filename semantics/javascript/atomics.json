@@ -4,7 +4,7 @@
       "name" : "Add",
       "language" : "javascript",
       "atomic" : true,
-      "implementation" : "{{output 'Sum'}} = Number({{input 'Term 1'}}) + Number({{input 'Term 2'}});"
+      "implementation-file" : "semantics/javascript/implementation/atomics/add.js"
     },
     {
       "name" : "Constant",
@@ -23,6 +23,53 @@
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/set.js"
+    },
+    {
+      "name" : "StringToArray",
+      "language" : "javascript",
+      "atomic" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/string-to-array.js"
+    },
+    {
+      "name" : "Clone",
+      "language" : "javascript",
+      "atomic" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/clone.js"
+    },
+    {
+      "name" : "Serialize",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/serialize.js"
+    },
+    {
+      "name" : "Deserialize",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/deserialize.js"
+    },
+    {
+      "name" : "SyncFirst",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/sync-first.js"
+    },
+    {
+      "name" : "NoLast",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/no-last.js"
+    },
+    {
+      "name" : "NoLast",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/last.js"
     }
   ]
 }

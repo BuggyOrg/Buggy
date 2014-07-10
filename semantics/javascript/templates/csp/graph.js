@@ -10,10 +10,12 @@ function Connection_Graph(){
 {{~/each}}
   };
 
-{{#each connections}}
+{{#each connections}}{{#if_eq type "Inverse"}}
+  csp.go(id, [qInput["{{from.generic}}__{{from.mangle}}:{{from.connector}}"], qOutput["{{to.generic}}__{{to.mangle}}:{{to.connector}}"] ]);
+{{~else}}
   csp.go(id, [qOutput["{{from.generic}}__{{from.mangle}}:{{from.connector}}"], qInput["{{to.generic}}__{{to.mangle}}:{{to.connector}}"] ]);
-{{~/each}}
+{{~/if_eq}}{{~/each}}
 {{#each nodes}}
-  Node_{{name}}(qInput, qOutput, {{node-meta-to-string meta}});
+  Node_{{id}}(qInput, qOutput, {{node-meta-to-string meta}});
 {{~/each}}
 }

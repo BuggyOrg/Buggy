@@ -1,5 +1,5 @@
 {{#if implementation.implementation}}
-var {{implementation.name}} = function(){
+var {{implementation.name}}_{{node.id}} = function(){
   var storage = {};
   return function*(InQueues, OutQueues, name, meta){
 {{~#unless implementation.input}}

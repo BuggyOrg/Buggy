@@ -33,10 +33,11 @@ define ["ls!src/graph"] (Graph) ->
       # this case should be dealt with somewhere .. probably here
 
       match-function = options.best-match
-      grp = match-function generic-name, semantics, options, "implementations"
-      if !grp?
+      grp-impl = match-function generic-name, semantics, options, "implementations"
+      grp-sym = match-function generic-name, semantics, options, "symbols"
+      if !grp-impl?
         throw new Error "[Dependency Graph] Couldn't resolve the group '#generic-name'"
-      grp-graph = Graph.from-group grp
+      grp-graph = Graph.from-group grp-sym, grp-impl
       sub-graphs = grp-graph.nodes |> map (n) ->
         generate-dependency-graph n.name, semantics, options
 
@@ -57,8 +58,12 @@ define ["ls!src/graph"] (Graph) ->
 
       #name mangling for global connection graph
       dep-graph.connections |> map (c) ->
-        node-from = first (dep-graph.nodes |> filter (n) -> n.name == c.from.generic)
-        node-to = first (dep-graph.nodes |> filter (n) -> n.name == c.to.generic)
+        node-from = first (dep-graph.nodes |> filter (n) -> n.id == c.from.generic)
+        node-to = first (dep-graph.nodes |> filter (n) -> n.id == c.to.generic)
+        if !node-from?
+          throw new Error "Connection start unkown : (" + c.from.generic + ":" + c.from.connector + " -> " + c.to.generic + ":" + c.to.connector + ")"
+        if !node-to?
+          throw new Error "Connection end unkown : (" + c.from.generic + ":" + c.from.connector + " -> " + c.to.generic + ":" + c.to.connector + ")"
         c.from.mangle = node-from.mangle
         c.to.mangle = node-to.mangle
 

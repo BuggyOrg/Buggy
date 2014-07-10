@@ -8,6 +8,142 @@
         { "name" : "ArrayStreamOut", "type" : "Output" },
         { "name" : "ResultStreamIn", "type" : "Input" }
       ]
+    },
+    {
+      "name" : "Scan",
+      "connectors" : [
+        { "name" : "Initial", "type" : "Input" },
+        { "name" : "Array", "type" : "Input" },
+        { "name" : "Result", "type" : "Output" },
+        { "name" : "Value1Out", "type" : "Output" },
+        { "name" : "Value2Out", "type" : "Output" },
+        { "name" : "ResultStreamIn", "type" : "Input" }
+      ]
+    },
+    {
+      "name" : "Fold",
+      "connectors" : [
+        { "name" : "Initial", "type" : "Input" },
+        { "name" : "Array", "type" : "Input" },
+        { "name" : "Result", "type" : "Output" },
+        { "name" : "Value1Out", "type" : "Output" },
+        { "name" : "Value2Out", "type" : "Output" },
+        { "name" : "ResultStreamIn", "type" : "Input" }
+      ]
+    }
+  ],
+  "implementations" : [
+    {
+      "name" : "Map",
+      "generics" : [
+        {
+          "name" : "Serialize",
+          "inputs" : { "Array" : ">Map:Array" }
+        },
+        {
+          "name" : "Deserialize",
+          "inputs" : { "Stream" : ">Map:ResultStreamIn" }
+        }
+      ],
+      "connections" : [
+					{
+						"id" : "Serialize:Stream -> Map:ArrayStreamOut",
+						"input" : { "generic" : "Map", "connector" : "ArrayStreamOut" },
+						"output" : { "generic" : "Serialize", "connector" : "Stream" }
+					},
+					{
+						"id" : "Deserialize:Array -> Map:Result",
+						"input" : { "generic" : "Map", "connector" : "Result" },
+						"output" : { "generic" : "Deserialize", "connector" : "Array" }
+					}
+      ]
+    },
+    {
+      "name" : "Scan",
+      "generics" : [
+        {
+          "name" : "SyncFirst",
+          "inputs" : { "SyncValue" : ">Scan:Initial",
+                       "SyncStream" : ">CloneStream:ClonedStream" }
+        },
+        {
+          "name" : "Clone",
+          "id" : "CloneLoop",
+          "inputs" : { "Input" : ">Scan:ResultStreamIn" }
+        },
+        {
+          "name" : "Clone",
+          "id" : "CloneStream",
+          "inputs" : { "Input" : ">Serialize:Stream" }
+        },
+        {
+          "name" : "NoLast",
+          "inputs" : { "Stream" : ">CloneLoop:ClonedStream" }
+        },
+        {
+          "name" : "Serialize",
+          "inputs" : { "Array" : ">Scan:Array" }
+        },
+        {
+          "name" : "Deserialize",
+          "inputs" : { "Stream" : ">CloneLoop:Stream" }
+        }
+      ],
+      "connections" : [
+          {
+            "id" : "SyncFirst:Sync -> Scan:Value1Out",
+            "input" : { "generic" : "Scan", "connector" : "Value1Out" },
+            "output" : { "generic" : "SyncFirst", "connector" : "Sync" }
+          },
+          {
+            "id" : "CloneStream:Stream -> Scan:Value2Out",
+            "input" : { "generic" : "Scan", "connector" : "Value2Out" },
+            "output" : { "generic" : "CloneStream", "connector" : "Stream" }
+          },
+          {
+            "id" : "NoLast:OutStream -> Scan:Value1Out",
+            "input" : { "generic" : "Scan", "connector" : "Value1Out" },
+            "output" : { "generic" : "NoLast", "connector" : "OutStream" },
+            "type" : "Loop"
+          },
+          {
+            "id" : "Deserialize:Array -> Scan:Result",
+            "input" : { "generic" : "Scan", "connector" : "Result" },
+            "output" : { "generic" : "Deserialize", "connector" : "Array" }
+          }
+      ]
+    },
+    {
+      "name" : "Fold",
+      "generics" : [
+        {
+          "name" : "Scan",
+          "inputs" : { "Initial" : ">Fold:Initial",
+                       "Array" : ">Fold:Array",
+                       "ResultStreamIn" : ">Fold:ResultStreamIn" }
+        },
+        {
+          "name" : "Last",
+          "inputs" : { "Input" : ">Scan:Result" }
+        }
+      ],
+      "connections" : [
+          {
+            "id" : "Scan:Value1Out -> Fold:Value1Out",
+            "input" : { "generic" : "Fold", "connector" : "Value1Out" },
+            "output" : { "generic" : "Scan", "connector" : "Value1Out" }
+          },
+          {
+            "id" : "Scan:Value2Out -> Fold:Value2Out",
+            "input" : { "generic" : "Fold", "connector" : "Value2Out" },
+            "output" : { "generic" : "Scan", "connector" : "Value2Out" }
+          },
+          {
+            "id" : "Last:Last -> Fold:Result",
+            "input" : { "generic" : "Fold", "connector" : "Result" },
+            "output" : { "generic" : "Last", "connector" : "Last" }
+          }
+      ]
     }
   ]
 }

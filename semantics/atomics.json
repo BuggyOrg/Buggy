@@ -17,16 +17,67 @@
     {
       "name" : "Select",
       "connectors" : [
-        { "name" : "StreamIn", "type" : "Input" },
+        { "name" : "Array", "type" : "Input" },
         { "name" : "Selection", "type" : "Output" }
       ]
     },
     {
       "name" : "Set",
       "connectors" : [
-        { "name" : "StreamIn", "type" : "Input" },
+        { "name" : "Array", "type" : "Input" },
         { "name" : "Value", "type" : "Input" },
-        { "name" : "StreamOut", "type" : "Output" }
+        { "name" : "ArrayOut", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "StringToArray",
+      "connectors" : [
+        { "name" : "String", "type" : "Input" },
+        { "name" : "Array",  "type" : "Output"}
+      ]
+    },
+    {
+      "name" : "Clone",
+      "connectors": [
+        { "name" : "Input", "type" : "Input"},
+        { "name" : "Stream", "type" : "Output" },
+        { "name" : "ClonedStream", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "Serialize",
+      "connectors" : [
+        { "name" : "Array", "type" : "Input" },
+        { "name" : "Stream", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "Deserialize",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "Array", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "SyncFirst",
+      "connectors" : [
+        { "name" : "SyncValue", "type" : "Input" },
+        { "name" : "SyncStream", "type" : "Input" },
+        { "name" : "Sync", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "NoLast",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "OutStream", "type" : "Output" }
+      ]
+    },
+    {
+      "name" : "Last",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "Last", "type" : "Output" }
       ]
     }
   ]
