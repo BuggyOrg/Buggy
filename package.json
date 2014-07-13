@@ -23,6 +23,7 @@
   "readmeFilename": "README.md",
   "gitHead": "c19834e3bb97636e5f283656221f14dde1f82bae",
   "devDependencies": {
+    "LiveScript": "^1.2.0",
     "chai": "~1.9.0",
     "chai-things": "~0.2.0",
     "grunt": "^0.4.5",

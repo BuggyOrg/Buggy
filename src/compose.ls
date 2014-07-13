@@ -18,8 +18,9 @@
 define ["ls!src/compose/dependency-graph",
         "ls!src/compose/source",
         "ls!src/semantics"
-        "ls!src/compose/sanity-check"
-        "ls!src/util/clone"], (DependencyGraph, Source, Semantics, SanityCheck, Clone) ->
+        "ls!src/compose/sanity-check",
+        "ls!src/compose/postprocess"
+        "ls!src/util/clone"], (DependencyGraph, Source, Semantics, SanityCheck, Postprocess, Clone) ->
 
   get-best-match = (id, semantics, options, type) -->
     res = Semantics.query semantics, id, options, type
@@ -40,8 +41,9 @@ define ["ls!src/compose/dependency-graph",
         compose-options.best-match = get-best-match
 
       d-graph = DependencyGraph.generate semantics, compose-options
-      SanityCheck semantics, d-graph
-      o-graph = DependencyGraph.optimize d-graph
+      p-graph = Postprocess.process d-graph, semantics, options
+      SanityCheck semantics, p-graph
+      o-graph = DependencyGraph.optimize p-graph
       source = Source.generate-source semantics, o-graph, compose-options
 
 

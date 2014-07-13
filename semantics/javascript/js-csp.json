@@ -35,6 +35,13 @@
           "file" : "semantics/javascript/templates/csp/footer.js",
           "process" : "once"
         }
+      ],
+      "postprocessing" : [
+        {
+          "name" : "multiple-outputs",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/multiple-outputs.ls"
+        }
       ]
     }
   ]
