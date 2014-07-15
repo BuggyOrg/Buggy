@@ -64,21 +64,11 @@
         {
           "name" : "SyncFirst",
           "inputs" : { "SyncValue" : ">Scan:Initial",
-                       "SyncStream" : ">CloneStream:ClonedStream" }
-        },
-        {
-          "name" : "Clone",
-          "id" : "CloneLoop",
-          "inputs" : { "Input" : ">Scan:ResultStreamIn" }
-        },
-        {
-          "name" : "Clone",
-          "id" : "CloneStream",
-          "inputs" : { "Input" : ">Serialize:Stream" }
+                       "SyncStream" : ">Serialize:Stream" }
         },
         {
           "name" : "NoLast",
-          "inputs" : { "Stream" : ">CloneLoop:ClonedStream" }
+          "inputs" : { "Stream" : ">Scan:ResultStreamIn" }
         },
         {
           "name" : "Serialize",
@@ -86,7 +76,7 @@
         },
         {
           "name" : "Deserialize",
-          "inputs" : { "Stream" : ">CloneLoop:Stream" }
+          "inputs" : { "Stream" : ">Scan:ResultStreamIn" }
         }
       ],
       "connections" : [
@@ -96,9 +86,9 @@
             "output" : { "generic" : "SyncFirst", "connector" : "Sync" }
           },
           {
-            "id" : "CloneStream:Stream -> Scan:Value2Out",
+            "id" : "Serialize:Stream -> Scan:Value2Out",
             "input" : { "generic" : "Scan", "connector" : "Value2Out" },
-            "output" : { "generic" : "CloneStream", "connector" : "Stream" }
+            "output" : { "generic" : "Serialize", "connector" : "Stream" }
           },
           {
             "id" : "NoLast:OutStream -> Scan:Value1Out",
