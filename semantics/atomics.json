@@ -39,9 +39,9 @@
     {
       "name" : "Clone",
       "connectors": [
-        { "name" : "Input", "type" : "Input"},
-        { "name" : "Stream", "type" : "Output" },
-        { "name" : "ClonedStream", "type" : "Output" }
+        { "name" : "Stream", "type" : "Input"},
+        { "name" : "Stream1", "type" : "Output" },
+        { "name" : "Stream2", "type" : "Output" }
       ]
     },
     {

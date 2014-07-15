@@ -41,6 +41,12 @@
           "name" : "multiple-outputs",
           "process" : "outputs",
           "procedure-file" : "semantics/javascript/processing/multiple-outputs.ls"
+        },
+        {
+          "name" : "multi-clone",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/multi-clone.ls",
+          "dependencies" : ["multiple-outputs"]
         }
       ]
     }

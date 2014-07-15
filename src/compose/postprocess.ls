@@ -21,7 +21,7 @@ define ["LiveScript",
     constr = (Semantics.query semantics, "js-csp", options, "construction").0
     constr.postprocessing |> map ->
       # eval only works for javascript so compile livescript to javascript
-      eval ls.compile "return " + it["procedure"]
+      eval ls.compile it["procedure"]
 
 
   apply-ruleset = (graph, rs) ->
