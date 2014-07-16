@@ -51,7 +51,7 @@ define ["ls!src/graph"] (Graph) ->
       dep-graph = generate-dependency-graph options.output.parent, semantics, options
       dep-graph = Graph.remove-double-connections dep-graph
 
-      Graph.add-node dep-graph, options.output.parent
+      #Graph.add-node dep-graph, options.output.parent
 
       return dep-graph
 

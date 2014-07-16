@@ -71,7 +71,7 @@
       "implementation-file" : "semantics/javascript/implementation/atomics/no-last.js"
     },
     {
-      "name" : "NoLast",
+      "name" : "Last",
       "language" : "javascript",
       "atomic" : true,
       "explicit-callback" : true,

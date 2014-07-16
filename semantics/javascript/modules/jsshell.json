@@ -21,7 +21,7 @@
       "external-dependencies" : "",
       "setup" : "",
       "input" : true,
-      "implementation" : "$(function(){var newInput = $('<input type=\"text\">'); $('#control').append(newInput); newInput.keypress(function(e){if(e.which==13){ {{output 'Value'}} = newInput.val(); csp.go(function*(){ {{output-data 'Value'}} }); } })});",
+      "implementation" : "var sys = require('sys');\n  var stdin = process.openStdin();\n  listener = function(Value) {\n    {{output 'Value'}} = String(Value).slice(0,-1);\n    csp.go(function*(){yield csp.put(OutQueues[name + \":Value\"], JSON.parse(JSON.stringify(output[\"Value\"])));});\n  };\n  stdin.addListener('data', listener);",
       "explicit-callback" : true
     },
     {

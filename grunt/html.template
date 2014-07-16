@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Buggy Compilation of {{file_name}}</title>
+  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700" rel="stylesheet" type="text/css">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://cdn.jsdelivr.net/dagre-d3/0.1.4/dagre-d3.min.js"></script>
+  <style>
+svg {
+  width: 40vw; height:50vw;
+}
+.node rect {
+    stroke: #333;
+    stroke-width: 1.5px;
+    fill: #fff;
+}
+
+.edgeLabel rect {
+    fill: #fff;
+}
+
+.edgePath {
+    stroke: #333;
+    stroke-width: 1.5px;
+    fill: none;
+}
+body {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+  margin: 0px;
+  padding: 0px;
+  color: #555555;
+  min-width: 320px;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+}
+</style>
+<script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/javascript/semantic.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css">
+<script>
+function addInput(node_name,submit_callback){
+  $(function(){
+    var newInput = $('<input type="text" placeholder="'+node_name+'">');
+    $('#control').append(newInput);
+    newInput.keypress(function(e){
+      if(e.which==13){
+        submit_callback(newInput.val());
+      }
+    });
+  });
+}
+
+function addOutput(node_name,value){
+  $("#outputs").append('<div class="item ui segment inverted"><div class="ui green horizontal label">'+node_name+'<i class="delete icon"></i></div>'+JSON.stringify(value)+'</div>');
+}
+</script>
+<script src='{{file_name}}.min.js'></script>
+<script src='{{file_name}}_1.depgraph.js'></script>
+<script src='{{file_name}}_2.depgraph.js'></script>
+</head>
+<body>
+  <h1 class="ui header">{{file_name}}</h1>
+<div class="ui three column aligned relaxed grid basic segment">
+<div class="ui column segment inverted">
+  <h2 class="ui header"><i class="settings icon"></i>Input / Output</h2>
+  <form class="ui fluid form" id="form">
+    <div class="field" id="control">
+    </div>
+    <input type="hidden" />
+  </form>
+  <div class="ui divided selection list" id="outputs">
+</div>
+</div>
+<div class="column">
+  <h2 class="ui header"><i class="puzzle piece icon"></i>Dependency Graph before postprocessing</h2>
+  <svg class="visible content" id="dep-graph_1">
+      <g/>
+  </svg>
+</div>
+<div class="column">
+  <h2 class="ui header"><i class="magic icon"></i>Dependency Graph after postprocessing</h2>
+  <svg class="hidden content" id="dep-graph_2">
+      <g/>
+  </svg>
+</div>
+</div>
+<script>
+$("#form").submit(function(){
+  return false;
+})
+
+// Create a new directed graph
+function drawGraph(graph, level){
+  var g = new dagreD3.Digraph();
+
+  for(var i=0; i<graph.nodes.length; i++){
+    g.addNode(graph.nodes[i].id, {label: graph.nodes[i].id});
+  }
+
+  for(var i=0; i<graph.connections.length; i++){
+    g.addEdge(null, graph.connections[i].from.generic, graph.connections[i].to.generic);
+  }
+
+  var renderer = new dagreD3.Renderer();
+  var layout = dagreD3.layout()
+                      .nodeSep(20);
+  renderer.layout(layout).run(g, d3.select("#dep-graph_"+level+" g"));
+}
+
+drawGraph(dep_graph1, 1);
+drawGraph(dep_graph2, 2);
+</script>
+</body>
+</html>

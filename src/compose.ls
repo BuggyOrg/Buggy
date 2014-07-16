@@ -42,7 +42,6 @@ define ["ls!src/compose/dependency-graph",
 
       d-graph = DependencyGraph.generate semantics, compose-options
       p-graph = Postprocess.process d-graph, semantics, options
-      #console.warn p-graph.connections
       m-graph = DependencyGraph.mangle p-graph
       SanityCheck semantics, m-graph
       o-graph = DependencyGraph.optimize m-graph
@@ -50,8 +49,18 @@ define ["ls!src/compose/dependency-graph",
 
 
 
-    create-dependency-graph: (ld, done) ->
-      Resolve.resolve ld, (resolve) ->
-        done? DependencyGraph.generate-for "main", resolve, get-best-match
+    create-dependency-graph: (semantics, options) ->
+      # use default options where no options are set
+      compose-options = Clone default-options
+      compose-options <<< options
+
+      if !compose-options.best-match?
+        compose-options.best-match = get-best-match
+
+      d-graph = DependencyGraph.generate semantics, compose-options
+      if options.postprocessing
+        p-graph = Postprocess.process d-graph, semantics, options
+      else
+        d-graph
 
   }
