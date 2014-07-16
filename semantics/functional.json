@@ -93,8 +93,7 @@
           {
             "id" : "NoLast:OutStream -> Scan:Value1Out",
             "input" : { "generic" : "Scan", "connector" : "Value1Out" },
-            "output" : { "generic" : "NoLast", "connector" : "OutStream" },
-            "type" : "Loop"
+            "output" : { "generic" : "NoLast", "connector" : "OutStream" }
           },
           {
             "id" : "Deserialize:Array -> Scan:Result",

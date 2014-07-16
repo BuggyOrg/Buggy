@@ -49,6 +49,8 @@ define ["ls!src/graph"] (Graph) ->
       # create the graph for the group described in output.parent
       # todo: use the real output node not the group containing the node
       dep-graph = generate-dependency-graph options.output.parent, semantics, options
+      dep-graph = Graph.remove-double-connections dep-graph
+      console.warn dep-graph.connections
 
       Graph.add-node dep-graph, options.output.parent
 

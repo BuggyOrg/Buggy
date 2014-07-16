@@ -51,6 +51,32 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
         connections: union graph1.connections, graph2.connections
       }
 
+    remove-double-connections: (graph) ->
+      new-connections = graph.connections |> map (c) ->
+        throughput = graph.connections |> filter (c2) ->
+          (c.to.generic == c2.from.generic and c.to.connector == c2.from.connector)
+
+        inputs = graph.connections |> any (c2) ->
+          (c2.to.generic == c.from.generic and c2.to.connector == c.from.connector)
+
+        if inputs
+          []
+        else if throughput.length == 0
+          c
+        else
+          throughput |> map (t) ->
+            {
+              from: c.from
+              to: t.to
+              type: "Normal"
+              parent-group: c.parent-group
+            }
+
+      {
+        nodes: graph.nodes
+        connections: flatten new-connections
+      }
+
     add-node: (graph, node) ->
       node-graph = { nodes: [{ name: node, id: node }], connections: []}
       Graph.union graph, node-graph

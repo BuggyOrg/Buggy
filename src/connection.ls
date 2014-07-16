@@ -46,9 +46,6 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
       Connection = this
       connections = []
       self-connections = (!group-implementation.atomic) and group-symbols? and group-symbols.connectors?
-      if (!group-implementation.atomic) and group-symbols? and group-symbols.connectors?
-        connections = group-symbols.connectors |> map (c) ->
-          Connection.create group-implementation.name, c.name, {generic: group-implementation.name, connector: c.name, type: "Inverse"}
       if group-implementation.connections?
         connections = union connections, Clone group-implementation.connections
       return connections
