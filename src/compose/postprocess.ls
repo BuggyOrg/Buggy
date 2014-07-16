@@ -31,7 +31,6 @@ define ["LiveScript",
   {
     process: (graph, semantics, options) ->
       rs = create-ruleset semantics, options
-      console.warn rs
       apply-ruleset graph, rs
 
   }
