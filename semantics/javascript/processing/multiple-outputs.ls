@@ -87,5 +87,4 @@ return (graph) ->
     nodes: union graph.nodes, new-nodes
     connections: union old-connections, (flatten new-connections)
   }
-  console.warn new-graph
   return new-graph

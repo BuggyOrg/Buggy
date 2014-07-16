@@ -34,5 +34,4 @@ return (graph) ->
     else
       n
 
-  console.warn graph.nodes
   graph
