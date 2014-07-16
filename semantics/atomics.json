@@ -1,6 +1,13 @@
 {
   "symbols" : [
     {
+      "name" : "Identity",
+      "connectors" : [
+        { "name" : "StreamIn" , "type" : "Input" },
+        { "name" : "StreamOut" , "type" : "Output" }
+      ]
+    },
+    {
       "name" : "Add",
       "connectors" : [
         { "name" : "Term 1", "type" : "Input" },

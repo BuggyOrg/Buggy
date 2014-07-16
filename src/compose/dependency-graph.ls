@@ -53,6 +53,9 @@ define ["ls!src/graph"] (Graph) ->
 
       Graph.add-node dep-graph, options.output.parent
 
+      return dep-graph
+
+    mangle: (dep-graph) ->
       dep-graph.nodes |> fold ((id,n) ->
         n.mangle = id
         id + 1), 0

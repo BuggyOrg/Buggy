@@ -1,6 +1,12 @@
 {
   "implementations" : [
     {
+      "name" : "Identity",
+      "language" : "javascript",
+      "atomic" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/id.js"
+    },
+    {
       "name" : "Add",
       "language" : "javascript",
       "atomic" : true,

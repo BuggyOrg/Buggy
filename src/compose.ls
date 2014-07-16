@@ -42,8 +42,10 @@ define ["ls!src/compose/dependency-graph",
 
       d-graph = DependencyGraph.generate semantics, compose-options
       p-graph = Postprocess.process d-graph, semantics, options
-      SanityCheck semantics, p-graph
-      o-graph = DependencyGraph.optimize p-graph
+      #console.warn p-graph.connections
+      m-graph = DependencyGraph.mangle p-graph
+      SanityCheck semantics, m-graph
+      o-graph = DependencyGraph.optimize m-graph
       source = Source.generate-source semantics, o-graph, compose-options
 
 

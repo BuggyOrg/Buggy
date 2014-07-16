@@ -26,7 +26,6 @@ return (graph) ->
         {
           name: "Clone",
           id: n.id
-          mangle: n.mangle,
           parent-group: n.parent-group
         }
       else

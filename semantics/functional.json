@@ -67,8 +67,8 @@
                        "SyncStream" : ">Serialize:Stream" }
         },
         {
-          "name" : "NoLast",
-          "inputs" : { "Stream" : ">Scan:ResultStreamIn" }
+          "name" : "Identity",
+          "inputs" : { "StreamIn" : ">Scan:ResultStreamIn" }
         },
         {
           "name" : "Serialize",
@@ -91,9 +91,9 @@
             "output" : { "generic" : "Serialize", "connector" : "Stream" }
           },
           {
-            "id" : "NoLast:OutStream -> Scan:Value1Out",
+            "id" : "Identity:StreamOut -> Scan:Value1Out",
             "input" : { "generic" : "Scan", "connector" : "Value1Out" },
-            "output" : { "generic" : "NoLast", "connector" : "OutStream" }
+            "output" : { "generic" : "Identity", "connector" : "StreamOut" }
           },
           {
             "id" : "Deserialize:Array -> Scan:Result",

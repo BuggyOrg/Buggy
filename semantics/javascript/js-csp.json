@@ -47,6 +47,11 @@
           "process" : "outputs",
           "procedure-file" : "semantics/javascript/processing/multi-clone.ls",
           "dependencies" : ["multiple-outputs"]
+        },
+        {
+          "name" : "loops",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/loops.ls"
         }
       ]
     }

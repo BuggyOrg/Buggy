@@ -27,8 +27,8 @@ c-name = (c) ->
   return cname
 
 # creates a unique new name for the clone node
-clone-name = (mangle) ->
-  "Clone__" + mangle
+clone-name = (name) ->
+  "Clone__" + name
 
 node-connectors-with-multiple-outputs = (graph) ->
   # group nodes by their output connector
@@ -38,18 +38,14 @@ node-connectors-with-multiple-outputs = (graph) ->
 
 return (graph) ->
 
-  # further mangling requires the current maximum
-  max-mangle = maximum (graph.nodes |> map (n) -> n.mangle)
-
   mult-nodes = node-connectors-with-multiple-outputs graph
 
   # create clone nodes
   new-nodes = (values mult-nodes) |> map ->
     {
       name: "Clone" + it.length  # length encoding is resolved in later postprocessing steps
-      id: clone-name it.0.from.mangle
+      id: clone-name it.0.from.generic
       parent-group: it.0.parent-group
-      mangle: it.0.from.mangle
     }
 
   old-connections = graph.connections |> filter (c) ->
@@ -58,14 +54,13 @@ return (graph) ->
 
   new-connections = (values mult-nodes) |> map (c-list) ->
     c-stream = 0
-    cn = clone-name c-list.0.from.mangle
+    cn = clone-name c-list.0.from.generic
     connections = c-list |> map (c) ->
       c-stream := c-stream + 1
       {
         from: {
           generic: cn
           connector: "Stream#c-stream"
-          mangle: c.from.mangle
         }
         to: c.to
         type: "Normal"
@@ -76,7 +71,6 @@ return (graph) ->
       to: {
         generic: cn
         connector: "Stream"
-        mangle: c-list.0.from.mangle
       }
       type: "Normal"
       parent-group: c-list.0.parent-group
