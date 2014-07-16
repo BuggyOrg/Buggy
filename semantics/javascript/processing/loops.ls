@@ -85,6 +85,4 @@ loops = (graph) ->
   }
 
 return (graph) ->
-  #console.warn graph.nodes
-  #console.warn graph.connections
   loops graph
