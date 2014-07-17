@@ -39,8 +39,13 @@ module.exports = function(grunt){
 
   grunt.registerTask('browser',
       "translates a buggy program into a html file with javascript",
-      function(spec){
-    grunt.task.run("compose:"+spec+":jshtml.json");
+      function(spec, debug){
+    if(debug){
+      grunt.task.run("compose:"+spec+":jshtml.json:"+debug);
+    }
+    else{
+      grunt.task.run("compose:"+spec+":jshtml.json");
+    }
     grunt.log.write("browserifying");
     var file_out = generateBuildFilepath(spec, grunt);
     var file_out_path = generateBuildPath(spec, grunt);

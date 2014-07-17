@@ -79,6 +79,8 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
   {
     process: (text, impl, options) ->
       context = impl
+      if options.debug? and options.debug
+        context.debug = true
 
       if context.implementation? and context.implementation.implementation?
         implTempl = Handlebars.compile context.implementation.implementation, noEscape: true

@@ -74,13 +74,6 @@
       ]
     },
     {
-      "name" : "NoLast",
-      "connectors" : [
-        { "name" : "Stream", "type" : "Input" },
-        { "name" : "OutStream", "type" : "Output" }
-      ]
-    },
-    {
       "name" : "Last",
       "connectors" : [
         { "name" : "Stream", "type" : "Input" },

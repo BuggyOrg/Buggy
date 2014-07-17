@@ -36,13 +36,14 @@ loops = (graph) ->
 
   dfs-recursive = (u, v) ->
     cnid = (id v)  + ":" + v.connector
-    pred[cnid] = [id u]
+    pred[cnid] = [{generic: (id u), connector: u.connector, to: (id v), to-conn: v.connector}]
 
     (out-edges graph, id v) |> map (c) ->
       ccnid = (id c.to) + ":" + c.to.connector
       if not (ccnid of pred)
         dfs-recursive c.from, c.to
       else if not (ccnid of finished)
+        pred[ccnid].push generic: (id v), connector: c.from.connector, to: (id c.to), to-conn: c.to.connector
         loop-list.push { generic: (id v), connector: v.connector, from: u.generic, from-conn: u.connector }
 
     finished[cnid] = true
@@ -53,28 +54,38 @@ loops = (graph) ->
       if (not (ccnid of pred))
         dfs-recursive c.from , c.to
 
+  double-connection = (values pred) |> filter (c) ->
+    c.length == 2
 
-  new-nodes = loop-list |> map (n) ->
+  generic-id = (dc) ->
+    conn_id = join "_", (words dc.0.to-conn)
+    dc.0.to + "__" + conn_id + "CSPLoopControl"
+
+  new-nodes = (double-connection) |> map (dc) ->
     {
-      name: "NoLast",
-      id: n.generic + "NoLast",
+      name: "CSPLoopControl",
+      id: generic-id dc,
     }
 
   connections = graph.connections |> filter (c) ->
-    not (loop-list |> any (n) ->
-      n.generic == c.to.generic and n.connector == c.to.connector
-      and n.from == c.from.generic and n.from-conn == c.from.connector)
+    not (double-connection |> any (dc) ->
+      dc.0.to == c.to.generic and dc.0.to-conn == c.to.connector)
 
-  new-connections = loop-list |> map (n) ->
+  new-connections = double-connection |> map (dc) ->
     [
       {
-        from: { generic: n.generic + "NoLast", connector: "OutStream" }
-        to: {  generic: n.generic,  connector: n.connector }
+        from: { generic: (generic-id dc), connector: "OutStream" }
+        to: {  generic: dc.0.to,  connector: dc.0.to-conn }
         type: "Normal"
       }
       {
-        from: { generic: n.from, connector: n.from-conn }
-        to: {  generic: n.generic + "NoLast", connector: "Stream" }
+        from: { generic: dc.0.generic, connector: dc.0.connector }
+        to: {  generic: (generic-id dc), connector: "Initial" }
+        type: "Normal"
+      }
+      {
+        from: { generic: dc.1.generic, connector: dc.1.connector }
+        to: { generic: (generic-id dc), connector: "Stream" }
         type: "Normal"
       }
     ]

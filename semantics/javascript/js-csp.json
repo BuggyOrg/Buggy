@@ -1,4 +1,24 @@
 {
+  "symbols": [
+    {
+      "name" : "CSPLoopControl",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "Initial", "type" : "Input" },
+        { "name" : "OutStream", "type" : "Output" }
+      ]
+    }
+  ],
+  "implementations" : [
+    {
+      "name" : "CSPLoopControl",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-input" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/csp-loop-control.js"
+    }
+  ],
   "construction" : [
     {
       "name" : "js-csp",
