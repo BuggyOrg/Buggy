@@ -46,8 +46,8 @@ h5 {
 <script>
 function addInput(node_name,submit_callback){
   $(function(){
-    var newInput = $('<input type="text" placeholder="'+node_name+'">');
-    $('#control').append(newInput);
+    $('#control').append('<div class="item ui segment inverted"><div class="ui green horizontal label">'+node_name+'</div><input type="text" placeholder="'+node_name+'" id="'+node_name+'_input" />');
+    var newInput = $("#"+node_name+"_input");
     newInput.keypress(function(e){
       if(e.which==13){
         submit_callback(newInput.val());
@@ -57,7 +57,7 @@ function addInput(node_name,submit_callback){
 }
 
 function addOutput(node_name,value){
-  $("#outputs").append('<div class="item ui segment inverted"><div class="ui green horizontal label">'+node_name+'<i class="delete icon"></i></div>'+JSON.stringify(value)+'</div>');
+  $("#outputs").append('<div class="item ui segment inverted"><div class="ui blue horizontal label">'+node_name+'<i class="delete icon"></i></div>'+JSON.stringify(value)+'</div>');
 }
 </script>
 <script src='{{file_name}}.min.js'></script>
@@ -70,7 +70,7 @@ function addOutput(node_name,value){
 <div class="ui column segment inverted">
   <h2 class="ui header"><i class="settings icon"></i>Input / Output</h2>
   <form class="ui fluid form" id="form">
-    <div class="field" id="control">
+    <div class="field ui divided selection list" id="control">
     </div>
     <input type="hidden" />
   </form>

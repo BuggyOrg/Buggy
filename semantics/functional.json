@@ -113,7 +113,7 @@
         },
         {
           "name" : "Last",
-          "inputs" : { "Input" : ">Scan:Result" }
+          "inputs" : { "Stream" : ">Scan:Result" }
         }
       ],
       "connections" : [

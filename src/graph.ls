@@ -51,30 +51,75 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
         connections: union graph1.connections, graph2.connections
       }
 
+    nodes-out-edges: (graph, v) ->
+      graph.connections |> filter -> it.from.generic == v.id
+
+    connectors-out-edges: (graph, c) ->
+      graph.connections |> filter ->
+        (it.from.generic == v.generic and it.from.connector == v.connector)
+
     remove-double-connections: (graph) ->
-      new-connections = graph.connections |> map (c) ->
-        throughput = graph.connections |> filter (c2) ->
-          (c.to.generic == c2.from.generic and c.to.connector == c2.from.connector)
+      on-removal-line = {}
+      line-counts = {}
+      graph.connections |> fold ((id,c) ->
+        c.id-num = id
+        on-removal-line[id] = []
+        id + 1), 0
 
-        inputs = graph.connections |> any (c2) ->
-          (c2.to.generic == c.from.generic and c2.to.connector == c.from.connector)
+      graph.connections |> each (c) ->
+        graph.connections |> each (c2) ->
+          if (c.to.generic == c2.from.generic and c.to.connector == c2.from.connector)
+            on-removal-line[c.id-num].push c2.id-num
 
-        if inputs
-          []
-        else if throughput.length == 0
-          c
-        else
-          throughput |> map (t) ->
-            {
-              from: c.from
-              to: t.to
-              type: "Normal"
-              parent-group: c.parent-group
-            }
+      # partition by double connections and non double connections
+      rem-partition = on-removal-line |> Obj.partition -> it.length > 0
+      doubles = rem-partition[0]
+      non-doubles = rem-partition[1]
+      (keys non-doubles) |> each (key) ->
+        non-doubles[key] = [ [key] ]
+
+      get-predecessors = (key) ->
+        keys (doubles |> Obj.filter (p) ->
+          Number(key) in p)
+
+      get-paths = (paths,n) ->
+        if n < 1
+          return paths
+        new-paths = paths |> concat-map (path) ->
+          key = last path
+          preds = get-predecessors key
+          if preds.length == 0
+            then [path]
+          else
+            preds |> map (pred) ->
+              union path, [pred]
+        get-paths new-paths, n-1
+
+      n = (keys doubles).length
+      paths = (values non-doubles) |> concat-map ->
+        get-paths it, n
+      paths = paths |> filter -> it.length > 1
+
+      new-connections = paths |> map (path) ->
+        from = graph.connections[Number(last path)].from
+        to = graph.connections[Number(first path)].to
+        {
+          from: from
+          to: to
+          type: "Normal"
+        }
+
+      con-list = unique (flatten paths)
+
+      old-connections = graph.connections |> reject ->
+        "#{it.id-num}" in con-list
+
+      old-connections |> map (c) ->
+        delete c.id-num
 
       {
         nodes: graph.nodes
-        connections: flatten new-connections
+        connections: union old-connections, new-connections
       }
 
     add-node: (graph, node) ->
