@@ -26,4 +26,12 @@ define ["ls!src/semantics/loading"], (Loading) ->
             Loading.load-template-file t["file"], ->
               t["template-file"] = it
         return constrution
+    * name : "processing file",
+      description : "looks for the template files and loads them",
+      process : (constrution) ->
+        if constrution["postprocessing"]?
+          constrution.postprocessing |> map (p) ->
+            Loading.load-template-file p["procedure-file"], ->
+              p["procedure"] = it
+        return constrution
   ]

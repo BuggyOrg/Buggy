@@ -15,7 +15,7 @@ var {{implementation.name}}_{{node.id}} = function(){
 {{~#unless implementation.explicit-input}}
 {{~#each symbol.connectors}}{{#if_eq type "Input"}}
     input["{{name}}"] = yield csp.take(InQueues[name + ":{{name}}"]);
-{{~#if ../../debug}}\
+{{~#if ../../debug}}
     console.log("logging after taking {{../../../generic.name}}->{{name}} ");
     console.log(input["{{name}}"]);
 {{~/if}}

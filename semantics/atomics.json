@@ -1,6 +1,13 @@
 {
   "symbols" : [
     {
+      "name" : "Identity",
+      "connectors" : [
+        { "name" : "StreamIn" , "type" : "Input" },
+        { "name" : "StreamOut" , "type" : "Output" }
+      ]
+    },
+    {
       "name" : "Add",
       "connectors" : [
         { "name" : "Term 1", "type" : "Input" },
@@ -39,9 +46,9 @@
     {
       "name" : "Clone",
       "connectors": [
-        { "name" : "Input", "type" : "Input"},
-        { "name" : "Stream", "type" : "Output" },
-        { "name" : "ClonedStream", "type" : "Output" }
+        { "name" : "Stream", "type" : "Input"},
+        { "name" : "Stream1", "type" : "Output" },
+        { "name" : "Stream2", "type" : "Output" }
       ]
     },
     {
@@ -64,13 +71,6 @@
         { "name" : "SyncValue", "type" : "Input" },
         { "name" : "SyncStream", "type" : "Input" },
         { "name" : "Sync", "type" : "Output" }
-      ]
-    },
-    {
-      "name" : "NoLast",
-      "connectors" : [
-        { "name" : "Stream", "type" : "Input" },
-        { "name" : "OutStream", "type" : "Output" }
       ]
     },
     {

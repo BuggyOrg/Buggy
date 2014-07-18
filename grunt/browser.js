@@ -14,6 +14,8 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var handlebars = require("handlebars");
+
 function generateBuildPath(path, grunt){
   return grunt.config.get("buildDir") + path.substring(0, path.lastIndexOf("/") + 1);
 }
@@ -28,13 +30,22 @@ function getFileName(path, grunt){
 
 module.exports = function(grunt){
   grunt.registerTask('generateHTMLFile', function(file_out_path, file_name){
-    grunt.file.write(file_out_path+file_name + ".html", "<script src='https://code.jquery.com/jquery-2.1.1.min.js'></script><script src='"+file_name+".min.js'></script><body><h1>"+file_name+"</h1></body>");
+    var fs = require("fs");
+    var tmpl = fs.readFileSync("grunt/html.template", "utf8");
+    var context = { file_name: file_name };
+    var template = handlebars.compile(tmpl);
+    grunt.file.write(file_out_path+file_name + ".html", template(context));
   });
 
   grunt.registerTask('browser',
       "translates a buggy program into a html file with javascript",
-      function(spec){
-    grunt.task.run("compose:"+spec+":jshtml.json");
+      function(spec, debug){
+    if(debug){
+      grunt.task.run("compose:"+spec+":jshtml.json:"+debug);
+    }
+    else{
+      grunt.task.run("compose:"+spec+":jshtml.json");
+    }
     grunt.log.write("browserifying");
     var file_out = generateBuildFilepath(spec, grunt);
     var file_out_path = generateBuildPath(spec, grunt);
@@ -48,6 +59,8 @@ module.exports = function(grunt){
       }
     });
     grunt.task.run("browserify:specFile");
+    grunt.task.run("dep-graph:"+spec+":1");
+    grunt.task.run("dep-graph:"+spec+":2");
     grunt.task.run("generateHTMLFile:"+file_out_path+":"+file_name);
   });
 

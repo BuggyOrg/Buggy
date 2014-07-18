@@ -18,8 +18,9 @@
 define ["ls!src/compose/dependency-graph",
         "ls!src/compose/source",
         "ls!src/semantics"
-        "ls!src/compose/sanity-check"
-        "ls!src/util/clone"], (DependencyGraph, Source, Semantics, SanityCheck, Clone) ->
+        "ls!src/compose/sanity-check",
+        "ls!src/compose/postprocess"
+        "ls!src/util/clone"], (DependencyGraph, Source, Semantics, SanityCheck, Postprocess, Clone) ->
 
   get-best-match = (id, semantics, options, type) -->
     res = Semantics.query semantics, id, options, type
@@ -40,14 +41,26 @@ define ["ls!src/compose/dependency-graph",
         compose-options.best-match = get-best-match
 
       d-graph = DependencyGraph.generate semantics, compose-options
-      SanityCheck semantics, d-graph
-      o-graph = DependencyGraph.optimize d-graph
+      p-graph = Postprocess.process d-graph, semantics, options
+      m-graph = DependencyGraph.mangle p-graph
+      SanityCheck semantics, m-graph
+      o-graph = DependencyGraph.optimize m-graph
       source = Source.generate-source semantics, o-graph, compose-options
 
 
 
-    create-dependency-graph: (ld, done) ->
-      Resolve.resolve ld, (resolve) ->
-        done? DependencyGraph.generate-for "main", resolve, get-best-match
+    create-dependency-graph: (semantics, options) ->
+      # use default options where no options are set
+      compose-options = Clone default-options
+      compose-options <<< options
+
+      if !compose-options.best-match?
+        compose-options.best-match = get-best-match
+
+      d-graph = DependencyGraph.generate semantics, compose-options
+      if options.postprocessing
+        p-graph = Postprocess.process d-graph, semantics, options
+      else
+        d-graph
 
   }

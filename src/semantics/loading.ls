@@ -17,7 +17,7 @@
 define ["ls!src/semantics/sources"], (Sources) ->
 
   file-path = (file) ->
-    if (file.indexOf "!") != -1 
+    if (file.indexOf "!") != -1
       file
     else if (file.indexOf "/") != -1
       "json!#file"

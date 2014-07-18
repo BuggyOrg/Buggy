@@ -1,4 +1,4 @@
-{{output 'Stream'}} = {{input 'Input'}};
-{{merge-meta 'Stream' 'Input'}};
-{{output 'ClonedStream'}} = {{input 'Input'}};
-{{merge-meta 'ClonedStream' 'Input'}};
+{{output 'Stream1'}} = {{input 'Stream'}};
+{{merge-meta 'Stream1' 'Stream'}};
+{{output 'Stream2'}} = {{input 'Stream'}};
+{{merge-meta 'Stream2' 'Stream'}};

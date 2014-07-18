@@ -49,9 +49,13 @@ define ["ls!src/graph"] (Graph) ->
       # create the graph for the group described in output.parent
       # todo: use the real output node not the group containing the node
       dep-graph = generate-dependency-graph options.output.parent, semantics, options
+      dep-graph = Graph.remove-double-connections dep-graph
 
-      Graph.add-node dep-graph, options.output.parent
+      #Graph.add-node dep-graph, options.output.parent
 
+      return dep-graph
+
+    mangle: (dep-graph) ->
       dep-graph.nodes |> fold ((id,n) ->
         n.mangle = id
         id + 1), 0

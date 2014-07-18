@@ -31,11 +31,11 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
         type = if out.type? then out.type else "Normal"
         return {
           id: "#out-generic:#out-connector -> #in-generic:#in-connector"
-          input: {
+          to: {
             generic: in-generic
             connector: in-connector
           }
-          output: {
+          from: {
             generic: out-generic
             connector: out-connector
           }
@@ -45,18 +45,6 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
     gather: (group-symbols, group-implementation) ->
       Connection = this
       connections = []
-      self-connections = (!group-implementation.atomic) and group-symbols? and group-symbols.connectors?
-      if group-implementation.name == "Map"
-        console.warn group-symbols
-        console.warn group-implementation
-        console.warn !group-implementation.atomic
-        console.warn group-symbols?
-        console.warn group-symbols.connectors?
-        console.warn self-connections
-      if (!group-implementation.atomic) and group-symbols? and group-symbols.connectors?
-        console.warn "YES"
-        connections = group-symbols.connectors |> map (c) ->
-          Connection.create group-implementation.name, c.name, {generic: group-implementation.name, connector: c.name, type: "Inverse"}
       if group-implementation.connections?
         connections = union connections, Clone group-implementation.connections
       return connections

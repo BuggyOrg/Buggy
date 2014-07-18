@@ -1,4 +1,24 @@
 {
+  "symbols": [
+    {
+      "name" : "CSPLoopControl",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "Initial", "type" : "Input" },
+        { "name" : "OutStream", "type" : "Output" }
+      ]
+    }
+  ],
+  "implementations" : [
+    {
+      "name" : "CSPLoopControl",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-input" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/csp-loop-control.js"
+    }
+  ],
   "construction" : [
     {
       "name" : "js-csp",
@@ -34,6 +54,24 @@
           "template" : "footer",
           "file" : "semantics/javascript/templates/csp/footer.js",
           "process" : "once"
+        }
+      ],
+      "postprocessing" : [
+        {
+          "name" : "multiple-outputs",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/multiple-outputs.ls"
+        },
+        {
+          "name" : "multi-clone",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/multi-clone.ls",
+          "dependencies" : ["multiple-outputs"]
+        },
+        {
+          "name" : "loops",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/loops.ls"
         }
       ]
     }
