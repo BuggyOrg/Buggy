@@ -45,7 +45,6 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
     gather: (group-symbols, group-implementation) ->
       Connection = this
       connections = []
-      self-connections = (!group-implementation.atomic) and group-symbols? and group-symbols.connectors?
       if group-implementation.connections?
         connections = union connections, Clone group-implementation.connections
       return connections
