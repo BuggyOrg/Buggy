@@ -27,9 +27,6 @@
           "inputs" : { "Value" : ">Add:Sum" }
         }
       ],
-      "connections" : {
-        "comment" : "define connections here.. much cleaner than in the generics"
-      },
       "meta": {
         "type": "group",
         "description": "Main Logic of 'Add'. Main itself is considered a bad name for groups as they don't communicate the real semantics other than beeing a starting point"

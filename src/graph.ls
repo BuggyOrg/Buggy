@@ -30,8 +30,8 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
               }
         connections: (Connection.gather grp-sym, grp-impl) |> map (c) ->
           {
-            from: c.output
-            to: c.input
+            from: c.from
+            to: c.to
             type: c.type
             parent-group: Group.identifier grp-impl
           }

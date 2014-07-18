@@ -48,13 +48,13 @@
       "connections" : [
 					{
 						"id" : "Serialize:Stream -> Map:ArrayStreamOut",
-						"input" : { "generic" : "Map", "connector" : "ArrayStreamOut" },
-						"output" : { "generic" : "Serialize", "connector" : "Stream" }
+						"to" : { "generic" : "Map", "connector" : "ArrayStreamOut" },
+						"from" : { "generic" : "Serialize", "connector" : "Stream" }
 					},
 					{
 						"id" : "Deserialize:Array -> Map:Result",
-						"input" : { "generic" : "Map", "connector" : "Result" },
-						"output" : { "generic" : "Deserialize", "connector" : "Array" }
+						"to" : { "generic" : "Map", "connector" : "Result" },
+						"from" : { "generic" : "Deserialize", "connector" : "Array" }
 					}
       ]
     },
@@ -82,23 +82,23 @@
       "connections" : [
           {
             "id" : "SyncFirst:Sync -> Scan:Value1Out",
-            "input" : { "generic" : "Scan", "connector" : "Value1Out" },
-            "output" : { "generic" : "SyncFirst", "connector" : "Sync" }
+            "to" : { "generic" : "Scan", "connector" : "Value1Out" },
+            "from" : { "generic" : "SyncFirst", "connector" : "Sync" }
           },
           {
             "id" : "Serialize:Stream -> Scan:Value2Out",
-            "input" : { "generic" : "Scan", "connector" : "Value2Out" },
-            "output" : { "generic" : "Serialize", "connector" : "Stream" }
+            "to" : { "generic" : "Scan", "connector" : "Value2Out" },
+            "from" : { "generic" : "Serialize", "connector" : "Stream" }
           },
           {
             "id" : "Identity:StreamOut -> Scan:Value1Out",
-            "input" : { "generic" : "Scan", "connector" : "Value1Out" },
-            "output" : { "generic" : "Identity", "connector" : "StreamOut" }
+            "to" : { "generic" : "Scan", "connector" : "Value1Out" },
+            "from" : { "generic" : "Identity", "connector" : "StreamOut" }
           },
           {
             "id" : "Deserialize:Array -> Scan:Result",
-            "input" : { "generic" : "Scan", "connector" : "Result" },
-            "output" : { "generic" : "Deserialize", "connector" : "Array" }
+            "to" : { "generic" : "Scan", "connector" : "Result" },
+            "from" : { "generic" : "Deserialize", "connector" : "Array" }
           }
       ]
     },
@@ -119,18 +119,18 @@
       "connections" : [
           {
             "id" : "Scan:Value1Out -> Fold:Value1Out",
-            "input" : { "generic" : "Fold", "connector" : "Value1Out" },
-            "output" : { "generic" : "Scan", "connector" : "Value1Out" }
+            "to" : { "generic" : "Fold", "connector" : "Value1Out" },
+            "from" : { "generic" : "Scan", "connector" : "Value1Out" }
           },
           {
             "id" : "Scan:Value2Out -> Fold:Value2Out",
-            "input" : { "generic" : "Fold", "connector" : "Value2Out" },
-            "output" : { "generic" : "Scan", "connector" : "Value2Out" }
+            "to" : { "generic" : "Fold", "connector" : "Value2Out" },
+            "from" : { "generic" : "Scan", "connector" : "Value2Out" }
           },
           {
             "id" : "Last:Last -> Fold:Result",
-            "input" : { "generic" : "Fold", "connector" : "Result" },
-            "output" : { "generic" : "Last", "connector" : "Last" }
+            "to" : { "generic" : "Fold", "connector" : "Result" },
+            "from" : { "generic" : "Last", "connector" : "Last" }
           }
       ]
     }

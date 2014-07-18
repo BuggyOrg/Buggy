@@ -31,11 +31,11 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
         type = if out.type? then out.type else "Normal"
         return {
           id: "#out-generic:#out-connector -> #in-generic:#in-connector"
-          input: {
+          to: {
             generic: in-generic
             connector: in-connector
           }
-          output: {
+          from: {
             generic: out-generic
             connector: out-connector
           }

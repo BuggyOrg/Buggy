@@ -36,6 +36,6 @@ module.exports = function(grunt){
       var file_out_path = generateBuildPath(spec, grunt,level);
       var file_name = getFileName(file_out, grunt,level);
 
-      grunt.task.run("shell:compose:"+file+":"+file_out+":examples/modules/jshtml.json:"+level);
+      grunt.task.run("shell:compose:"+file+":"+file_out+":semantics/javascript/modules/jshtml.json:"+level);
   });
 }
