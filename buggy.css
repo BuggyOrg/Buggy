@@ -66,9 +66,25 @@ p a {
 /*******************************
             Global
 *******************************/
+.main {
+  margin-top: 100px;
+  margin-left: 15%;
+  margin-right: 20%;
+  max-width: 800px;
+  text-align: justify;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 /*rtl:ignore*/
 .menu .right.menu > .mobile.item {
   display: none;
+}
+
+.menu .title {
+  font-weight: bold;
 }
 
 .ui.page.grid.segment {
