@@ -1,0 +1,37 @@
+//- compose_overview.jade
+- var chapter = "Compose"
+- var section = "Overview"
+include ./includes/index.jade
+  p
+    | The Compose mechanism creates the actual programs from the semantic
+    | definitions, modules, implementation details  and the program itself.
+  p
+    | The Compose process is a complex interaction between the different
+    | parts to ensure high exchangability and with a high ease of use. The
+    | following diagram outlines the Compose process. You can get more details
+    | by clicking on the different parts.
+  #compose-overview
+  .tiny.ui.horizontal.bulleted.list
+    .item
+      | File icon made by Amit Jakhu from
+      a(href='http://www.flaticon.com', title='Flaticon') www.flaticon.com
+    .item
+      | Gear icon made by
+      a(href='http://www.freepik.com', alt='Freepik.com', title='Freepik.com') Freepik
+      |  from
+      a(href='http://www.flaticon.com/free-icon/pdf-document_5097', title='Flaticon') www.flaticon.com
+    .item
+      | File licensed under
+      a(href='https://creativecommons.org/licenses/by-sa/3.0/legalcode') CC BY-SA 3.0
+  script.
+    function redirect(toWhere){
+    window.location = toWhere;
+    }
+    $("#compose-overview").load("../img/compose-overview.svg", function(){
+    var s = Snap("#svg2");
+    var semantics = s.select("#semantics");
+    semantics.addClass("clickable");
+    semantics.click(function(){
+    redirect("semantics.html");
+    });
+    });

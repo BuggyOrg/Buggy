@@ -1,72 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Buggy</title>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="../buggy.css"/>
-  <script src="../lib/jquery.2.1.1.min.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="../style/semantic.min.css">
-  <script src="../lib/semantic.min.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="../style/prism.css">
-  <script src="../lib/prism.min.js"></script>
-
-  <script src="../lib/snap.svg-min.js"></script>
-
-
-</head>
-<body id="home">
-  <div class="ui top sidebar inverted">
-    <div class="ui fixed top menu inverted">
-      <div class="item title">Buggy Documentation</div>
-      <div class="item">Compose</div>
-      <div class="item icon">
-        <i class="icon left arrow"></i>
-      </div>
-      <div class="item">
-        Overview
-      </div>
-      <div class="item icon">
-        <i class="icon right arrow"></i>
-      </div>
-    </div>
-  </div>
-  <div class="main container">
-    <div class="ui dividing header">
-      <h2>Compose: Overview</h2>
-    </div>
-    <p>
-      The Compose mechanism creates the actual programs from the semantic
-      definitions, modules, implementation details  and the program itself.
-    </p>
-    <p>
-      The Compose process is a complex interaction between the different
-      parts to ensure high exchangability and with a high ease of use. The
-      following diagram outlines the Compose process. You can get more details
-      by clicking on the different parts.
-    </p>
-    <div id="compose-overview">
-    </div>
-    <div class="tiny ui horizontal bulleted list">
-      <div class="item">File icon made by Amit Jakhu from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></div>
-      <div class="item">Gear icon made by <a href="http://www.freepik.com" alt="Freepik.com" title="Freepik.com">Freepik</a> from <a href="http://www.flaticon.com/free-icon/pdf-document_5097" title="Flaticon">www.flaticon.com</a></div>
-      <div class="item">File licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0</a></div>
-    </div>
-    <script>
-      function redirect(toWhere){
-        window.location = toWhere;
-      }
-      $("#compose-overview").load("../img/compose-overview.svg", function(){
-        var s = Snap("#svg2");
-        var semantics = s.select("#semantics");
-        semantics.addClass("clickable");
-        semantics.click(function(){
-          redirect("semantics.html");
-        });
-      });
-    </script>
-  </div>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Buggy</title><link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"><link rel="stylesheet" href="../buggy.css"><script src="../lib/jquery.2.1.1.min.js"></script><link rel="stylesheet" type="text/css" href="../style/semantic.min.css"><script src="../lib/semantic.min.js"></script><link rel="stylesheet" type="text/css" href="../style/prism.css"><script src="../lib/prism.min.js"></script><script src="../lib/snap.svg-min.js"></script></head><body id="home"><div class="ui top sidebar inverted"><div class="ui fixed top menu inverted"><div class="item title">Buggy Documentation</div><div class="item">Compose</div><div class="item icon"><i class="icon left arrow"></i></div><div class="item">Overview</div><div class="item icon"><i class="icon right arrow"></i></div></div></div><div class="main container"><div class="ui dividing header"><h2>Compose:Overview</h2><p>The Compose mechanism creates the actual programs from the semantic
+definitions, modules, implementation details  and the program itself.</p><p>The Compose process is a complex interaction between the different
+parts to ensure high exchangability and with a high ease of use. The
+following diagram outlines the Compose process. You can get more details
+by clicking on the different parts.</p><div id="compose-overview"></div><div class="tiny ui horizontal bulleted list"><div class="item">File icon made by Amit Jakhu from<a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></div><div class="item">Gear icon made by<a href="http://www.freepik.com" alt="Freepik.com" title="Freepik.com">Freepik</a> from<a href="http://www.flaticon.com/free-icon/pdf-document_5097" title="Flaticon">www.flaticon.com</a></div><div class="item">File licensed under<a href="https://creativecommons.org/licenses/by-sa/3.0/legalcode">CC BY-SA 3.0</a></div></div><script>function redirect(toWhere){
+window.location = toWhere;
+}
+$("#compose-overview").load("../img/compose-overview.svg", function(){
+var s = Snap("#svg2");
+var semantics = s.select("#semantics");
+semantics.addClass("clickable");
+semantics.click(function(){
+redirect("semantics.html");
+});
+});</script></div></div></body></html>
