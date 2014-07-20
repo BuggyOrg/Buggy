@@ -38,7 +38,7 @@ module.exports = function(grunt){
     {
       inout_module = "jsshell.json";
     }
-    inout_module = "semantics/javascript/modules/" + inout_module;
+    inout_module = "semantics/javascript/targets/" + inout_module;
     var file = spec;
     grunt.log.write("Building File " + file + " for target language 'Javascript'");
 

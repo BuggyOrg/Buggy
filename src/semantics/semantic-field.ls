@@ -17,6 +17,7 @@
 define ->
 
   (field-name, hooks = [], predicates = []) ->
+    #%%#[Semantic Field]
     SemanticField = {
       add: (semantics, fieldValue) -->
         fieldValue = hooks |> fold ((val,hook) -> hook.process val), fieldValue

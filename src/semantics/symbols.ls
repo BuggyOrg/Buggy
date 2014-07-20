@@ -17,4 +17,5 @@
 define ["ls!src/semantics/predicates/symbols",
         "ls!src/semantics/semantic-field"], (Predicates, Field) ->
 
+  #%%#[Semantic Field/Symbols]
   Symbols = Field "symbols", [], Predicates

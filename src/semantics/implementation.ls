@@ -19,5 +19,6 @@ define ["ls!src/semantics/hooks/implementation",
         "ls!src/semantics/predicates/implementation",
         "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field, Loading) ->
 
+  #%%#[Semantic Field/Implementations]
   # create a semantic field with the necessary hooks and predicates
   Field "implementations", Hooks, Predicates
