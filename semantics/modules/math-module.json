@@ -2,7 +2,7 @@
   "modules" : [
     {
       "name" : "MathParser",
-      "mathces" : "Math",
+      "matches" : "Math",
       "process" : "semantics/modules/processing/parse-math.ls"
     }
   ]
