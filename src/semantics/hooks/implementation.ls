@@ -17,9 +17,11 @@
 define ["ls!src/semantics/hooks/implementation-connections"
         "ls!src/semantics/loading"], (Conn, Loading) ->
 
+  #%%#[Semantic Field/Implementations/Hooks]
   # array of hooks
   hooks =
-    * name : "implementation file",
+    #%%#[Semantic Field/Implementations/Atomics]
+    * name : "atomics with implementation file",
       description : "looks for implementation files and loads them",
       process : (impl) ->
         if impl["implementation-file"]?
@@ -37,4 +39,5 @@ define ["ls!src/semantics/hooks/implementation-connections"
         if !it.atomic?
           it.atomic = false
         return it
+    #%%#[Semantic Field/Implementations/NodesRef]
     * Conn

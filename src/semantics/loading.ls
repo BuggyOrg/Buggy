@@ -25,6 +25,7 @@ define ["ls!src/semantics/sources"], (Sources) ->
       "json!semantics/#file"
 
   load-files = (files, loaded) ->
+    #%%#[TODO: Better loading mechanism]
     requirejs files, loaded
 
   load-json = (files, loaded) ->

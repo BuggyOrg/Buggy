@@ -17,6 +17,7 @@
 
 define ["ls!src/connection", "ls!src/generic"], (Connection, Generic) ->
 
+  #%%#[Semantic Field/Implementations/Nodes]
   * name: "connection translator"
     descrption: "translates connections stored in generics into the standardized format"
     process: (impl) ->

@@ -16,6 +16,7 @@
 
 define ->
 
+  #%%#[Semantic Field/Symbols/Predicates]
   Predicates = [
     * name: "name filter",
       description: "filters all elements that don't match the given name",
