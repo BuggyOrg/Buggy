@@ -5,3 +5,5 @@ languages/javascript/javascript.ld
 *.DS_Store
 build/*
 *.nfs*
+.buggy_files*
+.buggy-source-path

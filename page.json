@@ -1,0 +1,22 @@
+{
+  "start" : "buggy.html",
+  "documentation" : {
+    "path" : "documentation",
+    "chapters" : [
+      {
+        "name" : "Compose",
+        "path" : "compose",
+        "sections" : [
+          {
+            "name" : "Overview",
+            "file" : "overview"
+          },
+          {
+            "name" : "Semantics",
+            "file" : "semantics"
+          }
+        ]
+      }
+    ]
+  }
+}

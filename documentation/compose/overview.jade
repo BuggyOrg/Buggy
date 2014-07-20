@@ -1,7 +1,9 @@
-//- compose_overview.jade
-- var chapter = "Compose"
-- var section = "Overview"
-include ./includes/index.jade
+//- overview.jade
+extends ../includes/base.jade
+append navbar
+  -var chapter = "Compose"
+  -var section = "Overview"
+append content
   p
     | The Compose mechanism creates the actual programs from the semantic
     | definitions, modules, implementation details  and the program itself.

@@ -1,10 +1,17 @@
 //- ./includes/topbar.jade
+include ./navigation.jade
+block navbar
 .ui.top.sidebar.inverted
   .ui.fixed.top.menu.inverted
     .item.title Buggy Documentation
     .item= chapter
-    .item.icon
+    a(href='#').item.icon
       i.icon.left.arrow
-    .item= section
-    .item.icon
+    .ui.dropdown.link.item= section
+      .menu
+        each link in nav[chapter].items
+          a(href=link.link + ".html").item= link.name
+      script.
+        $(".ui.dropdown").dropdown({on: 'hover'});
+    a(href='#').item.icon
       i.icon.right.arrow

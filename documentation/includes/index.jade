@@ -5,15 +5,16 @@ html
     meta(charset='utf-8')
     title Buggy
     link(href='http://fonts.googleapis.com/css?family=Open+Sans', rel='stylesheet', type='text/css')
-    link(rel='stylesheet', href='../buggy.css')
-    script(src='../lib/jquery.2.1.1.min.js')
-    link(rel='stylesheet', type='text/css', href='../style/semantic.min.css')
-    script(src='../lib/semantic.min.js')
-    link(rel='stylesheet', type='text/css', href='../style/prism.css')
-    script(src='../lib/prism.min.js')
-    script(src='../lib/snap.svg-min.js')
+    link(rel='stylesheet', href='../../buggy.css')
+    script(src='../../lib/jquery.2.1.1.min.js')
+    link(rel='stylesheet', type='text/css', href='../../style/semantic.min.css')
+    script(src='../../lib/semantic.min.js')
+    link(rel='stylesheet', type='text/css', href='../../style/prism.css')
+    script(src='../../lib/prism.min.js')
+    script(src='../../lib/snap.svg-min.js')
+    script(src='../../source-refs.js')
   body#home
     include ./topbar.jade
     .main.container
       .ui.dividing.header
-        h2= chapter + ":" + section
+        h2= chapter + " : " + section

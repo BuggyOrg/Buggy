@@ -1,0 +1,11 @@
+//- ./includes/footer.jade
+script.
+  $("a[source-ref]").each(function(index, value){
+    var ref = $(this).attr("source-ref");
+    if(ref in sourceRefs){
+      $(this).attr("href", sourceRefs[ref].link + "#L" + sourceRefs[ref].line);
+    }
+    else {
+      console.log("no source ref for " + ref);
+    }
+  })
