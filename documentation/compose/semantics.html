@@ -1,4 +1,53 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Buggy</title><link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"><link rel="stylesheet" href="../../buggy.css"><script src="../../lib/jquery.2.1.1.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/semantic.min.css"><script src="../../lib/semantic.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/prism.css"><script src="../../lib/prism.min.js"></script><script src="../../lib/snap.svg-min.js"></script><script src="../../source-refs.js"></script></head><body id="home"><input id="documentation" type="hidden" name="documentation" value="[object Object]"><div class="ui top sidebar inverted"><div class="ui fixed top menu inverted"><div class="item title">Buggy Documentation</div><div class="item">Compose</div><a href="#" class="item icon"><i class="icon left arrow"></i></a><div class="ui dropdown link item">Semantics<div class="menu"><a href="overview.html" class="item">Overview</a><a href="semantics.html" class="item">Semantics</a></div><script>$(".ui.dropdown").dropdown({on: 'hover'});</script></div><a href="#" class="item icon"><i class="icon right arrow"></i></a></div></div><div class="main container"><div class="ui dividing header"><h2>Compose : Semantics</h2><div class="heading h3">Semantic Fields<a source-ref="Semantic Field" class="sourcelink"><i class="icon code"></i></a></div></div></div></body></html><script>$("a[source-ref]").each(function(index, value){
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Buggy</title><link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"><link rel="stylesheet" href="../../buggy.css"><script src="../../lib/jquery.2.1.1.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/semantic.min.css"><script src="../../lib/semantic.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/prism.css"><script src="../../lib/prism.min.js"></script><script src="../../lib/snap.svg-min.js"></script><script src="../../source-refs.js"></script></head><body id="home"><input id="documentation" type="hidden" name="documentation" value="[object Object]"><div class="ui top sidebar inverted"><div class="ui fixed top menu inverted"><div class="item title">Buggy Documentation</div><div class="item">Compose</div><a href="#" class="item icon"><i class="icon left arrow"></i></a><div class="ui dropdown link item">Semantics<div class="menu"><a href="overview.html" class="item">Overview</a><a href="semantics.html" class="item">Semantics</a></div></div><a href="#" class="item icon"><i class="icon right arrow"></i></a></div></div><div class="main container"><div class="ui dividing header"><h2>Compose : Semantics</h2></div><h3 class="heading">Semantics</h3><p>The Semantics in Buggy describe the actual functionality on different
+levels. This is done to achieve a high abstraction from the actual
+implementation. The overall goal is to create a description of a problem
+that is on a high abstraction level and must not necessary contain
+information about how to takle the problem or corresponding problems
+on lower abstraction levels. You should be able to describe the problem
+in a short manner without switching the abstraction level.</p><p>Buggy introduces a variety of Semantic Fields for this purpose that
+can introduce an high level of abstraction. The Semantic information of
+all these field can be queried during the Compose process. This
+information is stored locally and distributed, meaning that it is
+possible to use only the local set of Semantic information but you
+can also access Semantic information stored and maintained somewhere
+else</p><div class="ui accordion caution fluid inverted green"><div class="title"><i class="icon dropdown"></i>Storing Semantic information</div><div class="content">Buggy does not enforce a specific storage format. Semantic information
+be stored in any way. But in order to use it in Buggy the resulting
+format must be JSON. This article describes how the core implementation
+accesses and stores the information in multiple files. The interface
+for the semantics is a simple query routine explained later.</div></div><h3 class="heading">Semantic Fields<a source-ref="Semantic Field" class="sourcelink"><i class="icon code"></i></a></h3><p>Buggy distinguishes between different Semantic Fields that are each
+responsible for a specific task. The main Semantic Fields are:<div class="ui fluid accordion"><div class="title"><i class="icon dropdown"></i>Symbols<a source-ref="Semantic Field/Symbols" class="sourcelink inline"><i class="icon code"></i></a></div><div class="content">Defines what functionality exists without the information how
+this functionality is implemented.<a href="#symbols">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Symbols/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div><div class="title"><i class="icon dropdown"></i>Implementations<a source-ref="Semantic Field/Implementations" class="sourcelink inline"><i title="Bla" class="icon code linkpopup"></i></a></div><div class="content">Defines ways of implementing known Symbols. There can be multiple
+implementations for only one Symbol.<a href="#implementations">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Implementations/Hooks" class="sourcelink list">Hooks:<i class="icon code"></i></a></i><i class="item"><a source-ref="Semantic Field/Implementations/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div><div class="title"><i class="icon dropdown"></i>Construction Rules<a source-ref="Semantic Field/Construction" class="sourcelink list"><i class="icon code"></i></a></div><div class="content">Describes how to build actual programs with implemented symbols.
+This part doesn't introduce any actual functionality it is
+responsible for the necessary boilerplate code.<a href="#construction">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Construction/Hooks" class="sourcelink list">Hooks:<i class="icon code"></i></a></i><i class="item"><a source-ref="Semantic Field/Construction/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div></div></p><div class="ui accordion caution fluid inverted green"><div class="title"><i class="icon dropdown"></i>Creating new Semantic Fields</div><div class="content">The Semantic Fields are implemented using a Hooks / Predicate system
+where:<ul><li class="item"><b>Hooks&nbsp;</b>can change, extend, etc. a Field when it is added.</li><li class="item"><b>Predicates&nbsp;</b>implement how a query to the Field is processed on the data.</li></ul></div></div><div class="ui accordion caution fluid inverted red"><div class="ui corner label"><i class="icon exclamation"></i></div><div class="title"><i class="icon dropdown"></i>Caution! Creating new Semantic Fields</div><div class="content">When creating Hooks / Predicates with LiveScript be cautios, the Syntax used for
+lists in the existing Hooks / Predicates only works when you have more
+then one element. You have to explicitly mark the list as an array by
+surrounding it with <code>[]</code> when there is only one element in it.
+Like in the following example<div class="ui segment inverted"><pre><code>Predicates = [
+* name: "name filter",
+  description: "filters all elements that don't match the given name",
+  process: (value, query, options)->
+    value.name == query
+]</code></pre></div></div></div><h3 id="symbols" class="heading">Symbols<a source-ref="Semantic Field/Symbols" class="sourcelink"><i class="icon code"></i></a></h3><p>A Symbol describes a procedure. This can be a simple thing like<i>Add</i>or a complex Problem like the<i>Travelling Salesman Problem</i>. The Symbol does not describe how to calculate a solution or even how
+To approach the problem. It rather states what data will be processed.
+For an Add this can be two Numbers going and one resulting number going
+out, the Sum. A Symbol does not specify the exact semantics of the
+problem. There might be different interpretations of an problem and
+thus the exact semantics are chosen later with<a href="#">&nbsp;semantic tests&nbsp;</a>and via user specifications and other methods.</p><p>A Symbol always looks has a name and it can have connectors. The
+corresponding JSON Object looks like this.<div class="ui segment inverted"><pre><code>{
+ "name" : "Add",
+ "connectors" : [
+   { "name" : "Term 1", "type" : "Input" },
+   { "name" : "Term 2", "type" : "Input" },
+   { "name" : "Sum", "type" : "Output" }
+ ]
+},</code></pre></div><div class="ui accordion fluid fluid inverted purple"><div class="title"><i class="icon dropdown"></i>Work in progress: Connectors for Main Node.</div><div class="content">Every Symbol should probably have at least one connector. Currently the
+main node has no connector. The main node represents the starting point
+of a program. It is unclear weather the main node needs any connection
+at all. Inputs to a program are made through input nodes and outputs
+via output nodes. They are probably more adaptable than connectors.</div></div><div class="ui accordion fluid fluid inverted purple"><div class="title"><i class="icon dropdown"></i>Work in progress: Datatypes.</div><div class="content">There is no support for any datatype yet. This will be added in the
+and might influence the above notation!</div></div></p><h3 id="implementations" class="heading">Implementations<a source-ref="Semantic Field/Implementations" class="sourcelink"><i class="icon code"></i></a></h3><p>...</p></div></body></html><script>$("a[source-ref]").each(function(index, value){
   var ref = $(this).attr("source-ref");
   if(ref in sourceRefs){
     $(this).attr("href", sourceRefs[ref].link + "#L" + sourceRefs[ref].line);
@@ -6,4 +55,7 @@
   else {
     console.log("no source ref for " + ref);
   }
-})</script>
+})
+$(".ui.accordion").accordion();
+$(".ui.popup").popup();
+$(".ui.dropdown").dropdown({on: 'hover'});</script>

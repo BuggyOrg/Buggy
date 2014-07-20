@@ -11,7 +11,5 @@ block navbar
       .menu
         each section in documentation.chapters[chapter].sections
           a(href=section.file + ".html").item= section.name
-      script.
-        $(".ui.dropdown").dropdown({on: 'hover'});
     a(href='#').item.icon
       i.icon.right.arrow

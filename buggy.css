@@ -36,6 +36,10 @@ h2 {
   font-weight: normal !important;
 }
 
+h3 {
+  padding-top: 30px;
+}
+
 h1.ui.header {
   font-size: 3em;
 }
@@ -74,6 +78,54 @@ p a {
   margin-right: 0px;
   margin-left: auto;
 }
+.sourcelink.inline {
+  display:inline-block;
+  float:none !important;
+  margin-left: 10px; margin-right: 10px;
+}
+
+.sourcelink.list {
+  display:inline-block;
+  float:none !important;
+}
+
+.sourcelink.list i {
+  margin-left:10px;
+}
+
+.list.right {
+  display: block;
+  position:relative;
+  float: right;
+  margin-right: 0px;
+  margin-left: auto;
+}
+
+.caution {
+  background-color: #D95C5C!important;
+  color: white!important;
+}
+.caution .title {
+  color: white!important;
+}
+
+.accordion.inverted.purple {
+  background-color: #564F8A!important;
+  color: white!important;
+}
+.accordion.inverted.purple .title {
+  background-color: #564F8A!important;
+  color: white!important;
+}
+
+.accordion.inverted.green {
+  background-color: #A1CF64!important;
+  color: white!important;
+}
+.accordion.inverted.green .title {
+  background-color: #A1CF64!important;
+  color: white!important;
+}
 
 /*******************************
             Global
@@ -82,6 +134,7 @@ p a {
   margin-top: 150px;
   margin-left: 15%;
   margin-right: 20%;
+  margin-bottom: 150px;
   max-width: 800px;
   text-align: justify;
 }
