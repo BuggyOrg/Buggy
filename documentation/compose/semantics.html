@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Buggy</title><link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"><link rel="stylesheet" href="../../buggy.css"><script src="../../lib/jquery.2.1.1.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/semantic.min.css"><script src="../../lib/semantic.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/prism.css"><script src="../../lib/prism.min.js"></script><script src="../../lib/snap.svg-min.js"></script><script src="../../source-refs.js"></script></head><body id="home"><input id="documentation" type="hidden" name="documentation" value="[object Object]"><div class="ui top sidebar inverted"><div class="ui fixed top menu inverted"><div class="item title">Buggy Documentation</div><div class="item">Compose</div><a href="#" class="item icon"><i class="icon left arrow"></i></a><div class="ui dropdown link item">Semantics<div class="menu"><a href="overview.html" class="item">Overview</a><a href="semantics.html" class="item">Semantics</a></div></div><a href="#" class="item icon"><i class="icon right arrow"></i></a></div></div><div class="main container"><div class="ui dividing header"><h2>Compose : Semantics</h2></div><h3 class="heading">Semantics</h3><p>The Semantics in Buggy describe the actual functionality on different
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Buggy</title><link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"><link rel="stylesheet" href="../../buggy.css"><script src="../../lib/jquery.2.1.1.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/semantic.min.css"><script src="../../lib/semantic.min.js"></script><link rel="stylesheet" type="text/css" href="../../style/prism.css"><script src="../../lib/prism.min.js"></script><script src="../../lib/snap.svg-min.js"></script><script src="../../source-refs.js"></script></head><body id="home"><div class="ui top sidebar inverted"><div class="ui fixed top menu inverted"><div class="item title">Buggy Documentation</div><div class="item">Compose</div><a href="#" class="item icon"><i class="icon left arrow"></i></a><div class="ui dropdown link item">Semantics<div class="menu"><a href="overview.html" class="item">Overview</a><a href="semantics.html" class="item">Semantics</a></div></div><a href="#" class="item icon"><i class="icon right arrow"></i></a></div></div><div class="main container"><div class="ui dividing header"><h2>Compose : Semantics</h2></div><h3 class="heading">Semantics</h3><p>The Semantics in Buggy describe the actual functionality on different
 levels. This is done to achieve a high abstraction from the actual
 implementation. The overall goal is to create a description of a problem
 that is on a high abstraction level and must not necessary contain
@@ -11,15 +11,15 @@ information is stored locally and distributed, meaning that it is
 possible to use only the local set of Semantic information but you
 can also access Semantic information stored and maintained somewhere
 else</p><div class="ui accordion caution fluid inverted green"><div class="title"><i class="icon dropdown"></i>Storing Semantic information</div><div class="content">Buggy does not enforce a specific storage format. Semantic information
-be stored in any way. But in order to use it in Buggy the resulting
+can be stored in any way. But in order to use it in Buggy the resulting
 format must be JSON. This article describes how the core implementation
 accesses and stores the information in multiple files. The interface
 for the semantics is a simple query routine explained later.</div></div><h3 class="heading">Semantic Fields<a source-ref="Semantic Field" class="sourcelink"><i class="icon code"></i></a></h3><p>Buggy distinguishes between different Semantic Fields that are each
 responsible for a specific task. The main Semantic Fields are:<div class="ui fluid accordion"><div class="title"><i class="icon dropdown"></i>Symbols<a source-ref="Semantic Field/Symbols" class="sourcelink inline"><i class="icon code"></i></a></div><div class="content">Defines what functionality exists without the information how
-this functionality is implemented.<a href="#symbols">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Symbols/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div><div class="title"><i class="icon dropdown"></i>Implementations<a source-ref="Semantic Field/Implementations" class="sourcelink inline"><i title="Bla" class="icon code linkpopup"></i></a></div><div class="content">Defines ways of implementing known Symbols. There can be multiple
+this functionality is implemented.<a href="#symbols">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Symbols/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div><div class="title"><i class="icon dropdown"></i>Implementations<a source-ref="Semantic Field/Implementations" class="sourcelink inline"><i class="icon code"></i></a></div><div class="content">Defines ways of implementing known Symbols. There can be multiple
 implementations for only one Symbol.<a href="#implementations">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Implementations/Hooks" class="sourcelink list">Hooks:<i class="icon code"></i></a></i><i class="item"><a source-ref="Semantic Field/Implementations/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div><div class="title"><i class="icon dropdown"></i>Construction Rules<a source-ref="Semantic Field/Construction" class="sourcelink list"><i class="icon code"></i></a></div><div class="content">Describes how to build actual programs with implemented symbols.
 This part doesn't introduce any actual functionality it is
-responsible for the necessary boilerplate code.<a href="#construction">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Construction/Hooks" class="sourcelink list">Hooks:<i class="icon code"></i></a></i><i class="item"><a source-ref="Semantic Field/Construction/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div></div></p><div class="ui accordion caution fluid inverted green"><div class="title"><i class="icon dropdown"></i>Creating new Semantic Fields</div><div class="content">The Semantic Fields are implemented using a Hooks / Predicate system
+responsible for the necessary boilerplate code.<a href="#construction">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Construction/Hooks" class="sourcelink list">Hooks:<i class="icon code"></i></a></i><i class="item"><a source-ref="Semantic Field/Construction/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div><div class="title inverted purple"><i class="icon dropdown"></i>Work in Progress: Modules<a source-ref="Semantic Field/Modules" class="sourcelink list"><i class="icon code"></i></a></div><div class="content inverted purple">Modules aren't implemented yet!<a href="#modules">&nbsp;More<i class="icon double angle right"></i></a><br><div class="tiny ui horizontal bulleted list right"><i class="item"><a source-ref="Semantic Field/Modules/Hooks" class="sourcelink list">Hooks:<i class="icon code"></i></a></i><i class="item"><a source-ref="Semantic Field/Modules/Predicates" class="sourcelink list">Predicates:<i class="icon code"></i></a></i></div><br></div></div></p><div class="ui accordion caution fluid inverted green"><div class="title"><i class="icon dropdown"></i>Creating new Semantic Fields</div><div class="content">The Semantic Fields are implemented using a Hooks / Predicate system
 where:<ul><li class="item"><b>Hooks&nbsp;</b>can change, extend, etc. a Field when it is added.</li><li class="item"><b>Predicates&nbsp;</b>implement how a query to the Field is processed on the data.</li></ul></div></div><div class="ui accordion caution fluid inverted red"><div class="ui corner label"><i class="icon exclamation"></i></div><div class="title"><i class="icon dropdown"></i>Caution! Creating new Semantic Fields</div><div class="content">When creating Hooks / Predicates with LiveScript be cautios, the Syntax used for
 lists in the existing Hooks / Predicates only works when you have more
 then one element. You have to explicitly mark the list as an array by
@@ -29,12 +29,12 @@ Like in the following example<div class="ui segment inverted"><pre><code>Predica
   description: "filters all elements that don't match the given name",
   process: (value, query, options)->
     value.name == query
-]</code></pre></div></div></div><h3 id="symbols" class="heading">Symbols<a source-ref="Semantic Field/Symbols" class="sourcelink"><i class="icon code"></i></a></h3><p>A Symbol describes a procedure. This can be a simple thing like<i>Add</i>or a complex Problem like the<i>Travelling Salesman Problem</i>. The Symbol does not describe how to calculate a solution or even how
+]</code></pre></div></div></div><h3 id="symbols" class="heading">Symbols<a source-ref="Semantic Field/Symbols" class="sourcelink"><i class="icon code"></i></a></h3><p>A Symbol describes a procedure. This can be a simple thing like<i>&nbsp;Add&nbsp;</i>or a complex problem like the<i>&nbsp;Travelling Salesman Problem</i>. The Symbol does not describe how to calculate a solution or even how
 To approach the problem. It rather states what data will be processed.
 For an Add this can be two Numbers going and one resulting number going
 out, the Sum. A Symbol does not specify the exact semantics of the
 problem. There might be different interpretations of an problem and
-thus the exact semantics are chosen later with<a href="#">&nbsp;semantic tests&nbsp;</a>and via user specifications and other methods.</p><p>A Symbol always looks has a name and it can have connectors. The
+thus the exact semantics are chosen later with<a href="#" title="Not written yet..." class="popup link">&nbsp;semantic tests&nbsp;</a>and via user specifications and other methods.</p><p>A Symbol always looks has a name and it can have connectors. The
 corresponding JSON Object looks like this.<div class="ui segment inverted"><pre><code>{
  "name" : "Add",
  "connectors" : [
@@ -46,8 +46,112 @@ corresponding JSON Object looks like this.<div class="ui segment inverted"><pre>
 main node has no connector. The main node represents the starting point
 of a program. It is unclear weather the main node needs any connection
 at all. Inputs to a program are made through input nodes and outputs
-via output nodes. They are probably more adaptable than connectors.</div></div><div class="ui accordion fluid fluid inverted purple"><div class="title"><i class="icon dropdown"></i>Work in progress: Datatypes.</div><div class="content">There is no support for any datatype yet. This will be added in the
-and might influence the above notation!</div></div></p><h3 id="implementations" class="heading">Implementations<a source-ref="Semantic Field/Implementations" class="sourcelink"><i class="icon code"></i></a></h3><p>...</p></div></body></html><script>$("a[source-ref]").each(function(index, value){
+via output nodes. They are probably more adaptable than connectors.</div></div><div class="ui accordion fluid fluid inverted purple"><div class="title"><i class="icon dropdown"></i>Work in progress: Datatypes.</div><div class="content">There is no support for any datatype yet. This will be added soon
+and might influence the above notation!</div></div></p><h3 id="implementations" class="heading">Implementations<a source-ref="Semantic Field/Implementations" class="sourcelink"><i class="icon code"></i></a></h3><p>Every Symbol needs an implementation. Without an implementation a Symbol
+cannot be processed. An implementation is simply a less abstract
+description of what the Symbol can represent. For a Symbol named<b>&nbsp;Search</b>there might be an implementation called<b>&nbsp;Binary Search</b>Although the Binary Search idea doesn't apply for all search scenarios it is
+a valid implementation for specific datasets. There can be many
+implementations for one Symbol. If an implementation is valid for
+scenario depends on the data that should be processed and the intention
+of the programmer. A Binary Search implementation only applies for ordered
+sequences, which can be encoded in the data. For this purpose Buggy
+allows every Semantic Field to store Meta Information that can encode
+arbitrary data that can help choose an appropriate implementation. In
+some cases it might even be possible to deduce from the program itself,
+that a sequence will be ordered. This information can then be added
+during the compilation process.</p><p>There are generally two types of implementations.<div class="ui fluid accordion"><div class="title"><i class="icon dropdown"></i>Nodes<a source-ref="Semantic Field/Implementations/Nodes" title="Implementation of Connection Hook" class="sourcelink inline popup"><i class="icon code"></i></a>/<a source-ref="Semantic Field/Implementations/NodesRef" title="Reference in the Hooks section of Implementations" class="sourcelink inline popup"><i class="icon code"></i></a></div><div class="content">A Node translates a Symbol into a network of Symbols that are on a lower
+abstraction level. These are independent of the target language that
+Buggy compiles to!</div><div class="title"><i class="icon dropdown"></i>Atomics<a source-ref="Semantic Field/Implementations/Atomics" class="sourcelink inline"><i class="icon code"></i></a></div><div class="content">They implement a Symbol using a common programming language. They
+are on the lowest level of abstraction! Sometimes it can be interesting
+implementing high level features using atomics. But this is discouraged
+as it removes all the introspection possibilities Buggy can use.
+It is necessary to implement a rather small set of Atomics for every
+language to make it a supported language. Furthermore<a href="#construction">&nbsp;Construction Rules&nbsp;</a>are required to support a new language.</div></div></p><p>An implementation of an atomic might look like this where the &lt;file-path&gt;
+is a local file that contains the actual implementation.<div class="ui segment inverted"><pre><code>{
+  "name" : "Identity",
+  "language" : "javascript",
+  "atomic" : true,
+  "implementation-file" : "&lt;file-path&gt;"
+}</code></pre></div>How you can write an atomic implementation is discussed in<a href="#" title="Not written yet..." class="popup">&nbsp;another part&nbsp;</a>A Node looks a littl bit different. It is not specific to a language
+and has no implementation-file.<div class="ui segment inverted"><pre><code>{
+  "name" : "Fold",
+  "generics" : [
+    {
+      "name" : "Scan",
+      "inputs" : { "Initial" : ">Fold:Initial",
+                   "Array" : ">Fold:Array",
+                   "ResultStreamIn" : ">Fold:ResultStreamIn" }
+    },
+    {
+      "name" : "Last",
+      "inputs" : { "Stream" : ">Scan:Result" }
+    }
+  ],
+  "connections" : [
+    {
+      "to" : { "generic" : "Fold", "connector" : "Value1Out" },
+      "from" : { "generic" : "Scan", "connector" : "Value1Out" }
+    },
+    {
+      "to" : { "generic" : "Fold", "connector" : "Value2Out" },
+      "from" : { "generic" : "Scan", "connector" : "Value2Out" }
+    },
+    {
+      "to" : { "generic" : "Fold", "connector" : "Result" },
+      "from" : { "generic" : "Last", "connector" : "Last" }
+    }
+  ]
+}</code></pre></div>This implementation of fold is simply a Scan that takes the last Element
+in the Stream and returns routes it to the Result of Fold.</p><p>Both implementations have a name that is linked to the Symbol. Furthermore
+The following elements are possible.</p><table class="ui table segment"><thead><tr><th>Attribute</th><th>Required?</th><th>Description</th></tr></thead><tbody><tr><td>name</td><td><i class="icon checkmark"></i></td><td>The name of the Symbol that is implemented</td></tr><tr><td>language</td><td>Atomics<i class="icon checkmark"></i></td><td>The target language of the implementation</td></tr><tr><td>atomic</td><td>Atomics<i title="Not required, the atomic flag is automatically added.It is used during later processing steps and thus added." class="icon ban circle popup red"></i></td><td>A flag that indicates wheather this is an atomic or not</td></tr><tr><td>implementation-file</td><td>Atomics<i title="Not required, it is used to fill the implementation attribute" class="icon exclamation popup red"></i></td><td>A file url relative to the &nbsp;<a source-ref="TODO: Better loading mechanism" title="If somebody can change this. It is very annoying, but I have no time to improve the mechanism." class="ui label purple popuplabel">Buggy root directory<i class="icon code"></i></a>&nbsp;. It loads the file and puts the content into the implementation
+attribute.</td></tr><tr><td>implementation</td><td>Atomics<i class="icon checkmark"></i></td><td>The Implementation used when creating the source of the program.</td></tr><tr><td>generics</td><td>Nodes<i class="icon checkmark"></i></td><td>A sequence of Symbols with Meta information and possible connection
+information. The input attribute translates into connections<a source-ref="Semantic Field/Implementations/NodesRef" class="sourcelink inline"><i class="icon code"></i></a>it is thus possible to not use them, but they are shorter.</td></tr><tr><td>connections</td><td>Nodes<i title="Connections are necessary, but it is possible todefine them in the generic section. But in the end they are translatedinto this field and only read from here" class="icon exclamation red popup"></i></td><td>A list of connections between the symbols describing the dataflow
+in the network</td></tr></tbody></table><h3 id="construction" class="heading">Construction Rules</h3><p>To create source code out of the whole composition process Buggy must
+translate it into the target language. A buggy program is basically
+a dataflow which gets modified along the path. We found that a<a href="http://de.wikipedia.org/wiki/Communicating_Sequential_Processes">&nbsp;CSP&nbsp;</a>based implementation fits this idea very well and chose this as our
+first implementation strategy although it is not the most efficient
+implementation.</p><p>Even the very similar CSP implementation requires a few adaptations to
+the dataflow network build during the compose process. We call those
+adaptations artifacts due to the chosen implementation. In order to
+generate those artifacts postprocessing steps are introduced. They are
+explained later, but they are part of the Construction rules.</p><p>A construction rule can look like this.</p><div class="ui segment inverted"><pre><code>{
+ "name" : "js-csp",
+ "language" : "javascript",
+ "description" : "uses CSP to build construct a javascript program with channel communication between groups",
+ "templates" : [
+   {
+     "template" : "requires",
+     "file" : "semantics/javascript/templates/csp/requires.js",
+     "process" : "implementations"
+   },
+   ...
+ ],
+ "postprocessing" : [
+   {
+     "name" : "multiple-outputs",
+     "process" : "outputs",
+     "procedure-file" : "semantics/javascript/processing/multiple-outputs.ls"
+   },
+   ...
+ ]
+}</code></pre></div><p>Although CSP seems natural for our description it is probably best to create
+other construction rules that create code with less boilerplate instructions.
+One of Buggys major strengths is that there is no need to find the best
+answer for all cases. The construction rules can introduce a variety of
+optimized source generation tools that will perform better under certain
+circumstances. The different construction tools can automatically be
+compared with each other and Buggy can then choose the best implementation.</p><div class="ui accordion fluid fluid inverted purple"><div class="title"><i class="icon dropdown"></i>Work in progress: Creating faster and better Construction Rules</div><div class="content">Currently only the CSP implementation works and due to its nature it
+will probably never outperform any real programming languages. The
+strengths of the CSP approach are that the program can be parallelized
+naturally without any effort. So every Buggy program could run in parallel.
+Both parts are interesting but require a lot of time and effort to
+be implemented.</div></div><div class="ui accordion fluid fluid inverted purple"><div class="title"><i class="icon dropdown"></i>Work in progress: Compiling into any language</div><div class="content">The construction rules create a basis for a programming lanuguage following
+a specific idea to implement the dataflow network. Currently there is only
+one implementation for Javascript that reqiures the Harmony flag as we
+use<a href="https://github.com/olahol/node-csp" title="Thanks to Ola Holmström for this nice library" class="popup">&nbsp;node-csp&nbsp;</a>and thus need generators which are defined in ECMA 6 and not supported by
+the recent node release. Chrome supports it by turning experimental Javascript
+features on under<i>&nbsp;chrome://flags&nbsp;</i>. It is currently enough for our development but not for adressing more
+people.</div></div><h3 class="heading">Modules<a source-ref="Semantic Field/Modules" class="sourcelink"><i class="icon code"></i></a></h3><p>...</p></div></body></html><script>$("a[source-ref]").each(function(index, value){
   var ref = $(this).attr("source-ref");
   if(ref in sourceRefs){
     $(this).attr("href", sourceRefs[ref].link + "#L" + sourceRefs[ref].line);
@@ -57,5 +161,6 @@ and might influence the above notation!</div></div></p><h3 id="implementations" 
   }
 })
 $(".ui.accordion").accordion();
-$(".ui.popup").popup();
+$(".popup").popup();
+$(".popuplabel").popup();
 $(".ui.dropdown").dropdown({on: 'hover'});</script>

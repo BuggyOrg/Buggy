@@ -9,15 +9,35 @@ sourceRefs = {
     "line": "19",
     "ref": "Semantic Field/Construction/Hooks"
   },
+  "Semantic Field/Implementations/Nodes": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/implementation-connections.ls",
+    "line": "20",
+    "ref": "Semantic Field/Implementations/Nodes"
+  },
   "Semantic Field/Implementations/Hooks": {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/implementation.ls",
     "line": "20",
     "ref": "Semantic Field/Implementations/Hooks"
   },
+  "Semantic Field/Implementations/Atomics": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/implementation.ls",
+    "line": "23",
+    "ref": "Semantic Field/Implementations/Atomics"
+  },
+  "Semantic Field/Implementations/NodesRef": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/implementation.ls",
+    "line": "42",
+    "ref": "Semantic Field/Implementations/NodesRef"
+  },
   "Semantic Field/Implementations": {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/implementation.ls",
     "line": "22",
     "ref": "Semantic Field/Implementations"
+  },
+  "TODO: Better loading mechanism": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/loading.ls",
+    "line": "28",
+    "ref": "TODO: Better loading mechanism"
   },
   "Semantic Field/Construction/Predicates": {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/predicates/construction.ls",

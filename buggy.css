@@ -117,6 +117,14 @@ p a {
   background-color: #564F8A!important;
   color: white!important;
 }
+.title.inverted.purple {
+  background-color: #564F8A!important;
+  color: white!important;
+}
+.content.inverted.purple {
+  background-color: #564F8A!important;
+  color: white!important;
+}
 
 .accordion.inverted.green {
   background-color: #A1CF64!important;

@@ -19,7 +19,7 @@ var sourceRefs = function(grunt, where, url){
       for(var i=0; i<resultLines.length-1; i++){
         var line = resultLines[i];
         var parts = line.split(":");
-        var ref = parseRef(parts[2])
+        var ref = parseRef(parts.slice(2).join(":"))
         results[ref] = {
           link: urlExchange(parts[0]),
           line: parts[1],

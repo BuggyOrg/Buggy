@@ -27,7 +27,7 @@ append content
       | Storing Semantic information
     .content
       | Buggy does not enforce a specific storage format. Semantic information
-      | be stored in any way. But in order to use it in Buggy the resulting
+      | can be stored in any way. But in order to use it in Buggy the resulting
       | format must be JSON. This article describes how the core implementation
       | accesses and stores the information in multiple files. The interface
       | for the semantics is a simple query routine explained later.
@@ -59,7 +59,7 @@ append content
         i.icon.dropdown
         | Implementations
         a(source-ref="Semantic Field/Implementations").sourcelink.inline
-          i(title="Bla").icon.code.linkpopup
+          i.icon.code
       .content
         | Defines ways of implementing known Symbols. There can be multiple
         | implementations for only one Symbol.
@@ -92,6 +92,24 @@ append content
               i.icon.code
           i.item
             a(source-ref="Semantic Field/Construction/Predicates").sourcelink.list Predicates:
+              i.icon.code
+        br
+      .title.inverted.purple
+        i.icon.dropdown
+        | Work in Progress: Modules
+        a(source-ref="Semantic Field/Modules").sourcelink.list
+          i.icon.code
+      .content.inverted.purple
+        | Modules aren't implemented yet!
+        a(href="#modules") &nbsp;More
+          i.icon.double.angle.right
+        br
+        .tiny.ui.horizontal.bulleted.list.right
+          i.item
+            a(source-ref="Semantic Field/Modules/Hooks").sourcelink.list Hooks:
+              i.icon.code
+          i.item
+            a(source-ref="Semantic Field/Modules/Predicates").sourcelink.list Predicates:
               i.icon.code
         br
 
@@ -135,16 +153,16 @@ append content
       i.icon.code
   p
     | A Symbol describes a procedure. This can be a simple thing like
-    i Add
-    | or a complex Problem like the
-    i Travelling Salesman Problem
+    i &nbsp;Add&nbsp;
+    | or a complex problem like the
+    i &nbsp;Travelling Salesman Problem
     | . The Symbol does not describe how to calculate a solution or even how
     | To approach the problem. It rather states what data will be processed.
     | For an Add this can be two Numbers going and one resulting number going
     | out, the Sum. A Symbol does not specify the exact semantics of the
     | problem. There might be different interpretations of an problem and
     | thus the exact semantics are chosen later with
-    a(href="#") &nbsp;semantic tests&nbsp;
+    a(href="#",title="Not written yet...").popup.link &nbsp;semantic tests&nbsp;
     | and via user specifications and other methods.
   p
     | A Symbol always looks has a name and it can have connectors. The
@@ -175,10 +193,255 @@ append content
         i.icon.dropdown
         | Work in progress: Datatypes.
       .content
-        | There is no support for any datatype yet. This will be added in the
+        | There is no support for any datatype yet. This will be added soon
         | and might influence the above notation!
   h3(id="implementations").heading Implementations
     a(source-ref="Semantic Field/Implementations").sourcelink
+      i.icon.code
+  p
+    | Every Symbol needs an implementation. Without an implementation a Symbol
+    | cannot be processed. An implementation is simply a less abstract
+    | description of what the Symbol can represent. For a Symbol named
+    b &nbsp;Search
+    | there might be an implementation called
+    b &nbsp;Binary Search
+    | Although the Binary Search idea doesn't apply for all search scenarios it is
+    | a valid implementation for specific datasets. There can be many
+    | implementations for one Symbol. If an implementation is valid for
+    | scenario depends on the data that should be processed and the intention
+    | of the programmer. A Binary Search implementation only applies for ordered
+    | sequences, which can be encoded in the data. For this purpose Buggy
+    | allows every Semantic Field to store Meta Information that can encode
+    | arbitrary data that can help choose an appropriate implementation. In
+    | some cases it might even be possible to deduce from the program itself,
+    | that a sequence will be ordered. This information can then be added
+    | during the compilation process.
+  p
+    | There are generally two types of implementations.
+    .ui.fluid.accordion
+      .title
+        i.icon.dropdown
+        | Nodes
+        a(source-ref="Semantic Field/Implementations/Nodes",
+          title="Implementation of Connection Hook").sourcelink.inline.popup
+          i.icon.code
+        | /
+        a(source-ref="Semantic Field/Implementations/NodesRef",
+          title="Reference in the Hooks section of Implementations"
+          ).sourcelink.inline.popup
+          i.icon.code
+      .content
+        | A Node translates a Symbol into a network of Symbols that are on a lower
+        | abstraction level. These are independent of the target language that
+        | Buggy compiles to!
+      .title
+        i.icon.dropdown
+        | Atomics
+        a(source-ref="Semantic Field/Implementations/Atomics").sourcelink.inline
+          i.icon.code
+      .content
+        | They implement a Symbol using a common programming language. They
+        | are on the lowest level of abstraction! Sometimes it can be interesting
+        | implementing high level features using atomics. But this is discouraged
+        | as it removes all the introspection possibilities Buggy can use.
+        | It is necessary to implement a rather small set of Atomics for every
+        | language to make it a supported language. Furthermore
+        a(href="#construction") &nbsp;Construction Rules&nbsp;
+        | are required to support a new language.
+  p
+    | An implementation of an atomic might look like this where the &lt;file-path&gt;
+    | is a local file that contains the actual implementation.
+    .ui.segment.inverted
+      pre
+        code
+          | {
+          |   "name" : "Identity",
+          |   "language" : "javascript",
+          |   "atomic" : true,
+          |   "implementation-file" : "&lt;file-path&gt;"
+          | }
+    | How you can write an atomic implementation is discussed in
+    a(href="#",title="Not written yet...").popup &nbsp;another part&nbsp;
+    | A Node looks a littl bit different. It is not specific to a language
+    | and has no implementation-file.
+    .ui.segment.inverted
+      pre
+        code
+          | {
+          |   "name" : "Fold",
+          |   "generics" : [
+          |     {
+          |       "name" : "Scan",
+          |       "inputs" : { "Initial" : ">Fold:Initial",
+          |                    "Array" : ">Fold:Array",
+          |                    "ResultStreamIn" : ">Fold:ResultStreamIn" }
+          |     },
+          |     {
+          |       "name" : "Last",
+          |       "inputs" : { "Stream" : ">Scan:Result" }
+          |     }
+          |   ],
+          |   "connections" : [
+          |     {
+          |       "to" : { "generic" : "Fold", "connector" : "Value1Out" },
+          |       "from" : { "generic" : "Scan", "connector" : "Value1Out" }
+          |     },
+          |     {
+          |       "to" : { "generic" : "Fold", "connector" : "Value2Out" },
+          |       "from" : { "generic" : "Scan", "connector" : "Value2Out" }
+          |     },
+          |     {
+          |       "to" : { "generic" : "Fold", "connector" : "Result" },
+          |       "from" : { "generic" : "Last", "connector" : "Last" }
+          |     }
+          |   ]
+          | }
+    | This implementation of fold is simply a Scan that takes the last Element
+    | in the Stream and returns routes it to the Result of Fold.
+  p
+    | Both implementations have a name that is linked to the Symbol. Furthermore
+    | The following elements are possible.
+  table.ui.table.segment
+    thead
+      tr
+        th Attribute
+        th Required?
+        th Description
+    tbody
+      tr
+        td name
+        td
+          i.icon.checkmark
+        td The name of the Symbol that is implemented
+      tr
+        td language
+        td Atomics
+          i.icon.checkmark
+        td The target language of the implementation
+      tr
+        td atomic
+        td Atomics
+          i(title="Not required, the atomic flag is automatically added." +
+                  "It is used during later processing steps and thus added."
+          ).icon.ban.circle.popup.red
+        td A flag that indicates wheather this is an atomic or not
+      tr
+        td implementation-file
+        td Atomics
+          i(title="Not required, it is used to fill the implementation attribute"
+          ).icon.exclamation.popup.red
+        td A file url relative to the &nbsp;
+          a(source-ref="TODO: Better loading mechanism",
+            title="If somebody can change this. It is very annoying, "+
+              "but I have no time to improve the mechanism."
+              ).ui.label.purple.popuplabel
+            | Buggy root directory
+            i.icon.code
+          | &nbsp;. It loads the file and puts the content into the implementation
+          | attribute.
+      tr
+        td implementation
+        td Atomics
+          i.icon.checkmark
+        td The Implementation used when creating the source of the program.
+      tr
+        td generics
+        td Nodes
+          i.icon.checkmark
+        td A sequence of Symbols with Meta information and possible connection
+          | information. The input attribute translates into connections
+          a(source-ref="Semantic Field/Implementations/NodesRef").sourcelink.inline
+            i.icon.code
+          | it is thus possible to not use them, but they are shorter.
+      tr
+        td connections
+        td Nodes
+          i(title="Connections are necessary, but it is possible to" +
+            "define them in the generic section. But in the end they are translated"+
+            "into this field and only read from here").icon.exclamation.red.popup
+        td A list of connections between the symbols describing the dataflow
+          | in the network
+
+  h3(id="construction").heading Construction Rules
+  p
+    | To create source code out of the whole composition process Buggy must
+    | translate it into the target language. A buggy program is basically
+    | a dataflow which gets modified along the path. We found that a
+    a(href="http://de.wikipedia.org/wiki/Communicating_Sequential_Processes")
+      | &nbsp;CSP&nbsp;
+    | based implementation fits this idea very well and chose this as our
+    | first implementation strategy although it is not the most efficient
+    | implementation.
+  p
+    | Even the very similar CSP implementation requires a few adaptations to
+    | the dataflow network build during the compose process. We call those
+    | adaptations artifacts due to the chosen implementation. In order to
+    | generate those artifacts postprocessing steps are introduced. They are
+    | explained later, but they are part of the Construction rules.
+  p
+    | A construction rule can look like this.
+  .ui.segment.inverted
+    pre
+      code
+        |{
+        |  "name" : "js-csp",
+        |  "language" : "javascript",
+        |  "description" : "uses CSP to build construct a javascript program with channel communication between groups",
+        |  "templates" : [
+        |    {
+        |      "template" : "requires",
+        |      "file" : "semantics/javascript/templates/csp/requires.js",
+        |      "process" : "implementations"
+        |    },
+        |    ...
+        |  ],
+        |  "postprocessing" : [
+        |    {
+        |      "name" : "multiple-outputs",
+        |      "process" : "outputs",
+        |      "procedure-file" : "semantics/javascript/processing/multiple-outputs.ls"
+        |    },
+        |    ...
+        |  ]
+        |}
+  p
+    | Although CSP seems natural for our description it is probably best to create
+    | other construction rules that create code with less boilerplate instructions.
+    | One of Buggys major strengths is that there is no need to find the best
+    | answer for all cases. The construction rules can introduce a variety of
+    | optimized source generation tools that will perform better under certain
+    | circumstances. The different construction tools can automatically be
+    | compared with each other and Buggy can then choose the best implementation.
+  .ui.accordion.fluid.fluid.inverted.purple
+    .title
+      i.icon.dropdown
+      | Work in progress: Creating faster and better Construction Rules
+    .content
+      | Currently only the CSP implementation works and due to its nature it
+      | will probably never outperform any real programming languages. The
+      | strengths of the CSP approach are that the program can be parallelized
+      | naturally without any effort. So every Buggy program could run in parallel.
+      | Both parts are interesting but require a lot of time and effort to
+      | be implemented.
+  .ui.accordion.fluid.fluid.inverted.purple
+    .title
+      i.icon.dropdown
+      | Work in progress: Compiling into any language
+    .content
+      | The construction rules create a basis for a programming lanuguage following
+      | a specific idea to implement the dataflow network. Currently there is only
+      | one implementation for Javascript that reqiures the Harmony flag as we
+      | use
+      a(href="https://github.com/olahol/node-csp",
+        title="Thanks to Ola Holmström for this nice library").popup &nbsp;node-csp&nbsp;
+      | and thus need generators which are defined in ECMA 6 and not supported by
+      | the recent node release. Chrome supports it by turning experimental Javascript
+      | features on under
+      i &nbsp;chrome://flags&nbsp;
+      | . It is currently enough for our development but not for adressing more
+      | people.
+  h3(id=modules).heading Modules
+    a(source-ref="Semantic Field/Modules").sourcelink
       i.icon.code
   p
     | ...
