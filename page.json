@@ -2,21 +2,21 @@
   "start" : "buggy.html",
   "documentation" : {
     "path" : "documentation",
-    "chapters" : [
-      {
+    "chapters" : {
+      "Compose" : {
         "name" : "Compose",
         "path" : "compose",
-        "sections" : [
-          {
+        "sections" : {
+          "Overview" : {
             "name" : "Overview",
             "file" : "overview"
           },
-          {
+          "Semantics" : {
             "name" : "Semantics",
             "file" : "semantics"
           }
-        ]
+        }
       }
-    ]
+    }
   }
 }

@@ -5,11 +5,11 @@ var collectDocumentationFiles = function(page) {
   var doc = page.documentation;
   var curPath = doc.path;
   var files = {};
-  for(var i=0; i<doc.chapters.length; i++){
-    var chap = doc.chapters[i];
+  for(var chapter in doc.chapters){
+    var chap = doc.chapters[chapter];
     var chapPath = path.join(curPath, chap.path);
-    for(var j=0; j<chap.sections.length; j++){
-      var sec = chap.sections[j];
+    for(var section in chap.sections){
+      var sec = chap.sections[section];
       var secFileName = path.join(chapPath, sec.file);
       files[secFileName + ".html"] = secFileName + ".jade";
     }

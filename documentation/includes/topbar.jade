@@ -1,5 +1,5 @@
 //- ./includes/topbar.jade
-include ./navigation.jade
+input(id='documentation', type='hidden', name='documentation', value='#{documentation}')
 block navbar
 .ui.top.sidebar.inverted
   .ui.fixed.top.menu.inverted
@@ -9,8 +9,8 @@ block navbar
       i.icon.left.arrow
     .ui.dropdown.link.item= section
       .menu
-        each link in nav[chapter].items
-          a(href=link.link + ".html").item= link.name
+        each section in documentation.chapters[chapter].sections
+          a(href=section.file + ".html").item= section.name
       script.
         $(".ui.dropdown").dropdown({on: 'hover'});
     a(href='#').item.icon
