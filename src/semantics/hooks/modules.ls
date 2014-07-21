@@ -22,8 +22,8 @@ define ["ls!src/semantics/loading"], (Loading) ->
     * name : "processing file",
       description : "loads the processing file",
       process : (module) ->
-        if module["process"]?
-          Loading.load-template-file module["process"], ->
-            module["process-file"] = it
+        if module["process-file"]?
+          Loading.load-template-file module["process-file"], ->
+            module["process"] = it
         return module
   ]

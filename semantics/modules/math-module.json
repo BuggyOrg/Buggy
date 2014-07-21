@@ -3,7 +3,7 @@
     {
       "name" : "MathParser",
       "matches" : "Math",
-      "process" : "semantics/modules/processing/parse-math.ls"
+      "process-file" : "semantics/modules/processing/parse-math.ls"
     }
   ]
 }
