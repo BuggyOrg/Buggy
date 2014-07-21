@@ -16,7 +16,7 @@
 
 define ["ls!src/semantics/hooks/construction",
         "ls!src/semantics/predicates/construction",
-        "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field, Loading) ->
+        "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field) ->
 
   #%%#[Semantic Field/Construction]
   Construction = Field "construction", Hooks, Predicates
