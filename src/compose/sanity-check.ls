@@ -16,8 +16,25 @@
  */
 
 # Sanity Check...
-define (...) ->
+define ["ls!src/resolve"] (Resolve) ->
 
-  # TODO: This one is obvious!
+  validate-connector = (semantics, graph, connector, id, options) ->
+    nodes = graph.nodes |> filter -> it.id == id
+    if empty nodes
+      throw new Error "Connector #connector points to non existent generic with ID #id"
+    if nodes.length > 1
+      throw new Error "Ambiguous ID #id. More then one generic use this ID"
+
+    res = Resolve.resolve nodes.0, semantics, options
+    sym-connectors = res.symbol.connectors
+    con = sym-connectors |> filter -> it.name == connector
+    if empty con
+      throw new Error "Connector #connector is no connector of #{res.symbol.name}"
+    if con.length > 1
+      throw new Error "Symbol #{res.symbol.name} has multiple connectors with the same name"
+
+
   (semantics, graph, options) ->
-    yes
+    graph.connections |> each (c) ->
+      validate-connector semantics, graph, c.from.connector, c.from.generic, options
+      validate-connector semantics, graph, c.to.connector, c.to.generic, options

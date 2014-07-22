@@ -41,9 +41,9 @@ define ["ls!src/compose/dependency-graph",
         compose-options.best-match = get-best-match
 
       d-graph = DependencyGraph.generate semantics, compose-options
-      p-graph = Postprocess.process d-graph, semantics, options
+      p-graph = Postprocess.process d-graph, semantics, compose-options
       m-graph = DependencyGraph.mangle p-graph
-      SanityCheck semantics, m-graph
+      SanityCheck semantics, m-graph, compose-options
       o-graph = DependencyGraph.optimize m-graph
       source = Source.generate-source semantics, o-graph, compose-options
 
