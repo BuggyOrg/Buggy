@@ -14,6 +14,7 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#%%#[MathParser Module]
 math = require "mathjs"
 
 rename = {
