@@ -27,6 +27,7 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
                 id: Generic.identifier g
                 parent-group: Group.identifier grp-impl
                 meta: g.meta
+                module: g.module
               }
         connections: (Connection.gather grp-sym, grp-impl) |> map (c) ->
           {

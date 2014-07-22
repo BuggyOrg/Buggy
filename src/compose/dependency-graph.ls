@@ -15,31 +15,19 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/graph"] (Graph) ->
+define ["ls!src/graph", "ls!src/resolve"] (Graph, Resolve) ->
 
-  /*generate-dependency-graph-old = (generic-name, resolve, match-function) ->
+
+  generate-dependency-graph = (generic, semantics, options) ->
     # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
       # this case should be dealt with somewhere .. probably here
 
-      grp = match-function generic-name, resolve
-      grp-graph = Graph.from-group grp
+      grp = Resolve.resolve generic, semantics, options
+      if !grp?
+        throw new Error "[Dependency Graph] Couldn't resolve the group '#{generic.name}'"
+      grp-graph = Graph.from-group grp.symbol, grp.implementation
       sub-graphs = grp-graph.nodes |> map (n) ->
-        generate-dependency-graph n.name, resolve, match-function
-
-      fold Graph.union, grp-graph, sub-graphs*/
-
-  generate-dependency-graph = (generic-name, semantics, options) ->
-    # TODO: implement 'if main is output' (single output selected, we are not running a whole program)
-      # this case should be dealt with somewhere .. probably here
-
-      match-function = options.best-match
-      grp-impl = match-function generic-name, semantics, options, "implementations"
-      grp-sym = match-function generic-name, semantics, options, "symbols"
-      if !grp-impl?
-        throw new Error "[Dependency Graph] Couldn't resolve the group '#generic-name'"
-      grp-graph = Graph.from-group grp-sym, grp-impl
-      sub-graphs = grp-graph.nodes |> map (n) ->
-        generate-dependency-graph n.name, semantics, options
+        generate-dependency-graph n, semantics, options
 
       fold Graph.union, grp-graph, sub-graphs
 
@@ -48,10 +36,8 @@ define ["ls!src/graph"] (Graph) ->
     generate: (semantics, options) ->
       # create the graph for the group described in output.parent
       # todo: use the real output node not the group containing the node
-      dep-graph = generate-dependency-graph options.output.parent, semantics, options
+      dep-graph = generate-dependency-graph {name: options.output.parent}, semantics, options
       dep-graph = Graph.remove-double-connections dep-graph
-
-      #Graph.add-node dep-graph, options.output.parent
 
       return dep-graph
 
@@ -74,5 +60,6 @@ define ["ls!src/graph"] (Graph) ->
       return dep-graph
 
     optimize: (graph) ->
+      #todo: should be obvious
       graph
   }
