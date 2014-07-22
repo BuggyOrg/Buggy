@@ -16,7 +16,7 @@
 
 define ["ls!src/semantics/loading"], (Loading) ->
 
-  #%%#[Semantic Field/Construction/Hooks]
+  #%%#[Semantic Field/Modules/Hooks]
   # array of hooks
   hooks = [
     * name : "processing file",
