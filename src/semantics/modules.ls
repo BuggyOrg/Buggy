@@ -14,9 +14,9 @@
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define ["ls!src/semantics/hooks/construction",
-        "ls!src/semantics/predicates/construction",
+define ["ls!src/semantics/hooks/modules",
+        "ls!src/semantics/predicates/modules",
         "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field) ->
 
-  #%%#[Semantic Field/Construction]
-  Construction = Field "construction", Hooks, Predicates
+  #%%#[Semantic Field/Modules]
+  Modules = Field "modules", Hooks, Predicates

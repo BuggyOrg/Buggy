@@ -1,0 +1,9 @@
+{
+  "modules" : [
+    {
+      "name" : "MathParser",
+      "matches" : "Math",
+      "process-file" : "semantics/modules/processing/parse-math.ls"
+    }
+  ]
+}

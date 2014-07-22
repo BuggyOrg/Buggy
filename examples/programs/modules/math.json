@@ -1,0 +1,28 @@
+{
+  "implementations": [
+    {
+      "name" : "main",
+      "generics": [
+        {
+          "name" : "Input"
+        },
+        {
+          "name" : "Math",
+          "module" : {
+            "term" : "2+x+4"
+          },
+          "inputs" : { "x" : ">Input:Value" }
+        },
+        {
+          "name" : "Output",
+          "inputs" : { "Value" : ">Math:Result" }
+        }
+      ]
+    }
+  ],
+  "dependencies": [],
+  "meta": {
+    "description": "Buggy Environment Description",
+    "version": "3.0.0"
+  }
+}

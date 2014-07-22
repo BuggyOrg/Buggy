@@ -12,11 +12,18 @@
 
  You should have received a copy of the GNU General Public License
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-define ["ls!src/semantics/hooks/construction",
-        "ls!src/semantics/predicates/construction",
-        "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field) ->
+define ["ls!src/semantics/loading"], (Loading) ->
 
-  #%%#[Semantic Field/Construction]
-  Construction = Field "construction", Hooks, Predicates
+  #%%#[Semantic Field/Construction/Hooks]
+  # array of hooks
+  hooks = [
+    * name : "processing file",
+      description : "loads the processing file",
+      process : (module) ->
+        if module["process-file"]?
+          Loading.load-template-file module["process-file"], ->
+            module["process"] = it
+        return module
+  ]

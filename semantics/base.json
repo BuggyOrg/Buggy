@@ -23,6 +23,12 @@
       "description" : "Definitions for specific shells",
       "uri" : "semantics/shells.json",
       "type" : "load"
+    },
+    {
+      "name" : "Modules",
+      "description" : "Preprocess Modules",
+      "uri" : "semantics/modules/math-module.json",
+      "type" : "load"
     }
   ]
 }

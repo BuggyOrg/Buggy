@@ -12,11 +12,13 @@
 
  You should have received a copy of the GNU General Public License
  along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-define ["ls!src/semantics/hooks/construction",
-        "ls!src/semantics/predicates/construction",
-        "ls!src/semantics/semantic-field"], (Hooks, Predicates, Field) ->
-
-  #%%#[Semantic Field/Construction]
-  Construction = Field "construction", Hooks, Predicates
+define ->
+  #%%#[Semantic Field/Modules/Predicates]
+  predicates = [
+    * name: "match filter",
+      description: "filters all elements that don't match the given module",
+      process: (value, query, options)->
+        value.matches == query
+  ]
