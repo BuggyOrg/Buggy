@@ -135,6 +135,15 @@ p a {
   color: white!important;
 }
 
+.accordion.inverted.blue {
+  background-color: #6ECFF5!important;
+  color: white!important;
+}
+.accordion.inverted.blue .title {
+  background-color: #6ECFF5!important;
+  color: white!important;
+}
+
 /*******************************
             Global
 *******************************/

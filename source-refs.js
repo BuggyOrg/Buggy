@@ -5,7 +5,7 @@ sourceRefs = {
     "ref": "Semantic Field/Construction"
   },
   "Semantic Field/Construction/Hooks": {
-    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/construction.ls",
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/modules.ls",
     "line": "19",
     "ref": "Semantic Field/Construction/Hooks"
   },
@@ -39,6 +39,11 @@ sourceRefs = {
     "line": "28",
     "ref": "TODO: Better loading mechanism"
   },
+  "Semantic Field/Modules": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/modules.ls",
+    "line": "21",
+    "ref": "Semantic Field/Modules"
+  },
   "Semantic Field/Construction/Predicates": {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/predicates/construction.ls",
     "line": "19",
@@ -48,6 +53,11 @@ sourceRefs = {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/predicates/implementation.ls",
     "line": "19",
     "ref": "Semantic Field/Implementations/Predicates"
+  },
+  "Semantic Field/Modules/Predicates": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/predicates/modules.ls",
+    "line": "18",
+    "ref": "Semantic Field/Modules/Predicates"
   },
   "Semantic Field/Symbols/Predicates": {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/predicates/symbols.ls",
@@ -63,5 +73,10 @@ sourceRefs = {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/symbols.ls",
     "line": "20",
     "ref": "Semantic Field/Symbols"
+  },
+  "MathParser Module": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/semantics/modules/processing/parse-math.ls",
+    "line": "17",
+    "ref": "MathParser Module"
   }
 }

@@ -1,5 +1,8 @@
 
-var sourceRefs = function(grunt, where, url){
+var sourceRefs = function(grunt, identify, where_path, sub_where, url){
+
+  var path = require("path");
+  var where = path.join(where_path, sub_where);
 
   var parseRef = function(ref){
     return ref.split("[")[1].split("]")[0];
@@ -9,9 +12,8 @@ var sourceRefs = function(grunt, where, url){
     return file.replace(where,url);
   }
 
-  return function(){
+  return function(res){
     var grep = require("grep1");
-    var done = this.async();
     grep(["-n", "-H", "-r", "#%%#",where], function(err, stdout, stderr){
       var resultString = String(stdout);
       var resultLines = resultString.split("\n");
@@ -26,11 +28,39 @@ var sourceRefs = function(grunt, where, url){
           ref: ref
         };
       }
-      grunt.file.write("source-refs.js", "sourceRefs = " + JSON.stringify(results, null, 2));
-      done();
+      res(results);
     });
   };
 }
+
+// Code from: https://github.com/rxaviers/cldr
+//
+var merge = function() {
+    var destination = {},
+        sources = [].slice.call( arguments, 0 );
+    sources.forEach(function( source ) {
+        var prop;
+        for ( prop in source ) {
+            if ( prop in destination && Array.isArray( destination[ prop ] ) ) {
+
+                // Concat Arrays
+                destination[ prop ] = destination[ prop ].concat( source[ prop ] );
+
+            } else if ( prop in destination && typeof destination[ prop ] === "object" ) {
+
+                // Merge Objects
+                destination[ prop ] = merge( destination[ prop ], source[ prop ] );
+
+            } else {
+
+                // Set new values
+                destination[ prop ] = source[ prop ];
+
+            }
+        }
+    });
+    return destination;
+};
 
 module.exports = function(grunt) {
   'use strict';
@@ -58,17 +88,34 @@ module.exports = function(grunt) {
   grunt.registerTask("git-update", ["clean:developGit", "gitclone:develop"]);
 
   grunt.file.defaultEncoding = "utf8"
-  var sourceRefPath = "./.buggy_files/develop/src/";
+  var sourceRefPath = "./.buggy_files/develop/";
   if(grunt.file.exists("./.buggy-source-path")){
     sourceRefPath = grunt.file.read("./.buggy-source-path").split("\n")[0];
-    grunt.registerTask("grepSourceRefs",
-      "Searches the repository for source references", sourceRefs(grunt, sourceRefPath, "https://github.com/BuggyOrg/Buggy/blob/develop/src"));
     grunt.registerTask("sourceRefs", ["grepSourceRefs"]);
   }
   else {
-    grunt.registerTask("grepSourceRefs",
-      "Searches the repository for source references", sourceRefs(grunt, sourceRefPath, "https://github.com/BuggyOrg/Buggy/blob/develop/src"));
     grunt.registerTask("sourceRefs", ["git-update", "grepSourceRefs"]);
   }
+
+  var srcRefs = sourceRefs(grunt, "#%%#", sourceRefPath, "src", "https://github.com/BuggyOrg/Buggy/blob/develop/src");
+  var semRefs = sourceRefs(grunt, "#%%#", sourceRefPath, "semantics", "https://github.com/BuggyOrg/Buggy/blob/develop/semantics");
+
+  grunt.registerTask("grepSourceRefs",
+    "Searches the repository for source references", function(){
+      var done = this.async();
+      var rets = 0;
+      var sourceRefs = {};
+      var res = function(json){
+        rets += 1;
+        sourceRefs = merge(sourceRefs, json);
+        if(rets == 2){
+          grunt.file.write("source-refs.js", "sourceRefs = " + JSON.stringify(sourceRefs, null, 2));
+          done();
+        }
+      }
+      srcRefs(res);
+      semRefs(res);
+    });
+
 
 }

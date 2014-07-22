@@ -151,7 +151,31 @@ one implementation for Javascript that reqiures the Harmony flag as we
 use<a href="https://github.com/olahol/node-csp" title="Thanks to Ola Holmström for this nice library" class="popup">&nbsp;node-csp&nbsp;</a>and thus need generators which are defined in ECMA 6 and not supported by
 the recent node release. Chrome supports it by turning experimental Javascript
 features on under<i>&nbsp;chrome://flags&nbsp;</i>. It is currently enough for our development but not for adressing more
-people.</div></div><h3 class="heading">Modules<a source-ref="Semantic Field/Modules" class="sourcelink"><i class="icon code"></i></a></h3><p>...</p></div></body></html><script>$("a[source-ref]").each(function(index, value){
+people.</div></div><h3 class="heading">Modules<a source-ref="Semantic Field/Modules" class="sourcelink"><i class="icon code"></i></a></h3><p>Modules can be considered dynamic nodes that can change their behaviour
+depending compile-time data. One simple example might be a Module<i>&nbsp;AddN&nbsp</i>that can add a dynamic number of numbers. A normal node would have
+a predefined number of inputs and thus couldn't add an arbitrary number
+of numbers.</p><p>A Module can translate into a node consisting of multiple generics that
+are processed further. Or a Module can translate into target language
+specific code. It is highly advisable to always have the first kind as it
+is independet of the target language. Otherwise a module wouldn't be
+portable.</p><p>Modules are defined like all other semantic information in the semantic
+storage. A Module definition could look like this:</p><div class="ui segment inverted"><pre><code>{
+ "name" : "Add Many",
+ "matches" : "AddN",
+ "process-file" : "&lt;process-file&gt;"
+}</code></pre></div><p>Where there are the following possible attributes:</p><table class="ui table segment"><thead><tr><th>Attribute</th><th>Required?</th><th>Description</th></tr></thead><tbody><tr><td>name</td><td><i title="The name has currently no functionality. It is probably only for displaying" class="icon red questionmark popup"></i></td><td>The name of the Module.</td></tr><tr><td>matches</td><td><i class="icon checkmark"></i></td><td>This field defines the generic name that should be matched. Every
+generic that has this name can be implemented with this Module.</td></tr><tr><td>process-file</td><td><i title="Not required, it is used to fill the process attribute" class="icon exclamation popup red"></i></td><td>A file that points to LiveScript file that implements the
+functionality of this module. See<b>&nbsp;process&nbsp;</b>for more.</td></tr><tr><td>process</td><td><i class="icon checkmark"></i></td><td>A LiveScript implementation that returns a function that takes one
+argument. The function is called during the creation of the
+dependency graph. It gets the node that is currently processed.
+A possible implementation could look like this<div class="ui segment inverted"><pre><code>return (node) ->
+  {
+    symbol: { name: "AddN" id: node.id connectors: [...] }
+    implementation: { generic: [...] connections: [...] }
+  }</code></pre></div>The function must return an object that contains a symbol and an
+implementation.</td></tr></tbody></table><div class="ui accordion fluid inverted blue"><div class="title"><i class="icon dropdown"></i>Example: Math Parsing Module<a source-ref="MathParser Module"><i class="icon code"></i></a></div><div class="content">A more extensive example is the MathParser in Buggy itself. It parses
+a mathematical expression using<a href="http://mathjs.org/" title="Thank you Jos de Jong!" class="popup">&nbsp;MathJS&nbsp;</a>and uses the expression tree to generate a Buggy Network Graph with
+the appropiate Symbols and Connections</div></div></div></body></html><script>$("a[source-ref]").each(function(index, value){
   var ref = $(this).attr("source-ref");
   if(ref in sourceRefs){
     $(this).attr("href", sourceRefs[ref].link + "#L" + sourceRefs[ref].line);
