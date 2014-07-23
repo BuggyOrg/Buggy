@@ -20,7 +20,7 @@ default-config = {
   }
   meta: {
       "description": "Buggy Environment Description",
-      "version": "3.0.1"
+      "version": "0.5.0"
   }
 }
 
@@ -31,7 +31,7 @@ define [ "ls!src/group", "ls!src/util/clone"], (Group, Clone) ->
       new-buggy = Clone default-config
       new-buggy <<< Clone config
 
-    add-group: (buggy, group) ->
+    add-generic: (buggy, name) ->
       id = Group.identifier group
       if id of buggy.symbols
         buggy.symbols[id].push Clone group
