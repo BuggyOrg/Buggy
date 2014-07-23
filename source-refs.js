@@ -5,7 +5,7 @@ sourceRefs = {
     "ref": "Semantic Field/Construction"
   },
   "Semantic Field/Construction/Hooks": {
-    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/modules.ls",
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/construction.ls",
     "line": "19",
     "ref": "Semantic Field/Construction/Hooks"
   },
@@ -28,6 +28,11 @@ sourceRefs = {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/implementation.ls",
     "line": "42",
     "ref": "Semantic Field/Implementations/NodesRef"
+  },
+  "Semantic Field/Modules/Hooks": {
+    "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/hooks/modules.ls",
+    "line": "19",
+    "ref": "Semantic Field/Modules/Hooks"
   },
   "Semantic Field/Implementations": {
     "link": "https://github.com/BuggyOrg/Buggy/blob/develop/src/semantics/implementation.ls",

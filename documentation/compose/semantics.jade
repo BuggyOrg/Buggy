@@ -94,13 +94,14 @@ append content
             a(source-ref="Semantic Field/Construction/Predicates").sourcelink.list Predicates:
               i.icon.code
         br
-      .title.inverted.purple
+      .title
         i.icon.dropdown
-        | Work in Progress: Modules
+        | Modules
         a(source-ref="Semantic Field/Modules").sourcelink.list
           i.icon.code
-      .content.inverted.purple
-        | Modules aren't implemented yet!
+      .content
+        | Modules are Nodes that are change during compilation. They can create
+        | a network of other nodes replacing the Module node itself.
         a(href="#modules") &nbsp;More
           i.icon.double.angle.right
         br
@@ -178,7 +179,7 @@ append content
           |    { "name" : "Sum", "type" : "Output" }
           |  ]
           | },
-    .ui.accordion.fluid.fluid.inverted.purple
+    .ui.accordion.fluid.inverted.purple
       .title
         i.icon.dropdown
         | Work in progress: Connectors for Main Node.
@@ -188,7 +189,7 @@ append content
         | of a program. It is unclear weather the main node needs any connection
         | at all. Inputs to a program are made through input nodes and outputs
         | via output nodes. They are probably more adaptable than connectors.
-    .ui.accordion.fluid.fluid.inverted.purple
+    .ui.accordion.fluid.inverted.purple
       .title
         i.icon.dropdown
         | Work in progress: Datatypes.
@@ -480,7 +481,7 @@ append content
         td name
         td
           i(title="The name has currently no functionality." +
-          " It is probably only for displaying").icon.red.questionmark.popup
+          " It is probably only for displaying").icon.red.info.letter.popup
         td The name of the Module.
       tr
         td matches
@@ -527,4 +528,4 @@ append content
       a(href="http://mathjs.org/",title="Thank you Jos de Jong!").popup
         | &nbsp;MathJS&nbsp;
       | and uses the expression tree to generate a Buggy Network Graph with
-      | the appropiate Symbols and Connections
+      | the appropiate Symbols and Connections.
