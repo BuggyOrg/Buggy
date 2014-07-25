@@ -20,17 +20,17 @@ url = require "url"
 global <<< require \prelude-ls
 requirejs = require "../require.js"
 
-
 Semantics = requirejs "ls!src/semantics"
 
-Semantics.load-semantic-files ["semantics/base.json", "semantics/javascript/js.json", "../../examples/modules/jsshell.json"], (semantics) ->
-  console.log "Semantics"
-  console.log semantics
+port = if process.argv.length > 2 then process.argv[2] else 8002
+
+Semantics.load-semantic-files ["semantics/base.json", "semantics/javascript/js.json"], (semantics) ->
 
   options = language: "javascript"
 
   http = require("http");
 
+  console.log "listening to port #port"
   (http.createServer (request, response) ->
     uri = url.parse(request.url, true)
     if uri.query.query == "sources"
@@ -51,4 +51,4 @@ Semantics.load-semantic-files ["semantics/base.json", "semantics/javascript/js.j
       response.writeHead 200, "Content-Type": "text/plain"
       response.write "Server is running!"
       response.end!
-    ).listen 8001
+    ).listen port

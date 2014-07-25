@@ -31,9 +31,15 @@ module.exports = function(grunt){
             'src': "src",
             'semantics': "semantics",
             'examples': "examples",
-            'livescript': "lib/livescript",
+            'LiveScript': "lib/livescript",
+            'handlebars': "lib/handlebars",
             'ls': "lib/ls",
             'prelude': "lib/prelude-browser",
+          },
+          shim: {
+            'handlebars':{
+              exports: "Handlebars"
+            }
           },
           stubModules: ["ls","json","text"],
           onBuildWrite: function (moduleName, path, contents) {
@@ -41,12 +47,26 @@ module.exports = function(grunt){
               return "define('"+ moduleName +"', {load:function(){}});";
             }
             return contents;
-          }
+          },
+          optimize:"none"
+        }
+      }
+    },
+    shell: {
+      semantics: {
+        command: function(){
+          var sources = ["semantics/base.json",
+                         "semantics/javascript/js.json"];
+          var src = "-s " + sources.join(" -s ");
+          console.log("src/buggy/buggy2anything.ls -l javascript -n " + src + " > build/semantics.js");
+          return "src/buggy/buggy2anything.ls -l javascript -n " + src + " > build/semantics.js";
         }
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+  grunt.registerTask("pack", ["requirejs", "shell:semantics"]);
 
 }

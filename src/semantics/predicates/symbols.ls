@@ -19,7 +19,11 @@ define ->
   #%%#[Semantic Field/Symbols/Predicates]
   Predicates = [
     * name: "name filter",
+      type: "filter",
       description: "filters all elements that don't match the given name",
       process: (value, query, options)->
-        value.name == query
+        if options.search-query
+          (value.name.indexOf query) != -1
+        else
+          value.name == query
   ]

@@ -24,7 +24,11 @@ default-config = {
   }
 }
 
-define [ "ls!src/group", "ls!src/util/clone"], (Group, Clone) ->
+define [ "ls!src/group",
+         "ls!src/util/clone",
+         "ls!src/semantics",
+         "ls!src/resolve",
+         "ls!src/compose"], (Group, Clone) ->
 
   {
     create: (config) ->

@@ -32,7 +32,6 @@ define ["ls!src/semantics/sources",
         construction: []
       }
 
-
     # loads a semantic file and recursively loads all dependencies
     load-semantic-file: (file, semantics-loaded) ->
       Semantics.load-semantic-files([file], semantics-loaded)
@@ -46,9 +45,9 @@ define ["ls!src/semantics/sources",
         Impl.add-from-json s, json
         Construction.add-from-json s, json
         Modules.add-from-json s, json
-        # this must be the last call (currently) as it returns the
+        # this must be the last call as it returns the
         # new sources added
-        Sources.add-from-json s, json
+        return Sources.add-from-json s, json
 
       Loading.load-file-recursively files, s, load-file, semantics-loaded
 

@@ -20,5 +20,8 @@ define ->
     * name: "match filter",
       description: "filters all elements that don't match the given module",
       process: (value, query, options)->
-        value.matches == query
+        if options.search-query
+          (value.matches.indexOf query) != -1
+        else
+          value.matches == query
   ]

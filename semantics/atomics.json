@@ -9,6 +9,7 @@
     },
     {
       "name" : "Add",
+      "description" : "Adds two numbers",
       "connectors" : [
         { "name" : "Term 1", "type" : "Input" },
         { "name" : "Term 2", "type" : "Input" },
