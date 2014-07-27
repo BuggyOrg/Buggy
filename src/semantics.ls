@@ -19,8 +19,9 @@ define ["ls!src/semantics/sources",
         "ls!src/semantics/symbols",
         "ls!src/semantics/implementation",
         "ls!src/semantics/construction",
-        "ls!src/semantics/modules"
-        "ls!src/semantics/loading"], (Sources, Symbols, Impl, Construction, Modules, Loading) ->
+        "ls!src/semantics/modules",
+        "ls!src/semantics/meta",
+        "ls!src/semantics/loading"], (Sources, Symbols, Impl, Construction, Modules, Meta, Loading) ->
 
   Semantics = {
     create-semantics: (...) ->
@@ -28,6 +29,7 @@ define ["ls!src/semantics/sources",
         sources: []
         symbols: []
         modules: []
+        meta: []
         implementations: []
         construction: []
       }
@@ -45,6 +47,7 @@ define ["ls!src/semantics/sources",
         Impl.add-from-json s, json
         Construction.add-from-json s, json
         Modules.add-from-json s, json
+        Meta.add-from-json s, json
         # this must be the last call as it returns the
         # new sources added
         return Sources.add-from-json s, json
@@ -57,5 +60,6 @@ define ["ls!src/semantics/sources",
       | "implementations" => Impl.query semantics, what, options
       | "construction"    => Construction.query semantics, what, options
       | "modules"         => Modules.query semantics, what, options
+      | "meta"            => Meta.query semantics, what, options
       | otherwise         => ...
   }
