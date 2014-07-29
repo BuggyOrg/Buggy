@@ -25,7 +25,7 @@ define ["ls!src/graph", "ls!src/resolve"] (Graph, Resolve) ->
       grp = Resolve.resolve generic, semantics, options
       if !grp?
         throw new Error "[Dependency Graph] Couldn't resolve the group '#{generic.name}'"
-      grp-graph = Graph.from-group grp.symbol, grp.implementation
+      grp-graph = Graph.from-group grp.symbol, grp.implementation, generic
       sub-graphs = grp-graph.nodes |> map (n) ->
         generate-dependency-graph n, semantics, options
 

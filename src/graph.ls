@@ -18,7 +18,7 @@
 define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generic, Group) ->
 
   Graph = {
-    from-group: (grp-sym, grp-impl) ->
+    from-group: (grp-sym, grp-impl, generic) ->
       graph = {
         nodes: if !grp-impl.generics? then [] else
             grp-impl.generics |> map (g) ->
@@ -29,7 +29,7 @@ define [\ls!src/connection, \ls!src/generic, \ls!src/group], (Connection, Generi
                 meta: g.meta
                 module: g.module
               }
-        connections: (Connection.gather grp-sym, grp-impl) |> map (c) ->
+        connections: (Connection.gather grp-sym, grp-impl, generic) |> map (c) ->
           {
             from: c.from
             to: c.to

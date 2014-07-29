@@ -15,13 +15,19 @@
   along with Buggy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+set-id-for-group-connectors = (generic, connection) ->
+  if "id" of generic
+    if connection.from.generic == generic.name
+      connection.from.generic = generic.id
+    if connection.to.generic == generic.name
+      connection.to.generic = generic.id
+  return connection
+
 define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
 
   connections = {
     create: (in-generic, in-connector, out) ->
       if out.0 == ">"
-        # TODO: the string version  ">NODE:CONNECTOR" should be translated to { "Node" : NODE, "Connector" : CONNECTOR }
-        # and the logic for doing that should be here!??
         out-string = (out[1 til].join "")
         [out-generic, out-connector] = out-string.split ":"
         connections.create(in-generic, in-connector, { generic: out-generic, connector: out-connector })
@@ -42,12 +48,13 @@ define ["ls!src/generic", "ls!src/util/clone"], (Generic, Clone) ->
           type: type
         }
 
-    gather: (group-symbols, group-implementation) ->
+    gather: (group-symbols, group-implementation, generic) ->
       Connection = this
       connections = []
       if group-implementation.connections?
         connections = union connections, Clone group-implementation.connections
-      return connections
+
+      return (connections |> map -> set-id-for-group-connectors generic, it)
 
   }
 
