@@ -35,7 +35,7 @@ define ->
           []
 
       query: (semantics, what, options) ->
-        semantics[field-name] |> filter (->
-          it = (predicates |> fold ((val, pred) ->
-            val && pred.process it, what, options), true))
+        semantics[field-name] |> filter ((elem)->
+          (predicates |> fold ((val, pred) ->
+            val && pred.process elem, what, options), true))
     }
