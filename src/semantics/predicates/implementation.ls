@@ -21,7 +21,7 @@ define ->
     * name: "name filter",
       description: "filters all elements that don't match the given name",
       process: (value, query, options)->
-        value.name == query
+        value.symbol == query
     * name: "atomic implementation",
       description: "filters all elements that have no implementation although they need one",
       process: (value, query, options) ->

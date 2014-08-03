@@ -1,48 +1,59 @@
 {
   "implementations" : [
     {
+      "symbol" : "Identity",
       "name" : "Identity",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/id.js"
     },
     {
+      "symbol" : "Add",
       "name" : "Add",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/add.js"
     },
     {
+      "symbol" : "Constant",
       "name" : "Constant",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/constant.js"
     },
     {
+      "symbol" : "Select",
       "name" : "Select",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/select.js"
     },
     {
+      "symbol" : "Set",
       "name" : "Set",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/set.js"
     },
     {
+      "symbol" : "StringToArray",
       "name" : "StringToArray",
+      "description" : "Parses a comma separated string.",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/string-to-array.js"
     },
     {
+      "symbol" : "Clone",
       "name" : "Clone",
+      "description" : "CSP specific Clone operation",
+      "specific-to" : ["js-csp"],
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/clone.js"
     },
     {
+      "symbol" : "Serialize",
       "name" : "Serialize",
       "language" : "javascript",
       "atomic" : true,
@@ -50,6 +61,7 @@
       "implementation-file" : "semantics/javascript/implementation/atomics/serialize.js"
     },
     {
+      "symbol" : "Deserialize",
       "name" : "Deserialize",
       "language" : "javascript",
       "atomic" : true,
@@ -57,17 +69,30 @@
       "implementation-file" : "semantics/javascript/implementation/atomics/deserialize.js"
     },
     {
+      "symbol" : "SyncFirst",
       "name" : "SyncFirst",
+      "description" : "CSP specific control element for handling loops initials",
       "language" : "javascript",
       "atomic" : true,
       "explicit-callback" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/sync-first.js"
     },
     {
+      "symbol" : "Last",
       "name" : "Last",
       "language" : "javascript",
       "atomic" : true,
       "implementation-file" : "semantics/javascript/implementation/atomics/last.js"
+    },
+    {
+      "symbol" : "Map",
+      "name" : "Native Map",
+      "description" : "Map implementation using a native Javascript implementation",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-input" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/map.js"
     }
   ]
 }

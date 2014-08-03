@@ -23,7 +23,7 @@ define ->
       description: "filters all elements that don't match the given name",
       process: (value, query, options)->
         if options.search-query
-          (value.name.indexOf query) != -1
+          (value.name.toLowerCase().indexOf query) != -1
         else
           value.name == query
   ]

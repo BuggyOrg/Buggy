@@ -11,7 +11,8 @@
   ],
   "implementations" : [
     {
-      "name" : "CSPLoopControl",
+      "symbol" : "CSPLoopControl",
+      "name" : "CSPLoopControlImpl",
       "language" : "javascript",
       "atomic" : true,
       "explicit-input" : true,
