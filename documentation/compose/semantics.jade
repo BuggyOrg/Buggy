@@ -256,6 +256,7 @@ append content
       pre
         code
           | {
+          |   "symbol" : "Identity",
           |   "name" : "Identity",
           |   "language" : "javascript",
           |   "atomic" : true,
@@ -269,6 +270,7 @@ append content
       pre
         code
           | {
+          |   "symbol" : "Fold",
           |   "name" : "Fold",
           |   "generics" : [
           |     {
@@ -310,10 +312,15 @@ append content
         th Description
     tbody
       tr
-        td name
+        td symbol
         td
           i.icon.checkmark
         td The name of the Symbol that is implemented
+      tr
+        td name
+        td
+          i.icon.checkmark
+        td The name of the Implementation like "QuickSort" for a symbol "Sort".
       tr
         td language
         td Atomics
