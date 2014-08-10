@@ -13,4 +13,10 @@ function Connection_Graph(){
 {{#each nodes}}
   Node_{{id}}(qInput, qOutput, {{node-meta-to-string meta}});
 {{~/each}}
+
+{{#if debug}}
+{{~#each connections}}
+  outInMap["{{to.generic}}__{{to.mangle}}:{{to.connector}}"] = "{{from.generic}}__{{from.mangle}}:{{from.connector}}";
+{{~/each}}
+{{~/if}}
 }

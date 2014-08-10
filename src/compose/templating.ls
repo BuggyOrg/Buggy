@@ -46,7 +46,7 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
       "output[\"#a\"].Value"
 
     Handlebars.registerHelper 'output-data', (a) ->
-      "yield csp.put(OutQueues[name + \":#a\"], JSON.parse(JSON.stringify(output[\"#a\"])));"
+      "csp.go(outputData, [name + \":#a\", OutQueues[name + \":#a\"], JSON.parse(JSON.stringify(output[\"#a\"]))]);"
 
     Handlebars.registerHelper 'set-meta', (node, what, val) ->
       "output[\"#node\"].meta."+ what + " = " + val
@@ -82,10 +82,18 @@ define ["handlebars", "src/util/deep-find"] (Handlebars, DeepFind) ->
       if options.debug? and options.debug
         context.debug = true
 
+      exImpl = false;
+      oldImpl = "";
       if context.implementation? and context.implementation.implementation?
+        oldImpl = context.implementation.implementation
+        exImpl = true
         implTempl = Handlebars.compile context.implementation.implementation, noEscape: true
         context.implementation.implementation = implTempl context
 
       template = Handlebars.compile text, noEscape: true
-      template context
+      res = template context
+
+      if exImpl
+        context.implementation.implementation = oldImpl
+      return res
   }

@@ -18,7 +18,7 @@ define ["LiveScript",
         "ls!src/semantics"], (ls, Semantics) ->
 
   create-ruleset = (semantics, options) ->
-    constr = (Semantics.query semantics, "js-csp", options, "construction").0
+    constr = (Semantics.query semantics, options.construction, options, "construction").0
     constr.postprocessing |> map ->
       # eval only works for javascript so compile livescript to javascript
       eval ls.compile it["procedure"]

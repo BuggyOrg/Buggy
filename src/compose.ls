@@ -29,6 +29,7 @@ define ["ls!src/compose/dependency-graph",
 
   default-options = {
     output: {parent: "main", what: "Output"},
+    construction: "js-csp-node"
   }
 
   {

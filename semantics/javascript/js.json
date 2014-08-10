@@ -7,9 +7,15 @@
       "type" : "load"
     },
     {
-      "name" : "Javascript CSP Construction",
-      "description" : "CSP implementation of Javascript Buggy translation",
-      "uri" : "semantics/javascript/js-csp.json",
+      "name" : "Javascript CSP Construction for Node",
+      "description" : "CSP implementation of Javascript Buggy translation for Node",
+      "uri" : "semantics/javascript/js-csp-node.json",
+      "type" : "load"
+    },
+    {
+      "name" : "Javascript CSP Construction for WebWorker",
+      "description" : "CSP implementation of Javascript Buggy translation for web worker",
+      "uri" : "semantics/javascript/js-csp-worker.json",
       "type" : "load"
     }
   ]

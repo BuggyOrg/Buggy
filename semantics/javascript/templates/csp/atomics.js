@@ -14,32 +14,22 @@ var {{implementation.name}}_{{node.id}} = function(){
     var input = {};
 {{~#unless implementation.explicit-input}}
 {{~#each symbol.connectors}}{{#if_eq type "Input"}}
-    input["{{name}}"] = yield csp.take(InQueues[name + ":{{name}}"]);
-{{~#if ../../debug}}
-    console.log("logging after taking {{../../../generic.name}}->{{name}} ");
-    console.log(input["{{name}}"]);
-{{~/if}}
+    {{input-data name}};
+    {{~#if ../../debug}}
+    debug_take_pre(name + ":{{name}}");
+    {{~/if}}
+{{~/if_eq}}{{/each}}{{~#each symbol.connectors}}{{#if_eq type "Input"}}
+    {{~#if ../../debug}}
+    debug_take_post(name + ":{{name}}");
+    {{~/if}}
 {{~/if_eq}}{{/each}}{{/unless}}
     {{implementation.implementation}}
 {{~#unless implementation.explicit-callback}}
     {{#each symbol.connectors}}{{#if_eq type "Output"}}
-{{~#if ../../debug}}
-        console.log("putting after {{../../../generic.name}}->{{name}}");
-        console.log(output["{{name}}"]);
-{{~/if}}
-    yield csp.put(OutQueues[name + ":{{name}}"], output["{{name}}"]);
-{{~#if ../../debug}}
-  console.log("put done");
-{{~/if}}{{/if_eq}}{{#if_eq type "Generator"}}
-{{~#if ../../debug}}
-        console.log("putting after {{../../../generic.name}}->{{name}}");
-        console.log(output["{{name}}"]);
-{{~/if}}
-    yield csp.put(OutQueues[name + ":{{name}}"], output["{{name}}"]);
-{{~#if ../../debug}}
-  console.log("put done");
-{{~/if}}
-    {{/if_eq}}{{/each}}
+    {{output-data name}}
+{{/if_eq}}{{#if_eq type "Generator"}}
+    {{output-data name}}
+{{~/if_eq}}{{/each}}
 {{~/unless}}
   }
 {{~#unless implementation.input}}

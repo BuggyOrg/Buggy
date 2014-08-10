@@ -22,14 +22,20 @@
   ],
   "construction" : [
     {
-      "name" : "js-csp",
+      "name" : "js-csp-worker",
       "language" : "javascript",
-      "description" : "uses CSP to build construct a javascript program with channel communication between groups",
+      "target-plattform" : "browser",
+      "description" : "uses CSP to construct a javascript web-worker program with channel communication between groups",
       "templates" : [
+        {
+          "template" : "program",
+          "file" : "semantics/javascript/templates/csp/program-worker.js",
+          "process" : "once"
+        },
         {
           "template" : "requires",
           "file" : "semantics/javascript/templates/csp/requires.js",
-          "process" : "implementations"
+          "process" : "once"
         },
         {
           "template" : "header",
@@ -52,8 +58,8 @@
           "process" : "nodes"
         },
         {
-          "template" : "footer",
-          "file" : "semantics/javascript/templates/csp/footer.js",
+          "template" : "starter",
+          "file" : "semantics/javascript/templates/csp/starter.js",
           "process" : "once"
         }
       ],

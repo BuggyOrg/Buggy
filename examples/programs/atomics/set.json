@@ -1,6 +1,7 @@
 {
   "implementations": [
     {
+      "symbol" : "main",
       "name" : "main",
       "module" : true,
       "generics": [

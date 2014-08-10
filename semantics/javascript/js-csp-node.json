@@ -1,0 +1,86 @@
+{
+  "symbols": [
+    {
+      "name" : "CSPLoopControl",
+      "connectors" : [
+        { "name" : "Stream", "type" : "Input" },
+        { "name" : "Initial", "type" : "Input" },
+        { "name" : "OutStream", "type" : "Output" }
+      ]
+    }
+  ],
+  "implementations" : [
+    {
+      "symbol" : "CSPLoopControl",
+      "name" : "CSPLoopControlImpl",
+      "language" : "javascript",
+      "atomic" : true,
+      "explicit-input" : true,
+      "explicit-callback" : true,
+      "implementation-file" : "semantics/javascript/implementation/atomics/csp-loop-control.js"
+    }
+  ],
+  "construction" : [
+    {
+      "name" : "js-csp-node",
+      "language" : "javascript",
+      "target" : "terminal",
+      "description" : "uses CSP to build construct a javascript program with channel communication between groups",
+      "templates" : [
+        {
+          "template" : "program",
+          "file" : "semantics/javascript/templates/csp/program-node.js",
+          "process" : "once"
+        },
+        {
+          "template" : "requires",
+          "file" : "semantics/javascript/templates/csp/requires.js",
+          "process" : "implementations"
+        },
+        {
+          "template" : "header",
+          "file" : "semantics/javascript/templates/csp/header.js",
+          "process" : "once"
+        },
+        {
+          "template" : "atomics",
+          "file" : "semantics/javascript/templates/csp/atomics.js",
+          "process" : "implementations"
+        },
+        {
+          "template" : "graph",
+          "file" : "semantics/javascript/templates/csp/graph.js",
+          "process" : "graph"
+        },
+        {
+          "template" : "nodes",
+          "file" : "semantics/javascript/templates/csp/nodes.js",
+          "process" : "nodes"
+        },
+        {
+          "template" : "starter",
+          "file" : "semantics/javascript/templates/csp/starter.js",
+          "process" : "once"
+        }
+      ],
+      "postprocessing" : [
+        {
+          "name" : "multiple-outputs",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/multiple-outputs.ls"
+        },
+        {
+          "name" : "multi-clone",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/multi-clone.ls",
+          "dependencies" : ["multiple-outputs"]
+        },
+        {
+          "name" : "loops",
+          "process" : "outputs",
+          "procedure-file" : "semantics/javascript/processing/loops.ls"
+        }
+      ]
+    }
+  ]
+}

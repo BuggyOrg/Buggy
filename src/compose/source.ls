@@ -28,17 +28,21 @@ define ["ls!src/compose/templating",
           symbol: options.best-match n.name, semantics, options, "symbols"
         }
 
-      constr = (Semantics.query semantics, "js-csp", options, "construction").0
+      constr = first (Semantics.query semantics, options.construction, options, "construction")
 
-      sources = constr.templates |> map (t) ->
+      prepare-source = (t) ->
         if t.process == "once"
-          t["template-file"]
+          Templating.process t["template-file"], graph, options
         else if t.process == "graph"
           Templating.process t["template-file"], graph, options
         else if t.process == "implementations" or t.process == "nodes"
-          res |> map (r) ->
-            Templating.process t["template-file"], r, options
+          fold ((l,r) ->
+            l + (Templating.process t["template-file"], r, options)),"",res
 
-      fold1 (+), (flatten sources)
+      sources = constr.templates |> map (t) ->
+        [t.template, prepare-source t]
+
+      source-map = pairs-to-obj sources
+      Templating.process source-map.program, source-map, {}
 
   }
