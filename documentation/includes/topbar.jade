@@ -8,7 +8,9 @@ block navbar
       i.icon.left.arrow
     .ui.dropdown.link.item= section
       .menu
-        each section in documentation.chapters[chapter].sections
-          a(href=section.file + ".html").item= section.name
+        each chapter in documentation.chapters
+          .header.item.inverted= chapter.name
+          each section in chapter.sections
+            a(href="../" + chapter.path + "/" + section.file + ".html").item= section.name
     a(href='#').item.icon
       i.icon.right.arrow

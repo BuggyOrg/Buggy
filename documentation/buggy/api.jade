@@ -1,28 +1,32 @@
 //- semantics.jade
 extends ../includes/base.jade
 append navbar
-  - var chapter = "API"
+  - var chapter = "Buggy"
   - var section = "API"
 append content
   h3.heading Buggy API
   p
     | To use buggy simply include "buggy.js" into your project or webpage.
-    | It will define the global name 
-    b Buggy 
+    | It will define the global name
+    b Buggy
     | whose public API is
   div
-    code Buggy = { create, Compose, Group, Resolve, Semantics }
+    code Buggy = { create, Compose, Group, Graph, Resolve, Semantics }
   p
     | Capitalized names represent Objects and lower case names are functions.
     | The next part describes the API in more detail.
+  h4.heading
+    a(id="Buggy.create",source-ref="Buggy.create").sourcelink-inline
+      code Buggy.create(config)
+
   h3.heading Compose
   p
     | This contains all functions regarding the composition of programs.
-  h4.heading 
+  h4.heading
     a(id="Compose.compose",source-ref="Compose.compose").sourcelink-inline
       code Compose.compose(semantics, options)
   p
-    | The compose function creates a program using the given semantics and 
+    | The compose function creates a program using the given semantics and
     | a set of options sepcifying the composition procedure.
   .ui.relaxed.list
     .item
@@ -66,7 +70,18 @@ append content
           | plus the options 
           code postprocessing 
           | that determines if any postprocessing should be done
+  h3 Group
+  p
+    code Group = { create, identifier, add-generic, getGenericsByName }
+  h3 Graph
+  p
+    code Graph = { fromGroup, getConnections, getNodes, union, nodeOutEdges, connectorOutEdges, removeDoubleEdges, addNode }
   h3 Semantics
   p
-    | The Semantics package contains all methods to create and maintain 
+    | The Semantics package contains all methods to create and maintain
     | semantical databases.
+  p
+    code Semantics = { createSemantics, loadSemanticFile, loadSemanticFiles, query }
+  h3 Resolve
+  p
+    code Resolve = { resolve }

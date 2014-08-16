@@ -3,6 +3,16 @@
   "documentation" : {
     "path" : "documentation",
     "chapters" : {
+      "Buggy" : {
+        "name" : "Buggy",
+        "path" : "buggy",
+        "sections" : {
+          "API" : {
+            "name" : "API",
+            "file" : "api"
+          }
+        }
+      },
       "Compose" : {
         "name" : "Compose",
         "path" : "compose",
@@ -16,17 +26,7 @@
             "file" : "semantics"
           }
         }
-      },
-      "API" : {
-        "name" : "API",
-        "path" : "api",
-        "sections" : {
-          "API" : {
-            "name" : "API",
-            "file" : "api"
-          }
-        }
-      }  
+      }
     }
   }
 }
