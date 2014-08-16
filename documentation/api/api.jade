@@ -1,0 +1,72 @@
+//- semantics.jade
+extends ../includes/base.jade
+append navbar
+  - var chapter = "API"
+  - var section = "API"
+append content
+  h3.heading Buggy API
+  p
+    | To use buggy simply include "buggy.js" into your project or webpage.
+    | It will define the global name 
+    b Buggy 
+    | whose public API is
+  div
+    code Buggy = { create, Compose, Group, Resolve, Semantics }
+  p
+    | Capitalized names represent Objects and lower case names are functions.
+    | The next part describes the API in more detail.
+  h3.heading Compose
+  p
+    | This contains all functions regarding the composition of programs.
+  h4.heading 
+    a(id="Compose.compose",source-ref="Compose.compose").sourcelink-inline
+      code Compose.compose(semantics, options)
+  p
+    | The compose function creates a program using the given semantics and 
+    | a set of options sepcifying the composition procedure.
+  .ui.relaxed.list
+    .item
+      i.icon.angle.right
+      .content
+        .header semantics
+        .description
+          | Semantics must be a valid semantic database.
+    .item
+      i.icon.angle.right
+      .content
+        .header options
+        .description
+          | The options field describes details of the composition procedure.
+          | The field can be used for user defined parameters and thus it is not
+          | possible to list all values here, but it follows a certain structure
+          | and a few items are standard items
+  h4.heading
+    a(source-ref="Compose.create-dependency-graph")-sourcelink-inline
+      code Compose.create-dependency-graph(semantics, options)
+  p
+    | This function creates the dependency graph for the given semantics.
+    | On default it doesn't process any construction rules like postprocessing
+    | etc..
+  .ui.relaxed.list
+    .item
+      i.icon.angle.right
+      .content
+        .header semantics
+        .description
+          | Seantics must be a valid semantic database.
+    .item
+      i.icon.angle.right
+      .content
+        .header options
+        .description
+          | The options field has the same parameters as the option field
+          | in 
+          a(href="#Compose.compose")
+            code Compose.compose 
+          | plus the options 
+          code postprocessing 
+          | that determines if any postprocessing should be done
+  h3 Semantics
+  p
+    | The Semantics package contains all methods to create and maintain 
+    | semantical databases.

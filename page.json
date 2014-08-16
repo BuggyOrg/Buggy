@@ -16,7 +16,17 @@
             "file" : "semantics"
           }
         }
-      }
+      },
+      "API" : {
+        "name" : "API",
+        "path" : "api",
+        "sections" : {
+          "API" : {
+            "name" : "API",
+            "file" : "api"
+          }
+        }
+      }  
     }
   }
 }
