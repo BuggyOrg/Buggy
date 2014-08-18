@@ -28,7 +28,8 @@ define [ "ls!src/group",
          "ls!src/util/clone",
          "ls!src/semantics",
          "ls!src/resolve",
-         "ls!src/compose"], (Group, Clone) ->
+         "ls!src/graph",
+         "ls!src/compose"], (Group, Clone, Semantics, Resolve, Graph, Compose) ->
 
   {
     create: (config) ->
@@ -42,4 +43,9 @@ define [ "ls!src/group",
       else
         buggy.symbols[id] = [ Clone group ]
 
+    Compose: Compose
+    Graph: Graph
+    Group: Group
+    Resolve: Resolve
+    Semantics: Semantics
   }

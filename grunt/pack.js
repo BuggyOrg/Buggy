@@ -21,9 +21,10 @@ module.exports = function(grunt){
     requirejs: {
       compile: {
         options: {
+          baseUrl: ".",
 //          baseUrl: "path/to/base",
-          name: "ls!src/buggy", // assumes a production build using almond
-//          optimize: "uglify",
+          name: "node_modules/almond/almond.js",
+          include: ["ls!src/buggy"],
           out: "build/buggy.js",
           paths: {
             'text': "lib/text",
@@ -35,6 +36,10 @@ module.exports = function(grunt){
             'handlebars': "lib/handlebars",
             'ls': "lib/ls",
             'prelude': "lib/prelude-browser",
+          },
+          wrap: {
+              startFile: 'grunt/start.frag',
+              endFile: 'grunt/end.frag'
           },
           shim: {
             'handlebars':{
@@ -48,7 +53,9 @@ module.exports = function(grunt){
             }
             return contents;
           },
-          optimize:"none"
+          optimize:"uglify2",
+          preserveLicenseComments:false,
+          generateSourceMaps: true
         }
       }
     },
