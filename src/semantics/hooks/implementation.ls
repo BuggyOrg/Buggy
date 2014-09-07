@@ -39,5 +39,13 @@ define ["ls!src/semantics/hooks/implementation-connections"
         if !it.atomic?
           it.atomic = false
         return it
+    * name: "implementation type field for all"
+      description: "adds a type field for every implementation"
+      process: (impl) ->
+        if impl["atomic"]?
+          impl.type = "atomic"
+        else if !(impl["type"]?) && impl["generics"]
+          impl.type = "dataflow"
+        return impl
     #%%#[Semantic Field/Implementations/NodesRef]
     * Conn

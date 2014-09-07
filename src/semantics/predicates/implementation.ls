@@ -21,7 +21,10 @@ define ->
     * name: "name filter",
       description: "filters all elements that don't match the given name",
       process: (value, query, options)->
-        value.symbol == query
+        if options.search-query
+          (value.symbol.toLowerCase().indexOf query.toLowerCase()) != -1
+        else
+          value.symbol == query
     * name: "atomic implementation",
       description: "filters all elements that have no implementation although they need one",
       process: (value, query, options) ->
