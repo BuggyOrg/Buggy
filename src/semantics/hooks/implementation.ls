@@ -42,9 +42,9 @@ define ["ls!src/semantics/hooks/implementation-connections"
     * name: "implementation type field for all"
       description: "adds a type field for every implementation"
       process: (impl) ->
-        if impl["atomic"]?
+        if impl.atomic
           impl.type = "atomic"
-        else if !(impl["type"]?) && impl["generics"]
+        else if !("type" of impl) && ("generics" of impl)
           impl.type = "dataflow"
         return impl
     #%%#[Semantic Field/Implementations/NodesRef]
