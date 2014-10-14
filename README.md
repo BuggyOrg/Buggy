@@ -56,4 +56,4 @@ Buggy is already in it's third iteration. We startet with a humble goal and had 
 License
 =======
 
-Buggy is released under GPL v3, see the License file (https://raw.githubusercontent.com/BuggyOrg/Buggy/develop/LICENSE).
+Buggy and all it's parts are released under GPL v3, see the License file (https://raw.githubusercontent.com/BuggyOrg/Buggy/master/LICENSE).

@@ -53,9 +53,10 @@ module.exports = function(grunt){
             }
             return contents;
           },
-          optimize:"uglify2",
           preserveLicenseComments:false,
-          generateSourceMaps: true
+          optimize:"none"
+          //optimize:"uglify2",
+          //generateSourceMaps: true
         }
       }
     },

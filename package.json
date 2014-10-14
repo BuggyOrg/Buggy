@@ -2,7 +2,7 @@
   "name": "Buggy",
   "version": "0.5.0",
   "description": "A special Development-Framework",
-  "main": "buggy.js",
+  "main": "build/buggy.js",
   "scripts": {
     "test": "./node_modules/.bin/grunt test"
   },

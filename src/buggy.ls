@@ -25,27 +25,31 @@ default-config = {
 }
 
 define [ "ls!src/group",
+         "ls!src/implementation",
+         "ls!src/symbol",
          "ls!src/util/clone",
          "ls!src/semantics",
          "ls!src/resolve",
          "ls!src/graph",
-         "ls!src/compose"], (Group, Clone, Semantics, Resolve, Graph, Compose) ->
+         "ls!src/compose"], (Group, Implementation, Symbol, Clone, Semantics, Resolve, Graph, Compose) ->
 
   {
     create: (config) ->
       new-buggy = Clone default-config
       new-buggy <<< Clone config
-
+    /* unclear if this function is needed at all...
     add-generic: (buggy, name) ->
       id = Group.identifier group
       if id of buggy.symbols
         buggy.symbols[id].push Clone group
       else
-        buggy.symbols[id] = [ Clone group ]
+        buggy.symbols[id] = [ Clone group ]*/
 
     Compose: Compose
     Graph: Graph
+    Implementation: Implementation
     Group: Group
     Resolve: Resolve
     Semantics: Semantics
+    Symbol: Symbol
   }

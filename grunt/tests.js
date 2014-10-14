@@ -22,29 +22,17 @@ module.exports = function(grunt){
 
   require('mocha-unfunk-reporter').option('reportPending', true);
 
-  grunt.registerTask('test', ['livescript:test', 'mochacli', 'clean:test']);
+  grunt.registerTask('test', ['mochacli']);
 
   grunt.config.merge({
-    clean: {
-      test: ['test/*-test.js']
-    },
-    livescript: {
-      test: {
-        expand: true,
-        cwd: 'test/',
-        src: ['**/*.ls'],
-        dest: 'test/',
-        ext: '.js'
-      }
-    },
-
     mochacli: {
         options: {
           require: ["test/require"],
-          reporter: 'mocha-unfunk-reporter'
+          reporter: 'mocha-unfunk-reporter',
+          compilers: ["ls:LiveScript"]
         },
         any: {
-          src: ['test/**/*-test.js']
+          src: ['test/**/*-test.ls']
         }
     }
   });
