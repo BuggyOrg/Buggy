@@ -8,7 +8,14 @@
     } else {
         //Browser globals case. Just assign the
         //result to a property on the global.
-        root.Buggy = factory();
+        var Buggy = factory();
+        if(Object.keys(root).length == 0){
+          for(key in Buggy){
+            root[key] = Buggy[key];
+          }
+        } else {
+          root.Buggy = Buggy;
+        }
     }
 }(this, function () {
     //almond, and your modules will be inlined here
